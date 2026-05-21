@@ -30,6 +30,7 @@ func main() {
 	heroAlive := true
 	heroCriticalChance := defaultHeroCriticalChance
 	heroAttacks := [3]string{"Slash", "Pierce", "Heavy Strike"}
+	heroInventory := []string{"Small Potion", "Wooden Shield"}
 	heroTotalDamage := calculateDamage(heroBaseDamage, heroBonusDamage)
 
 	enemyName := defaultEnemyName
@@ -50,6 +51,16 @@ func main() {
 	fmt.Println("Attack 2:", heroAttacks[1])
 	fmt.Println("Attack 3:", heroAttacks[2])
 
+	fmt.Println("Hero inventory before reward:", heroInventory)
+	fmt.Println("Inventory length before reward:", len(heroInventory))
+	fmt.Println("Inventory capacity before reward:", cap(heroInventory))
+
+	heroInventory = append(heroInventory, "Rusty Sword")
+
+	fmt.Println("Hero inventory after reward:", heroInventory)
+	fmt.Println("Inventory length after reward:", len(heroInventory))
+	fmt.Println("Inventory capacity after reward:", cap(heroInventory))
+
 	if heroHP > 0 {
 		fmt.Println(heroName, "is ready to fight")
 	} else {
@@ -63,7 +74,7 @@ func main() {
 
 	for round := 1; enemyHP > 0; round++ {
 		attackIndex := (round - 1) % len(heroAttacks)
-		selectedAttak := heroAttacks[attackIndex]
+		selectedAttack := heroAttacks[attackIndex]
 
 		enemyHP -= heroTotalDamage
 
@@ -72,11 +83,12 @@ func main() {
 		}
 
 		fmt.Println("Round:", round)
-		fmt.Println(heroName, "uses", selectedAttak)
+		fmt.Println(heroName, "uses", selectedAttack)
 		fmt.Println(heroName, "hits", enemyName, "for", heroTotalDamage, "damage")
 		fmt.Println(enemyName, "HP:", enemyHP)
 	}
 
 	fmt.Println("Battle finished")
 	fmt.Println(enemyName, "is defeated")
+	fmt.Println(heroName, "received item:", "Rusty Sword")
 }

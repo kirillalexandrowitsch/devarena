@@ -56,7 +56,7 @@ Beginner
 - [x] Loops
 - [x] Constants
 - [x] Arrays
-- [ ] Slices
+- [x] Slices
 - [ ] Maps
 - [ ] Structs
 - [ ] Methods
@@ -102,10 +102,10 @@ Beginner
 ## Collections
 
 - [x] Arrays
-- [ ] Slices
-- [ ] len
-- [ ] cap
-- [ ] append
+- [x] Slices
+- [x] len
+- [x] cap
+- [x] append
 - [ ] copy
 - [ ] Maps
 - [ ] Map lookup
