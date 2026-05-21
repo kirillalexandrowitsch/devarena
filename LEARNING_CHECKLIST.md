@@ -31,7 +31,7 @@ Rule:
 
 - [x] Variables
 - [x] Basic data types
-- [ ] Functions
+- [x] Functions
 - [ ] Conditions
 - [ ] Loops
 - [ ] Arrays
