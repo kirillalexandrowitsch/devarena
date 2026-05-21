@@ -106,7 +106,7 @@ Beginner
 - [x] len
 - [x] cap
 - [x] append
-- [ ] copy
+- [x] copy
 - [ ] Maps
 - [ ] Map lookup
 - [ ] Map delete

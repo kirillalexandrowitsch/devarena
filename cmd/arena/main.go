@@ -36,6 +36,9 @@ func main() {
 	enemyName := defaultEnemyName
 	enemyHP := defaultEnemyHP
 
+	inventoryBeforeBattle := make([]string, len(heroInventory))
+	copy(inventoryBeforeBattle, heroInventory)
+
 	fmt.Println("Hero name:", heroName)
 	fmt.Println("Hero class:", heroClass)
 	fmt.Println("Hero level:", heroLevel)
@@ -58,6 +61,7 @@ func main() {
 	heroInventory = append(heroInventory, "Rusty Sword")
 
 	fmt.Println("Hero inventory after reward:", heroInventory)
+	fmt.Println("Inventory copy before battle still:", inventoryBeforeBattle)
 	fmt.Println("Inventory length after reward:", len(heroInventory))
 	fmt.Println("Inventory capacity after reward:", cap(heroInventory))
 
