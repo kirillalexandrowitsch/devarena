@@ -54,7 +54,7 @@ Beginner
 - [x] Functions
 - [x] Conditions
 - [x] Loops
-- [ ] Constants
+- [x] Constants
 - [ ] Arrays
 - [ ] Slices
 - [ ] Maps

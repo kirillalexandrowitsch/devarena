@@ -2,6 +2,18 @@ package main
 
 import "fmt"
 
+const (
+	defaultHeroClass          = "Warrior"
+	defaultHeroLevel          = 1
+	defaultHeroHP             = 100
+	defaultHeroBaseDamage     = 15
+	defaultHeroBonusDamage    = 5
+	defaultHeroCriticalChance = 0.15
+
+	defaultEnemyName = "Goblin"
+	defaultEnemyHP   = 60
+)
+
 func calculateDamage(baseDamage int, bonusDamage int) int {
 	return baseDamage + bonusDamage
 }
@@ -10,18 +22,17 @@ func main() {
 	fmt.Println("Welcome to DevArena")
 
 	heroName := "Ragnar"
-	heroClass := "Warrior"
-	heroLevel := 1
-	heroHP := 100
-	heroBaseDamage := 15
-	heroBonusDamage := 5
+	heroClass := defaultHeroClass
+	heroLevel := defaultHeroLevel
+	heroHP := defaultHeroHP
+	heroBaseDamage := defaultHeroBaseDamage
+	heroBonusDamage := defaultHeroBonusDamage
 	heroAlive := true
-	heroCriticalChance := 0.15
-
-	enemyName := "Goblin"
-	enemyHP := 60
-
+	heroCriticalChance := defaultHeroCriticalChance
 	heroTotalDamage := calculateDamage(heroBaseDamage, heroBonusDamage)
+
+	enemyName := defaultEnemyName
+	enemyHP := defaultEnemyHP
 
 	fmt.Println("Hero name:", heroName)
 	fmt.Println("Hero class:", heroClass)
