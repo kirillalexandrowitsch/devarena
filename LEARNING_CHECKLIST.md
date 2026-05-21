@@ -67,11 +67,11 @@ Beginner
 
 ## Go Types
 
-- [ ] string
-- [ ] int
+- [x] string
+- [x] int
 - [ ] int64
-- [ ] bool
-- [ ] float64
+- [x] bool
+- [x] float64
 - [ ] rune
 - [ ] byte
 - [ ] zero values
@@ -82,8 +82,8 @@ Beginner
 ## Functions
 
 - [x] Basic functions
-- [ ] Function parameters
-- [ ] Return values
+- [x] Function parameters
+- [x] Return values
 - [ ] Multiple return values
 - [ ] Named return values
 - [ ] Variadic functions
@@ -302,8 +302,8 @@ Beginner
 - [ ] git switch
 - [ ] git merge
 - [ ] git rebase basics
-- [ ] git log
-- [ ] .gitignore
+- [x] git log
+- [x] .gitignore
 
 ## GitHub Workflow
 
@@ -337,18 +337,18 @@ Beginner
 
 ## Terminal Basics
 
-- [ ] pwd
-- [ ] cd
+- [x] pwd
+- [x] cd
 - [ ] ls
-- [ ] mkdir
-- [ ] touch
+- [x] mkdir
+- [x] touch
 - [ ] rm
 - [ ] cp
 - [ ] mv
 - [ ] cat
 - [ ] less
 - [ ] grep
-- [ ] find
+- [x] find
 - [ ] chmod
 
 ## Environment and Processes
@@ -471,7 +471,7 @@ Beginner
 
 ## Project Structure
 
-- [ ] cmd
+- [x] cmd
 - [ ] internal
 - [ ] config
 - [ ] handler
@@ -486,8 +486,8 @@ Beginner
 - [ ] migrations
 - [ ] docker-compose.yml
 - [ ] .env.example
-- [ ] README.md
-- [ ] ARCHITECTURE.md
+- [x] README.md
+- [x] ARCHITECTURE.md
 
 ## Architecture Concepts
 
