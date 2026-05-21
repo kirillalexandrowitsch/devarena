@@ -55,7 +55,7 @@ Beginner
 - [x] Conditions
 - [x] Loops
 - [x] Constants
-- [ ] Arrays
+- [x] Arrays
 - [ ] Slices
 - [ ] Maps
 - [ ] Structs
@@ -101,7 +101,7 @@ Beginner
 
 ## Collections
 
-- [ ] Arrays
+- [x] Arrays
 - [ ] Slices
 - [ ] len
 - [ ] cap

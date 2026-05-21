@@ -29,6 +29,7 @@ func main() {
 	heroBonusDamage := defaultHeroBonusDamage
 	heroAlive := true
 	heroCriticalChance := defaultHeroCriticalChance
+	heroAttacks := [3]string{"Slash", "Pierce", "Heavy Strike"}
 	heroTotalDamage := calculateDamage(heroBaseDamage, heroBonusDamage)
 
 	enemyName := defaultEnemyName
@@ -44,6 +45,11 @@ func main() {
 	fmt.Println("Hero alive:", heroAlive)
 	fmt.Println("Hero critical chance:", heroCriticalChance)
 
+	fmt.Println("Hero attacks:")
+	fmt.Println("Attack 1:", heroAttacks[0])
+	fmt.Println("Attack 2:", heroAttacks[1])
+	fmt.Println("Attack 3:", heroAttacks[2])
+
 	if heroHP > 0 {
 		fmt.Println(heroName, "is ready to fight")
 	} else {
@@ -56,6 +62,9 @@ func main() {
 	fmt.Println("Battle started")
 
 	for round := 1; enemyHP > 0; round++ {
+		attackIndex := (round - 1) % len(heroAttacks)
+		selectedAttak := heroAttacks[attackIndex]
+
 		enemyHP -= heroTotalDamage
 
 		if enemyHP < 0 {
@@ -63,6 +72,7 @@ func main() {
 		}
 
 		fmt.Println("Round:", round)
+		fmt.Println(heroName, "uses", selectedAttak)
 		fmt.Println(heroName, "hits", enemyName, "for", heroTotalDamage, "damage")
 		fmt.Println(enemyName, "HP:", enemyHP)
 	}
