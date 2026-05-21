@@ -11,6 +11,7 @@ func main() {
 	heroHP := 100
 	heroDamage := 15
 	heroAlive := true
+	heroCriticalChance := 0.15
 
 	fmt.Println("Hero name:", heroName)
 	fmt.Println("Hero class:", heroClass)
@@ -18,4 +19,5 @@ func main() {
 	fmt.Println("Hero HP:", heroHP)
 	fmt.Println("Hero damage:", heroDamage)
 	fmt.Println("Hero alive:", heroAlive)
+	fmt.Println("Hero critical chance:", heroCriticalChance)
 }

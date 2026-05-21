@@ -30,7 +30,7 @@ Rule:
 ### Basic Go syntax
 
 - [x] Variables
-- [ ] Basic data types
+- [x] Basic data types
 - [ ] Functions
 - [ ] Conditions
 - [ ] Loops
