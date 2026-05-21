@@ -29,4 +29,10 @@ func main() {
 	fmt.Println("Hero total damage:", heroTotalDamage)
 	fmt.Println("Hero alive:", heroAlive)
 	fmt.Println("Hero critical chance:", heroCriticalChance)
+
+	if heroHP > 0 {
+		fmt.Println(heroName, "is ready to fight")
+	} else {
+		fmt.Println(heroName, "is defeated and cannot fight")
+	}
 }

@@ -32,7 +32,7 @@ Rule:
 - [x] Variables
 - [x] Basic data types
 - [x] Functions
-- [ ] Conditions
+- [x] Conditions
 - [ ] Loops
 - [ ] Arrays
 - [ ] Slices
