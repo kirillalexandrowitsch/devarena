@@ -29,7 +29,7 @@ Rule:
 
 ### Basic Go syntax
 
-- [ ] Variables
+- [x] Variables
 - [ ] Basic data types
 - [ ] Functions
 - [ ] Conditions
