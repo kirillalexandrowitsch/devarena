@@ -97,7 +97,7 @@ Beginner
 - [x] for loops
 - [ ] break
 - [ ] continue
-- [ ] range
+- [x] range
 
 ## Collections
 
@@ -110,8 +110,8 @@ Beginner
 - [x] Maps
 - [x] Map lookup
 - [x] Map delete
-- [ ] Range over slice
-- [ ] Range over map
+- [x] Range over slice
+- [x] Range over map
 
 ## Structs and Methods
 

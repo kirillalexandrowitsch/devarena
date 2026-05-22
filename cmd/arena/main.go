@@ -55,9 +55,9 @@ func main() {
 	fmt.Println("Hero critical chance:", heroCriticalChance)
 
 	fmt.Println("Hero stats:")
-	fmt.Println("Strength:", heroStats["strength"])
-	fmt.Println("Agility:", heroStats["agility"])
-	fmt.Println("Stamina:", heroStats["stamina"])
+	for statName, statValue := range heroStats {
+		fmt.Println(statName+":", statValue)
+	}
 
 	intellect, exists := heroStats["intellect"]
 	if exists {
@@ -70,29 +70,42 @@ func main() {
 	heroStats["intellect"] = 3
 
 	fmt.Println("Hero stats after training:")
-	fmt.Println("Strength:", heroStats["strength"])
-	fmt.Println("Intellect:", heroStats["intellect"])
+	for statName, statValue := range heroStats {
+		fmt.Println(statName+":", statValue)
+	}
 
 	delete(heroStats, "intellect")
 
 	fmt.Println("Hero stats after removing temporary intellect bonus:")
-	fmt.Println("Strength:", heroStats["strength"])
-	fmt.Println("Agility:", heroStats["agility"])
-	fmt.Println("Stamina:", heroStats["stamina"])
+	for statName, statValue := range heroStats {
+		fmt.Println(statName+":", statValue)
+	}
 
 	fmt.Println("Hero attacks:")
-	fmt.Println("Attack 1:", heroAttacks[0])
-	fmt.Println("Attack 2:", heroAttacks[1])
-	fmt.Println("Attack 3:", heroAttacks[2])
+	for index, attack := range heroAttacks {
+		fmt.Println("Attack", index+1, ":", attack)
+	}
 
-	fmt.Println("Hero inventory before battle:", inventoryBeforeBattle)
+	fmt.Println("Hero inventory before battle:")
+	for index, item := range inventoryBeforeBattle {
+		fmt.Println("Item", index+1, ":", item)
+	}
+
 	fmt.Println("Inventory length before reward:", len(heroInventory))
 	fmt.Println("Inventory capacity before reward:", cap(heroInventory))
 
 	heroInventory = append(heroInventory, "Rusty Sword")
 
-	fmt.Println("Hero inventory after reward:", heroInventory)
-	fmt.Println("Inventory copy before battle still:", inventoryBeforeBattle)
+	fmt.Println("Hero inventory after reward:")
+	for index, item := range heroInventory {
+		fmt.Println("Item", index+1, ":", item)
+	}
+
+	fmt.Println("Inventory copy before battle still:")
+	for index, item := range inventoryBeforeBattle {
+		fmt.Println("Item", index+1, ":", item)
+	}
+
 	fmt.Println("Inventory length after reward:", len(heroInventory))
 	fmt.Println("Inventory capacity after reward:", cap(heroInventory))
 
