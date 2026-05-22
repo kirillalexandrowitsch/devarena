@@ -57,7 +57,7 @@ Beginner
 - [x] Constants
 - [x] Arrays
 - [x] Slices
-- [ ] Maps
+- [x] Maps
 - [ ] Structs
 - [ ] Methods
 - [ ] Pointers
@@ -107,9 +107,9 @@ Beginner
 - [x] cap
 - [x] append
 - [x] copy
-- [ ] Maps
-- [ ] Map lookup
-- [ ] Map delete
+- [x] Maps
+- [x] Map lookup
+- [x] Map delete
 - [ ] Range over slice
 - [ ] Range over map
 
