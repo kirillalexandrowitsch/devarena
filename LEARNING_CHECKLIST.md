@@ -61,7 +61,7 @@ Beginner
 - [x] Structs
 - [x] Methods
 - [x] Pointers
-- [ ] Interfaces
+- [x] Interfaces
 - [ ] Packages
 - [ ] Modules
 
@@ -127,14 +127,14 @@ Beginner
 - [x] Basic pointers
 - [x] Address operator
 - [x] Dereferencing
-- [ ] nil
+- [x] nil
 - [x] Pointer receiver
 - [x] Mutating state through pointer
 
 ## Interfaces
 
-- [ ] Interfaces
-- [ ] Implicit implementation
+- [x] Interfaces
+- [x] Implicit implementation
 - [ ] Empty interface / any
 - [ ] Type assertion
 - [ ] Type switch

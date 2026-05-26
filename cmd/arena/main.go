@@ -14,6 +14,37 @@ const (
 	defaultEnemyHP   = 60
 )
 
+type Weapon interface {
+	Name() string
+	DamageBonus() int
+}
+
+type Sword struct {
+	Title string
+	Bonus int
+}
+
+func (s Sword) Name() string {
+	return s.Title
+}
+
+func (s Sword) DamageBonus() int {
+	return s.Bonus
+}
+
+type Axe struct {
+	Title string
+	Bonus int
+}
+
+func (a Axe) Name() string {
+	return a.Title
+}
+
+func (a Axe) DamageBonus() int {
+	return a.Bonus
+}
+
 type Hero struct {
 	Name           string
 	Class          string
@@ -26,6 +57,7 @@ type Hero struct {
 	Attacks        [3]string
 	Inventory      []string
 	Stats          map[string]int
+	Weapon         Weapon
 }
 
 type Enemy struct {
@@ -40,7 +72,13 @@ type Battle struct {
 }
 
 func (h Hero) TotalDamage() int {
-	return h.BaseDamage + h.BonusDamage
+	totalDamage := h.BaseDamage + h.BonusDamage
+
+	if h.Weapon != nil {
+		totalDamage += h.Weapon.DamageBonus()
+	}
+
+	return totalDamage
 }
 
 func (h Hero) PrintInfo() {
@@ -50,6 +88,14 @@ func (h Hero) PrintInfo() {
 	fmt.Println("Hero HP:", h.HP)
 	fmt.Println("Hero base damage:", h.BaseDamage)
 	fmt.Println("Hero bonus damage:", h.BonusDamage)
+
+	if h.Weapon != nil {
+		fmt.Println("Hero weapon:", h.Weapon.Name())
+		fmt.Println("Weapon damage bonus:", h.Weapon.DamageBonus())
+	} else {
+		fmt.Println("Hero weapon: none")
+	}
+
 	fmt.Println("Hero total damage:", h.TotalDamage())
 	fmt.Println("Hero alive:", h.Alive)
 	fmt.Println("Hero critical chance:", h.CriticalChance)
@@ -78,6 +124,10 @@ func (h Hero) PrintInventory(title string) {
 
 func (h *Hero) AddItem(item string) {
 	h.Inventory = append(h.Inventory, item)
+}
+
+func (h *Hero) EquipWeapon(weapon Weapon) {
+	h.Weapon = weapon
 }
 
 func (h *Hero) TakeDamage(damage int) {
@@ -110,6 +160,11 @@ func (b *Battle) Start() {
 
 		fmt.Println("Round:", b.Round)
 		fmt.Println(b.Hero.Name, "uses", selectedAttack)
+
+		if b.Hero.Weapon != nil {
+			fmt.Println(b.Hero.Name, "attacks with", b.Hero.Weapon.Name())
+		}
+
 		fmt.Println(b.Hero.Name, "hits", b.Enemy.Name, "for", b.Hero.TotalDamage(), "damage")
 		fmt.Println(b.Enemy.Name, "HP:", b.Enemy.HP)
 	}
@@ -134,6 +189,11 @@ func damageHeroOriginal(hero *Hero, damage int) {
 	fmt.Println("Inside damageHeroOriginal HP:", hero.HP)
 }
 
+func printWeaponInfo(weapon Weapon) {
+	fmt.Println("Weapon name:", weapon.Name())
+	fmt.Println("Weapon damage bonus:", weapon.DamageBonus())
+}
+
 func main() {
 	fmt.Println("Welcome to DevArena")
 
@@ -154,6 +214,22 @@ func main() {
 			"stamina":  12,
 		},
 	}
+
+	starterSword := Sword{
+		Title: "Starter Sword",
+		Bonus: 4,
+	}
+
+	battleAxe := Axe{
+		Title: "Battle Axe",
+		Bonus: 7,
+	}
+
+	fmt.Println("Available weapons:")
+	printWeaponInfo(starterSword)
+	printWeaponInfo(battleAxe)
+
+	hero.EquipWeapon(starterSword)
 
 	enemy := Enemy{
 		Name: defaultEnemyName,
