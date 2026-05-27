@@ -63,7 +63,7 @@ Beginner
 - [x] Pointers
 - [x] Interfaces
 - [x] Packages
-- [ ] Modules
+- [x] Modules
 
 ## Go Types
 
@@ -146,10 +146,10 @@ Beginner
 - [x] Imports
 - [x] Exported names
 - [x] Unexported names
-- [ ] Go modules
-- [ ] go.mod
+- [х] Go modules
+- [х] go.mod
 - [ ] go.sum
-- [ ] go mod tidy
+- [х] go mod tidy
 - [ ] init function
 
 ## Additional Core Go

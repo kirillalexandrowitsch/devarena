@@ -75,7 +75,13 @@ Observability and production-readiness
 ## Current Stage
 
 ```text
-Stage 0: Repository Initialization
+Stage 1: Go Core
+```
+
+Current focus:
+
+```text
+Go packages and modules
 ```
 
 ---
@@ -117,6 +123,7 @@ RabbitMQ
 Kafka
 Background workers
 Event streaming
+Outbox pattern
 ```
 
 ### Infrastructure
@@ -214,6 +221,7 @@ Tournament
 BattleLog
 AuditLog
 GameEvent
+OutboxEvent
 ```
 
 ---
@@ -246,13 +254,25 @@ Stage 20: Performance and Production Readiness
 
 ---
 
-## Initial Project Structure
+## Current Project Structure
 
 ```text
 devarena/
   cmd/
     arena/
       main.go
+
+  internal/
+    battle/
+      battle.go
+
+    enemy/
+      enemy.go
+
+    hero/
+      hero.go
+      weapon.go
+
   README.md
   ARCHITECTURE.md
   LEARNING_CHECKLIST.md
@@ -301,12 +321,88 @@ devarena/
   docker-compose.yml
   Makefile
   .env.example
+  .dockerignore
   .gitignore
   README.md
   ARCHITECTURE.md
   LEARNING_CHECKLIST.md
   go.mod
   go.sum
+```
+
+---
+
+## Go Module
+
+This project uses Go modules.
+
+Current module path:
+
+```text
+github.com/rudyakovk/devarena
+```
+
+Internal packages are imported using this module path.
+
+Examples:
+
+```go
+import "github.com/rudyakovk/devarena/internal/hero"
+import "github.com/rudyakovk/devarena/internal/enemy"
+import "github.com/rudyakovk/devarena/internal/battle"
+```
+
+The `internal` directory is used to keep application packages private to this module.
+
+This means external projects cannot import packages such as:
+
+```text
+github.com/rudyakovk/devarena/internal/hero
+```
+
+Only packages inside the same module can use these internal packages.
+
+Useful Go module commands:
+
+```bash
+go mod tidy
+go list ./...
+go test ./...
+```
+
+---
+
+## Current Internal Packages
+
+### `internal/hero`
+
+Contains hero-related domain logic:
+
+```text
+Hero
+Weapon
+Sword
+Axe
+Hero methods
+Weapon interface
+```
+
+### `internal/enemy`
+
+Contains enemy-related domain logic:
+
+```text
+Enemy
+Enemy.TakeDamage
+```
+
+### `internal/battle`
+
+Contains battle-related domain logic:
+
+```text
+Battle
+Battle.Start
 ```
 
 ---
@@ -323,6 +419,8 @@ go run ./cmd/arena
 
 ## Test
 
+Run all tests:
+
 ```bash
 go test ./...
 ```
@@ -332,6 +430,40 @@ Later the project will include:
 ```bash
 go test -race ./...
 go test -cover ./...
+```
+
+---
+
+## Useful Development Commands
+
+Format code:
+
+```bash
+gofmt -w .
+```
+
+List all packages:
+
+```bash
+go list ./...
+```
+
+Clean and update module dependencies:
+
+```bash
+go mod tidy
+```
+
+Run the console arena:
+
+```bash
+go run ./cmd/arena
+```
+
+Run all tests:
+
+```bash
+go test ./...
 ```
 
 ---
@@ -350,7 +482,18 @@ learn: add basic hero data types
 learn: add damage calculation function
 learn: add battle condition
 learn: add simple battle loop
-refactor: split arena logic into packages
+learn: add hero constants
+learn: add fixed attack array
+learn: add hero inventory slice
+learn: copy hero inventory slice
+learn: add hero stats map
+learn: iterate hero collections with range
+learn: add Hero Enemy and Battle structs
+learn: add Hero and Battle methods
+learn: use pointers to update hero and battle state
+learn: add Weapon interface
+refactor: split arena domain into packages
+learn: document Go module usage
 feat: add REST API health endpoint
 feat: add PostgreSQL hero repository
 test: add battle service table-driven tests
