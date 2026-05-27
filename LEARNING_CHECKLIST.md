@@ -150,7 +150,7 @@ Beginner
 - [х] go.mod
 - [ ] go.sum
 - [х] go mod tidy
-- [ ] init function
+- [x] init function
 
 ## Additional Core Go
 
