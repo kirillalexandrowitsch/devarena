@@ -88,6 +88,7 @@ func main() {
 	printTypeConversions()
 
 	gameHero := hero.Hero{
+		ID:             1,
 		Name:           "Ragnar",
 		Class:          defaultHeroClass,
 		Level:          defaultHeroLevel,

@@ -3,6 +3,7 @@ package hero
 import "fmt"
 
 type Hero struct {
+	ID             HeroID
 	Name           string
 	Class          HeroClass
 	Level          int
@@ -28,6 +29,7 @@ func (h Hero) TotalDamage() int {
 }
 
 func (h Hero) PrintInfo() {
+	fmt.Println("Hero ID:", h.ID)
 	fmt.Println("Hero name:", h.Name)
 	fmt.Println("Hero class:", h.Class)
 	fmt.Println("Hero level:", h.Level)

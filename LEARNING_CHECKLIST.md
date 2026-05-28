@@ -77,7 +77,7 @@ Beginner
 - [x] zero values
 - [x] type conversion
 - [x] custom types
-- [ ] type aliases
+- [x] type aliases
 
 ## Functions
 
