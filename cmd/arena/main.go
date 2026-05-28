@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	defaultHeroClass          = "Warrior"
+	defaultHeroClass          = hero.HeroClassWarrior
 	defaultHeroLevel          = 1
 	defaultHeroHP             = 100
 	defaultHeroBaseDamage     = 15

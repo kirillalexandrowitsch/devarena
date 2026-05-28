@@ -4,7 +4,7 @@ import "fmt"
 
 type Hero struct {
 	Name           string
-	Class          string
+	Class          HeroClass
 	Level          int
 	HP             int
 	BaseDamage     int

@@ -76,7 +76,7 @@ Beginner
 - [ ] byte
 - [x] zero values
 - [x] type conversion
-- [ ] custom types
+- [x] custom types
 - [ ] type aliases
 
 ## Functions
