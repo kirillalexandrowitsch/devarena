@@ -75,7 +75,7 @@ Beginner
 - [ ] rune
 - [ ] byte
 - [x] zero values
-- [ ] type conversion
+- [x] type conversion
 - [ ] custom types
 - [ ] type aliases
 

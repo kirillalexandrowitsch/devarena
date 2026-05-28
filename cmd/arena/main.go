@@ -62,10 +62,30 @@ func printZeroValues() {
 	fmt.Println("Default hero:", defaultHero)
 }
 
+func printTypeConversions() {
+	wins := 7
+	losses := 3
+	totalBattles := wins + losses
+
+	winRate := float64(wins) / float64(totalBattles) * 100
+	totalBattles64 := int64(totalBattles)
+	winRateText := fmt.Sprintf("%.2f%%", winRate)
+
+	fmt.Println("Type conversion demo:")
+	fmt.Println("Wins:", wins)
+	fmt.Println("Losses:", losses)
+	fmt.Println("Total battles as int:", totalBattles)
+	fmt.Println("Total battles as int64:", totalBattles64)
+	fmt.Println("Win rate as float64:", winRate)
+	fmt.Println("Win rate text:", winRateText)
+}
+
 func main() {
 	fmt.Println("Welcome to DevArena")
 
 	printZeroValues()
+
+	printTypeConversions()
 
 	gameHero := hero.Hero{
 		Name:           "Ragnar",
