@@ -86,7 +86,7 @@ Beginner
 - [x] Return values
 - [x] Multiple return values
 - [x] Named return values
-- [ ] Variadic functions
+- [x] Variadic functions
 - [ ] Anonymous functions
 - [ ] Closures
 
@@ -146,10 +146,10 @@ Beginner
 - [x] Imports
 - [x] Exported names
 - [x] Unexported names
-- [х] Go modules
-- [х] go.mod
+- [x] Go modules
+- [x] go.mod
 - [ ] go.sum
-- [х] go mod tidy
+- [x] go mod tidy
 - [x] init function
 
 ## Additional Core Go
@@ -472,7 +472,7 @@ Beginner
 ## Project Structure
 
 - [x] cmd
-- [ ] internal
+- [x] internal
 - [ ] config
 - [ ] handler
 - [ ] service

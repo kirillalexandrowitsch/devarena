@@ -181,7 +181,7 @@ func main() {
 	fmt.Println("Inventory length before reward:", len(gameHero.Inventory))
 	fmt.Println("Inventory capacity before reward:", cap(gameHero.Inventory))
 
-	gameHero.AddItem("Rusty Sword")
+	gameHero.AddItems("Rusty Sword", "Training Token")
 
 	gameHero.PrintInventory("Hero inventory after reward:")
 
@@ -215,7 +215,7 @@ func main() {
 
 	rewardExperience, rewardItem := calculateBattleReward(gameHero.Level, gameEnemy.Name)
 
-	gameHero.AddItem(rewardItem)
+	gameHero.AddItems(rewardItem)
 
 	fmt.Println(gameHero.Name, "received experience:", rewardExperience)
 	fmt.Println(gameHero.Name, "received item:", rewardItem)

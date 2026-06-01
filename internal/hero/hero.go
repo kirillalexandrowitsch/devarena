@@ -74,6 +74,12 @@ func (h *Hero) AddItem(item string) {
 	h.Inventory = append(h.Inventory, item)
 }
 
+func (h *Hero) AddItems(items ...string) {
+	for _, item := range items {
+		h.AddItem(item)
+	}
+}
+
 func (h *Hero) EquipWeapon(weapon Weapon) {
 	h.Weapon = weapon
 }
