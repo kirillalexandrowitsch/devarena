@@ -136,14 +136,24 @@ func main() {
 
 	gameHero.EquipWeapon(starterSword)
 
+	trainingSessions := 0
+
 	calculateTrainingBonus := func(strength int) int {
-		return strength / 2
+		trainingSessions++
+
+		return strength/2 + trainingSessions
 	}
 
-	trainingBonusDamage := calculateTrainingBonus(gameHero.Stats["strength"])
+	firstTrainingBonus := calculateTrainingBonus(gameHero.Stats["strength"])
+	secondTrainingBonus := calculateTrainingBonus(gameHero.Stats["strength"])
+	trainingBonusDamage := firstTrainingBonus + secondTrainingBonus
+
 	gameHero.BonusDamage += trainingBonusDamage
 
-	fmt.Println("Training bonus damage:", trainingBonusDamage)
+	fmt.Println("Training sessions:", trainingSessions)
+	fmt.Println("First training bonus damage:", firstTrainingBonus)
+	fmt.Println("Second training bonus damage:", secondTrainingBonus)
+	fmt.Println("Total training bonus damage:", trainingBonusDamage)
 
 	gameEnemy := enemy.Enemy{
 		Name: defaultEnemyName,
