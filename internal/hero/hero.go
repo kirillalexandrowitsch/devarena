@@ -3,19 +3,16 @@ package hero
 import "fmt"
 
 type Hero struct {
-	ID             HeroID
-	Name           string
-	Class          HeroClass
-	Level          int
-	HP             int
-	BaseDamage     int
-	BonusDamage    int
-	Alive          bool
-	CriticalChance float64
-	Attacks        [3]string
-	Inventory      []string
-	Stats          map[string]int
-	Weapon         Weapon
+	ID    HeroID
+	Name  string
+	Class HeroClass
+	Level int
+	Alive bool
+	CombatStats
+	Attacks   [3]string
+	Inventory []string
+	Stats     map[string]int
+	Weapon    Weapon
 }
 
 func (h Hero) TotalDamage() int {

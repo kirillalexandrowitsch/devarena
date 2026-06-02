@@ -127,17 +127,19 @@ func main() {
 	printTypeConversions()
 
 	gameHero := hero.Hero{
-		ID:             1,
-		Name:           "Ragnar",
-		Class:          defaultHeroClass,
-		Level:          defaultHeroLevel,
-		HP:             defaultHeroHP,
-		BaseDamage:     defaultHeroBaseDamage,
-		BonusDamage:    defaultHeroBonusDamage,
-		Alive:          true,
-		CriticalChance: defaultHeroCriticalChance,
-		Attacks:        [3]string{"Slash", "Pierce", "Heavy Strike"},
-		Inventory:      []string{"Small Potion", "Wooden Shield"},
+		ID:    1,
+		Name:  "Ragnar",
+		Class: defaultHeroClass,
+		Level: defaultHeroLevel,
+		Alive: true,
+		CombatStats: hero.CombatStats{
+			HP:             defaultHeroHP,
+			BaseDamage:     defaultHeroBaseDamage,
+			BonusDamage:    defaultHeroBonusDamage,
+			CriticalChance: defaultHeroCriticalChance,
+		},
+		Attacks:   [3]string{"Slash", "Pierce", "Heavy Strike"},
+		Inventory: []string{"Small Potion", "Wooden Shield"},
 		Stats: map[string]int{
 			"strength": 10,
 			"agility":  7,

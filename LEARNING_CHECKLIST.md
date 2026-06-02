@@ -116,7 +116,7 @@ Beginner
 ## Structs and Methods
 
 - [x] Structs
-- [ ] Embedded structs
+- [x] Embedded structs
 - [x] Methods
 - [x] Value receiver
 - [x] Pointer receiver
