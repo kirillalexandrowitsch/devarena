@@ -80,16 +80,41 @@ func printTypeConversions() {
 	fmt.Println("Win rate text:", winRateText)
 }
 
+func selectRewardItem(candidates []string) string {
+	selectedReward := "Rusty Sword"
+
+	for _, item := range candidates {
+		if item == "" {
+			continue
+		}
+
+		selectedReward = item
+		break
+	}
+
+	return selectedReward
+}
+
 func calculateBattleReward(heroLevel int, defeatedEnemyName string) (rewardExperience int, rewardItem string) {
 	baseExperience := 25
 	levelBonus := heroLevel * 5
 
 	rewardExperience = baseExperience + levelBonus
-	rewardItem = "Rusty Sword"
+
+	rewardCandidates := []string{
+		"",
+		"Rusty Sword",
+	}
 
 	if defeatedEnemyName == "Goblin" {
-		rewardItem = "Goblin Dagger"
+		rewardCandidates = []string{
+			"",
+			"Goblin Dagger",
+			"Rusty Sword",
+		}
 	}
+
+	rewardItem = selectRewardItem(rewardCandidates)
 
 	return
 }

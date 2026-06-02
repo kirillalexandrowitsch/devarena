@@ -95,8 +95,8 @@ Beginner
 - [x] if / else
 - [x] switch
 - [x] for loops
-- [ ] break
-- [ ] continue
+- [x] break
+- [x] continue
 - [x] range
 
 ## Collections
