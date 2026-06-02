@@ -120,7 +120,7 @@ Beginner
 - [x] Methods
 - [x] Value receiver
 - [x] Pointer receiver
-- [ ] Method sets
+- [x] Method sets
 
 ## Pointers
 

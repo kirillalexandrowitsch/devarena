@@ -41,6 +41,14 @@ func printWeaponInfo(weapon hero.Weapon) {
 	fmt.Println("Weapon damage bonus:", weapon.DamageBonus())
 }
 
+func printCalculatedDamage(calculator hero.DamageCalculator) {
+	fmt.Println("Calculated damage from interface:", calculator.TotalDamage())
+}
+
+func addMethodSetReward(manager hero.InventoryManager) {
+	manager.AddItem("Method Set Badge")
+}
+
 func printZeroValues() {
 	var defaultName string
 	var defaultLevel int
@@ -200,6 +208,11 @@ func main() {
 
 	gameHero.PrintInfo()
 	gameHero.PrintStats()
+
+	fmt.Println("Method set demo:")
+	printCalculatedDamage(gameHero)
+	printCalculatedDamage(&gameHero)
+	addMethodSetReward(&gameHero)
 
 	intellect, exists := gameHero.Stats["intellect"]
 	if exists {
