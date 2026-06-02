@@ -135,7 +135,7 @@ Beginner
 
 - [x] Interfaces
 - [x] Implicit implementation
-- [ ] Empty interface / any
+- [x] Empty interface / any
 - [ ] Type assertion
 - [ ] Type switch
 - [ ] Interface composition

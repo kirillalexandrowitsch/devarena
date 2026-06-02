@@ -49,6 +49,10 @@ func addMethodSetReward(manager hero.InventoryManager) {
 	manager.AddItem("Method Set Badge")
 }
 
+func printAnyValue(label string, value any) {
+	fmt.Println(label+":", value)
+}
+
 func printZeroValues() {
 	var defaultName string
 	var defaultLevel int
@@ -213,6 +217,13 @@ func main() {
 	printCalculatedDamage(gameHero)
 	printCalculatedDamage(&gameHero)
 	addMethodSetReward(&gameHero)
+
+	fmt.Println("Any demo:")
+	printAnyValue("Hero name", gameHero.Name)
+	printAnyValue("Hero level", gameHero.Level)
+	printAnyValue("Hero alive", gameHero.Alive)
+	printAnyValue("Hero inventory", gameHero.Inventory)
+	printAnyValue("Hero struct", gameHero)
 
 	intellect, exists := gameHero.Stats["intellect"]
 	if exists {
