@@ -120,6 +120,8 @@ func main() {
 		},
 	}
 
+	fmt.Println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))
+
 	starterSword := hero.Sword{
 		Title: "Starter Sword",
 		Bonus: 4,

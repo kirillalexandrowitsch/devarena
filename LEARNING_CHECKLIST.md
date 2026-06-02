@@ -93,7 +93,7 @@ Beginner
 ## Control Flow
 
 - [x] if / else
-- [ ] switch
+- [x] switch
 - [x] for loops
 - [ ] break
 - [ ] continue
