@@ -163,6 +163,14 @@ func prepareArena() {
 	fmt.Println("Arena preparation finished")
 }
 
+func validateArenaCapacity(capacity int) {
+	if capacity <= 0 {
+		panic("arena capacity must be positive")
+	}
+
+	fmt.Println("Arena capacity is valid:", capacity)
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -214,6 +222,8 @@ func main() {
 	printByteDemo()
 
 	prepareArena()
+
+	validateArenaCapacity(100)
 
 	gameHero := hero.Hero{
 		ID:    1,
