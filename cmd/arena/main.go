@@ -152,6 +152,17 @@ func printByteDemo() {
 	}
 }
 
+func prepareArena() {
+	fmt.Println("Arena preparation sterted")
+
+	defer fmt.Println("Arena preparation log closed")
+	defer fmt.Println("Arena temporary resources released")
+
+	fmt.Println("Checking arena gates")
+	fmt.Println("Checking arena weapons")
+	fmt.Println("Arena preparation finished")
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -201,6 +212,8 @@ func main() {
 	printRuneDemo()
 
 	printByteDemo()
+
+	prepareArena()
 
 	gameHero := hero.Hero{
 		ID:    1,
