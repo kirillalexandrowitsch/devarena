@@ -60,7 +60,24 @@ func printStringValue(label string, value any) {
 		return
 	}
 
-	fmt.Println(label+" as string", text)
+	fmt.Println(label+" as string:", text)
+}
+
+func printTypedValue(label string, value any) {
+	switch typedValue := value.(type) {
+	case string:
+		fmt.Println(label+" is string:", typedValue)
+	case int:
+		fmt.Println(label+" is int:", typedValue)
+	case bool:
+		fmt.Println(label+" is bool:", typedValue)
+	case []string:
+		fmt.Println(label+" is []string:", typedValue)
+	case hero.Hero:
+		fmt.Println(label+" is hero.Hero:", typedValue.Name)
+	default:
+		fmt.Println(label + " has unknown type")
+	}
 }
 
 func printZeroValues() {
@@ -235,9 +252,17 @@ func main() {
 	printAnyValue("Hero inventory", gameHero.Inventory)
 	printAnyValue("Hero struct", gameHero)
 
-	fmt.Println("Type assertion demo")
+	fmt.Println("Type assertion demo:")
 	printStringValue("Hero name", gameHero.Name)
 	printStringValue("Hero level", gameHero.Level)
+
+	fmt.Println("Type switch demo:")
+	printTypedValue("Hero name", gameHero.Name)
+	printTypedValue("Hero level", gameHero.Level)
+	printTypedValue("Hero alive", gameHero.Alive)
+	printTypedValue("Hero inventory", gameHero.Inventory)
+	printTypedValue("Hero struct", gameHero)
+	printTypedValue("Hero critical chance", gameHero.CriticalChance)
 
 	intellect, exists := gameHero.Stats["intellect"]
 	if exists {
