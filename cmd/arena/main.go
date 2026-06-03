@@ -124,6 +124,20 @@ func printTypeConversions() {
 	fmt.Println("Win rate text:", winRateText)
 }
 
+func printRuneDemo() {
+	heroTitle := "Ragnar Герой"
+	titleRunes := []rune(heroTitle)
+
+	fmt.Println("Rune demo:")
+	fmt.Println("Hero title:", heroTitle)
+	fmt.Println("Bytes length:", len(heroTitle))
+	fmt.Println("Runes length:", len(titleRunes))
+
+	for index, symbol := range heroTitle {
+		fmt.Printf("Byte index %d: %c (%U)\n", index, symbol, symbol)
+	}
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -169,6 +183,8 @@ func main() {
 	printZeroValues()
 
 	printTypeConversions()
+
+	printRuneDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
