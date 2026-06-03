@@ -153,7 +153,7 @@ func printByteDemo() {
 }
 
 func prepareArena() {
-	fmt.Println("Arena preparation sterted")
+	fmt.Println("Arena preparation started")
 
 	defer fmt.Println("Arena preparation log closed")
 	defer fmt.Println("Arena temporary resources released")
