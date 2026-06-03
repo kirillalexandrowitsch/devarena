@@ -138,7 +138,7 @@ Beginner
 - [x] Empty interface / any
 - [x] Type assertion
 - [x] Type switch
-- [ ] Interface composition
+- [x] Interface composition
 
 ## Packages and Modules
 

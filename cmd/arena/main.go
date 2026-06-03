@@ -49,6 +49,11 @@ func addMethodSetReward(manager hero.InventoryManager) {
 	manager.AddItem("Method Set Badge")
 }
 
+func addComposedInterfaceReward(receiver hero.BattleRewardReceiver) {
+	fmt.Println("Composed interface damage:", receiver.TotalDamage())
+	receiver.AddItem("Interface Composition Medal")
+}
+
 func printAnyValue(label string, value any) {
 	fmt.Println(label+":", value)
 }
@@ -244,6 +249,9 @@ func main() {
 	printCalculatedDamage(gameHero)
 	printCalculatedDamage(&gameHero)
 	addMethodSetReward(&gameHero)
+
+	fmt.Println("Interface composition demo:")
+	addComposedInterfaceReward(&gameHero)
 
 	fmt.Println("Any demo:")
 	printAnyValue("Hero name", gameHero.Name)

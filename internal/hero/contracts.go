@@ -7,3 +7,8 @@ type DamageCalculator interface {
 type InventoryManager interface {
 	AddItem(item string)
 }
+
+type BattleRewardReceiver interface {
+	DamageCalculator
+	InventoryManager
+}
