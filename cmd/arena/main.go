@@ -138,6 +138,20 @@ func printRuneDemo() {
 	}
 }
 
+func printByteDemo() {
+	heroTitle := "Ragnar Герой"
+	titleBytes := []byte(heroTitle)
+
+	fmt.Println("Byte demo:")
+	fmt.Println("Hero title:", heroTitle)
+	fmt.Println("Bytes length:", len(titleBytes))
+	fmt.Println("Bytes:", titleBytes)
+
+	for index, symbolByte := range titleBytes {
+		fmt.Printf("Byte index %d: %d (%X)\n", index, symbolByte, symbolByte)
+	}
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -185,6 +199,8 @@ func main() {
 	printTypeConversions()
 
 	printRuneDemo()
+
+	printByteDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,

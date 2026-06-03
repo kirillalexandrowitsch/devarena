@@ -73,7 +73,7 @@ Beginner
 - [x] bool
 - [x] float64
 - [x] rune
-- [ ] byte
+- [x] byte
 - [x] zero values
 - [x] type conversion
 - [x] custom types
