@@ -171,6 +171,19 @@ func validateArenaCapacity(capacity int) {
 	fmt.Println("Arena capacity is valid:", capacity)
 }
 
+func runArenaSafetyCheck(capacity int) {
+	defer func() {
+		recoveredValue := recover()
+		if recoveredValue != nil {
+			fmt.Println("Recovered from arena panic:", recoveredValue)
+		}
+	}()
+
+	validateArenaCapacity(capacity)
+
+	fmt.Println("Arena safety check completed")
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -224,6 +237,7 @@ func main() {
 	prepareArena()
 
 	validateArenaCapacity(100)
+	runArenaSafetyCheck(0)
 
 	gameHero := hero.Hero{
 		ID:    1,
