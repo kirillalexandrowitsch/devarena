@@ -184,6 +184,31 @@ func runArenaSafetyCheck(capacity int) {
 	fmt.Println("Arena safety check completed")
 }
 
+func firstOrDefault[T any](items []T, defaultValue T) T {
+	if len(items) == 0 {
+		return defaultValue
+	}
+
+	return items[0]
+}
+
+func printGenericsDemo() {
+	starterItems := []string{"Small Potion", "Wooden Shield"}
+	enemyLevels := []int{1, 2, 3}
+	arenaReadiness := []bool{true}
+
+	firstItem := firstOrDefault(starterItems, "No item")
+	firstEnemyLevel := firstOrDefault(enemyLevels, 0)
+	firstReadinessState := firstOrDefault(arenaReadiness, false)
+	emptyReward := firstOrDefault([]string{}, "Default Reward")
+
+	fmt.Println("Generics demo:")
+	fmt.Println("First starter item:", firstItem)
+	fmt.Println("First enemy level:", firstEnemyLevel)
+	fmt.Println("First readiness state:", firstReadinessState)
+	fmt.Println("Empty reward fallback:", emptyReward)
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -238,6 +263,8 @@ func main() {
 
 	validateArenaCapacity(100)
 	runArenaSafetyCheck(0)
+
+	printGenericsDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
