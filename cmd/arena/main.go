@@ -53,6 +53,16 @@ func printAnyValue(label string, value any) {
 	fmt.Println(label+":", value)
 }
 
+func printStringValue(label string, value any) {
+	text, ok := value.(string)
+	if !ok {
+		fmt.Println(label + " is not a string")
+		return
+	}
+
+	fmt.Println(label+" as string", text)
+}
+
 func printZeroValues() {
 	var defaultName string
 	var defaultLevel int
@@ -224,6 +234,10 @@ func main() {
 	printAnyValue("Hero alive", gameHero.Alive)
 	printAnyValue("Hero inventory", gameHero.Inventory)
 	printAnyValue("Hero struct", gameHero)
+
+	fmt.Println("Type assertion demo")
+	printStringValue("Hero name", gameHero.Name)
+	printStringValue("Hero level", gameHero.Level)
 
 	intellect, exists := gameHero.Stats["intellect"]
 	if exists {
