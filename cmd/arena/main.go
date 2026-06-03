@@ -209,6 +209,18 @@ func printGenericsDemo() {
 	fmt.Println("Empty reward fallback:", emptyReward)
 }
 
+func printPair[T any, U any](label string, first T, second U) {
+	fmt.Println(label+":", first, "->", second)
+}
+
+func printTypeParametersDemo() {
+	fmt.Println("Type parameters demo:")
+
+	printPair("Hero level to reward", 1, "Goblin Dagger")
+	printPair("Arena readiness to capacity", true, 100)
+	printPair[string, int]("Hero name to level", "Ragnar", 1)
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -265,6 +277,8 @@ func main() {
 	runArenaSafetyCheck(0)
 
 	printGenericsDemo()
+
+	printTypeParametersDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,

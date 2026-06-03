@@ -158,7 +158,7 @@ Beginner
 - [x] panic
 - [x] recover
 - [x] generics
-- [ ] type parameters
+- [x] type parameters
 - [ ] constraints
 - [ ] functional options pattern
 - [ ] dependency injection without framework
