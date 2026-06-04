@@ -330,6 +330,33 @@ func printDependencyInjectionDemo() {
 	arenaService.AnnounceArenaReady()
 }
 
+func printSliceInternalsDemo() {
+	baseInventory := []string{"Small Potion", "Wooden Shield", "Old Boots"}
+	inventoryView := baseInventory[:2]
+
+	fmt.Println("Slice internals demo:")
+	fmt.Println("Base inventory:", baseInventory)
+	fmt.Println("Inventory view:", inventoryView)
+	fmt.Println("Base inventory len:", len(baseInventory), "cap:", cap(baseInventory))
+	fmt.Println("Inventory view len:", len(inventoryView), "cap:", cap(inventoryView))
+
+	inventoryView[0] = "Large Potion"
+
+	fmt.Println("Base inventory after view update:", baseInventory)
+	fmt.Println("Inventory view after update:", inventoryView)
+
+	extendedView := append(inventoryView, "Iron helmet")
+
+	fmt.Println("Extended view after append:", extendedView)
+	fmt.Println("Base inventory after append to view:", baseInventory)
+
+	isolatedInventory := append([]string{}, baseInventory...)
+	isolatedInventory[0] = "Isolated Potion"
+
+	fmt.Println("Base inventory after isolated update:", baseInventory)
+	fmt.Println("Isolated inventory:", isolatedInventory)
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -394,6 +421,8 @@ func main() {
 	printFunctionalOptionsDemo()
 
 	printDependencyInjectionDemo()
+
+	printSliceInternalsDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,

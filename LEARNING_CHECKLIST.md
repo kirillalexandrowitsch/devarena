@@ -165,7 +165,7 @@ Beginner
 
 ## Go Internals Basics
 
-- [ ] Slice internals
+- [x] Slice internals
 - [ ] Map internals basics
 - [ ] Interface internals basics
 - [ ] Stack vs heap basics
