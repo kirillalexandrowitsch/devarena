@@ -161,7 +161,7 @@ Beginner
 - [x] type parameters
 - [x] constraints
 - [x] functional options pattern
-- [ ] dependency injection without framework
+- [x] dependency injection without framework
 
 ## Go Internals Basics
 

@@ -298,6 +298,38 @@ func printFunctionalOptionsDemo() {
 	fmt.Println("Tournament arena:", tournamentArena)
 }
 
+type ArenaNotifier interface {
+	Notify(message string)
+}
+
+type ConsoleNotifier struct{}
+
+func (notifier ConsoleNotifier) Notify(message string) {
+	fmt.Println("Arena notification:", message)
+}
+
+type ArenaService struct {
+	notifier ArenaNotifier
+}
+
+func NewArenaService(notifier ArenaNotifier) ArenaService {
+	return ArenaService{
+		notifier: notifier,
+	}
+}
+
+func (service ArenaService) AnnounceArenaReady() {
+	service.notifier.Notify("Arena service is ready")
+}
+
+func printDependencyInjectionDemo() {
+	consoleNotifier := ConsoleNotifier{}
+	arenaService := NewArenaService(consoleNotifier)
+
+	fmt.Println("Dependency injection demo:")
+	arenaService.AnnounceArenaReady()
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -360,6 +392,8 @@ func main() {
 	printConstraintsDemo()
 
 	printFunctionalOptionsDemo()
+
+	printDependencyInjectionDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
