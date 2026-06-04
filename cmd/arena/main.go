@@ -551,7 +551,7 @@ func printStructAlignmentDemo() {
 	fmt.Println("ArenaMemoryStats size:", unsafe.Sizeof(arenaStats))
 	fmt.Println("ArenaMemoryStats align:", unsafe.Alignof(arenaStats))
 	fmt.Println("ArenaMemoryStats Active offset:", unsafe.Offsetof(arenaStats.Active))
-	fmt.Println("ArenaMemoryStats Capacity offset:", unsafe.Offsetof(arenaStats.Level))
+	fmt.Println("ArenaMemoryStats Capacity offset:", unsafe.Offsetof(arenaStats.Capacity))
 	fmt.Println("ArenaMemoryStats Level offset:", unsafe.Offsetof(arenaStats.Level))
 	fmt.Println("ArenaMemoryStats Ranked offset:", unsafe.Offsetof(arenaStats.Ranked))
 
