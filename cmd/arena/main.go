@@ -235,13 +235,13 @@ func maxArenaValue[T arenaNumber](first T, second T) T {
 
 func printConstraintsDemo() {
 	maxHeroLevel := maxArenaValue(1, 5)
-	maxArenaCapacity := maxArenaValue(100, 250)
+	maxArenaCapacity := maxArenaValue[int64](100, 250)
 	maxCriticalChance := maxArenaValue(0.15, 0.35)
 
 	fmt.Println("Constraints demo:")
 	fmt.Println("Max hero level:", maxHeroLevel)
-	fmt.Println("MAx arena capacity:", maxArenaCapacity)
-	fmt.Println("MAx critical chance:", maxCriticalChance)
+	fmt.Println("Max arena capacity:", maxArenaCapacity)
+	fmt.Println("Max critical chance:", maxCriticalChance)
 
 }
 
