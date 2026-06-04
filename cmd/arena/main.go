@@ -408,6 +408,41 @@ func printMapInternalsDemo() {
 	fmt.Println("Initialized map:", initializedCounters)
 }
 
+func printInterfaceInternalsDemo() {
+	var emptyValue any
+
+	var nilHeroPointer *hero.Hero
+	var typedNilAsAny any = nilHeroPointer
+
+	interfaceHero := hero.Hero{
+		ID:    2,
+		Name:  "Interface Hero",
+		Class: hero.HeroClassWarrior,
+		Level: 1,
+		Alive: true,
+		CombatStats: hero.CombatStats{
+			HP:             100,
+			BaseDamage:     10,
+			BonusDamage:    2,
+			CriticalChance: 0.10,
+		},
+	}
+
+	var damageCalculator hero.DamageCalculator = interfaceHero
+	var inventoryManager hero.InventoryManager = &interfaceHero
+
+	fmt.Println("Interface internals demo:")
+	fmt.Printf("Empty interface: type=%T value=%v is nil=%v\n", emptyValue, emptyValue, emptyValue == nil)
+	fmt.Printf("Typed nil pointer as any: type=%T value=%v is nil=%v\n", typedNilAsAny, typedNilAsAny, typedNilAsAny == nil)
+	fmt.Printf("Damage calculator dynamic type: %T\n", damageCalculator)
+	fmt.Println("Damage calculator total damage:", damageCalculator.TotalDamage())
+	fmt.Printf("Inventory manager dynamic type: %T\n", inventoryManager)
+
+	inventoryManager.AddItem("Interface Internals Badge")
+
+	fmt.Println("Hero inventory after interface call:", interfaceHero.Inventory)
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -476,6 +511,8 @@ func main() {
 	printSliceInternalsDemo()
 
 	printMapInternalsDemo()
+
+	printInterfaceInternalsDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
