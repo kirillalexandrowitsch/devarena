@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/rudyakovk/devarena/internal/battle"
 	"github.com/rudyakovk/devarena/internal/enemy"
@@ -490,6 +491,43 @@ func printEscapeAnalysisDemo() {
 	fmt.Printf("Score pointer address: %p\n", scorePointer)
 }
 
+func printGarbageCollectorDemo() {
+	var before runtime.MemStats
+	var afterAllocation runtime.MemStats
+	var afterGC runtime.MemStats
+
+	runtime.ReadMemStats(&before)
+
+	temporaryInventories := make([][]string, 0, 1000)
+
+	for i := 0; i < 10000; i++ {
+		inventory := []string{
+			"Small Potion",
+			"Wooden Shield",
+			"Goblin Dagger",
+		}
+
+		temporaryInventories = append(temporaryInventories, inventory)
+	}
+
+	runtime.ReadMemStats(&afterAllocation)
+
+	fmt.Println("Garbage collector demo:")
+	fmt.Println("Temporary inventories count:", len(temporaryInventories))
+	fmt.Println("Heap allocation before:", before.HeapAlloc)
+	fmt.Println("Heap allocation after allocation:", afterAllocation.HeapAlloc)
+	fmt.Println("GC cycles before:", before.NumGC)
+	fmt.Println("GC cycles after allocation:", afterAllocation.NumGC)
+
+	temporaryInventories = nil
+
+	runtime.GC()
+	runtime.ReadMemStats(&afterGC)
+
+	fmt.Println("Heap allocation after manual GC:", afterGC.HeapAlloc)
+	fmt.Println("GC cycles after manual GC:", afterGC.NumGC)
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -564,6 +602,8 @@ func main() {
 	printStackHeapDemo()
 
 	printEscapeAnalysisDemo()
+
+	printGarbageCollectorDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
