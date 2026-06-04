@@ -345,7 +345,7 @@ func printSliceInternalsDemo() {
 	fmt.Println("Base inventory after view update:", baseInventory)
 	fmt.Println("Inventory view after update:", inventoryView)
 
-	extendedView := append(inventoryView, "Iron helmet")
+	extendedView := append(inventoryView, "Iron Helmet")
 
 	fmt.Println("Extended view after append:", extendedView)
 	fmt.Println("Base inventory after append to view:", baseInventory)
@@ -355,6 +355,57 @@ func printSliceInternalsDemo() {
 
 	fmt.Println("Base inventory after isolated update:", baseInventory)
 	fmt.Println("Isolated inventory:", isolatedInventory)
+}
+
+func addInventoryCounter(counters map[string]int, item string, count int) {
+	counters[item] = count
+}
+
+func printMapInternalsDemo() {
+	inventoryCounters := map[string]int{
+		"Small Potion":  2,
+		"Wooden Shield": 1,
+		"Iron Helmet":   1,
+	}
+
+	fmt.Println("Map internals demo:")
+	fmt.Println("Inventory counters:", inventoryCounters)
+
+	potionCount, potionExists := inventoryCounters["Samll Potion"]
+	fmt.Println("Small Potion count:", potionCount, "exists:", potionExists)
+
+	unknowCount, unknowExists := inventoryCounters["Unknow Item"]
+	fmt.Println("Unknow Item count:", unknowCount, "exists:", unknowExists)
+
+	sharedCounters := inventoryCounters
+	sharedCounters["Small Potion"] = 5
+
+	fmt.Println("Inventory counters after shared map update:", inventoryCounters)
+	fmt.Println("Shared counters:", sharedCounters)
+
+	addInventoryCounter(inventoryCounters, "Goblin Dagger", 1)
+
+	fmt.Println("Inventory counters after function update:", inventoryCounters)
+
+	delete(inventoryCounters, "Wooden Shield")
+
+	fmt.Println("Inventory counters after delete:", inventoryCounters)
+
+	fmt.Println("Map iteration order:")
+	for item, count := range inventoryCounters {
+		fmt.Println(item, "->", count)
+	}
+
+	var nilCounters map[string]int
+
+	fmt.Println("Nil map:", nilCounters)
+	fmt.Println("Nil map length:", len(nilCounters))
+	fmt.Println("Read from nil map:", nilCounters["Missing item"])
+
+	initializedCounters := make(map[string]int)
+	initializedCounters["Training Token"] = 1
+
+	fmt.Println("Initialized map:", initializedCounters)
 }
 
 func selectRewardItem(candidates []string) string {
@@ -423,6 +474,8 @@ func main() {
 	printDependencyInjectionDemo()
 
 	printSliceInternalsDemo()
+
+	printMapInternalsDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
