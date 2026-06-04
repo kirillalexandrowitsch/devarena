@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"runtime"
+	"unsafe"
 
 	"github.com/rudyakovk/devarena/internal/battle"
 	"github.com/rudyakovk/devarena/internal/enemy"
@@ -498,7 +499,7 @@ func printGarbageCollectorDemo() {
 
 	runtime.ReadMemStats(&before)
 
-	temporaryInventories := make([][]string, 0, 1000)
+	temporaryInventories := make([][]string, 0, 10000)
 
 	for i := 0; i < 10000; i++ {
 		inventory := []string{
@@ -526,6 +527,40 @@ func printGarbageCollectorDemo() {
 
 	fmt.Println("Heap allocation after manual GC:", afterGC.HeapAlloc)
 	fmt.Println("GC cycles after manual GC:", afterGC.NumGC)
+}
+
+type ArenaMemoryStats struct {
+	Active   bool
+	Capacity int64
+	Level    int32
+	Ranked   bool
+}
+
+type OptimizedArenaMemoryStats struct {
+	Capacity int64
+	Level    int32
+	Active   bool
+	Ranked   bool
+}
+
+func printStructAlignmentDemo() {
+	arenaStats := ArenaMemoryStats{}
+	optimizedStats := OptimizedArenaMemoryStats{}
+
+	fmt.Println("Struct alignment demo:")
+	fmt.Println("ArenaMemoryStats size:", unsafe.Sizeof(arenaStats))
+	fmt.Println("ArenaMemoryStats align:", unsafe.Alignof(arenaStats))
+	fmt.Println("ArenaMemoryStats Active offset:", unsafe.Offsetof(arenaStats.Active))
+	fmt.Println("ArenaMemoryStats Capacity offset:", unsafe.Offsetof(arenaStats.Level))
+	fmt.Println("ArenaMemoryStats Level offset:", unsafe.Offsetof(arenaStats.Level))
+	fmt.Println("ArenaMemoryStats Ranked offset:", unsafe.Offsetof(arenaStats.Ranked))
+
+	fmt.Println("OptimizedArenaMemoryStats size:", unsafe.Sizeof(optimizedStats))
+	fmt.Println("OptimizedArenaMemoryStats align:", unsafe.Alignof(optimizedStats))
+	fmt.Println("OptimizedArenaMemoryStats Capacity offset:", unsafe.Offsetof(optimizedStats.Capacity))
+	fmt.Println("OptimizedArenaMemoryStats Level offset:", unsafe.Offsetof(optimizedStats.Level))
+	fmt.Println("OptimizedArenaMemoryStats Active offset:", unsafe.Offsetof(optimizedStats.Active))
+	fmt.Println("OptimizedArenaMemoryStats Ranked offset:", unsafe.Offsetof(optimizedStats.Ranked))
 }
 
 func selectRewardItem(candidates []string) string {
@@ -604,6 +639,8 @@ func main() {
 	printEscapeAnalysisDemo()
 
 	printGarbageCollectorDemo()
+
+	printStructAlignmentDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,

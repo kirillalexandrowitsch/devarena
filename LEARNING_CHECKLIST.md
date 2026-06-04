@@ -171,7 +171,7 @@ Beginner
 - [x] Stack vs heap basics
 - [x] Escape analysis basics
 - [x] Garbage collector basics
-- [ ] Struct alignment basics
+- [x] Struct alignment basics
 - [ ] Memory allocation basics
 
 ---
