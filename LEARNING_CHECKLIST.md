@@ -72,10 +72,10 @@ Beginner
 - [x] int64
 - [x] bool
 - [x] float64
-- [x] rune
-- [x] byte
+- [ ] rune
+- [ ] byte
 - [x] zero values
-- [x] type conversion
+- [ ] type conversion
 - [x] custom types
 - [x] type aliases
 
@@ -84,11 +84,11 @@ Beginner
 - [x] Basic functions
 - [x] Function parameters
 - [x] Return values
-- [x] Multiple return values
-- [x] Named return values
+- [ ] Multiple return values
+- [ ] Named return values
 - [x] Variadic functions
-- [x] Anonymous functions
-- [x] Closures
+- [ ] Anonymous functions
+- [ ] Closures
 
 ## Control Flow
 
@@ -104,12 +104,12 @@ Beginner
 - [x] Arrays
 - [x] Slices
 - [x] len
-- [x] cap
+- [ ] cap
 - [x] append
-- [x] copy
+- [ ] copy
 - [x] Maps
-- [x] Map lookup
-- [x] Map delete
+- [ ] Map lookup
+- [ ] Map delete
 - [x] Range over slice
 - [x] Range over map
 
@@ -135,9 +135,9 @@ Beginner
 
 - [x] Interfaces
 - [x] Implicit implementation
-- [x] Empty interface / any
-- [x] Type assertion
-- [x] Type switch
+- [ ] Empty interface / any
+- [ ] Type assertion
+- [ ] Type switch
 - [x] Interface composition
 
 ## Packages and Modules
@@ -154,24 +154,24 @@ Beginner
 
 ## Additional Core Go
 
-- [x] defer
-- [x] panic
-- [x] recover
-- [x] generics
-- [x] type parameters
-- [x] constraints
-- [x] functional options pattern
-- [x] dependency injection without framework
+- [ ] defer
+- [ ] panic
+- [ ] recover
+- [ ] generics
+- [ ] type parameters
+- [ ] constraints
+- [ ] functional options pattern
+- [ ] dependency injection without framework
 
 ## Go Internals Basics
 
-- [x] Slice internals
-- [x] Map internals basics
-- [x] Interface internals basics
-- [x] Stack vs heap basics
-- [x] Escape analysis basics
-- [x] Garbage collector basics
-- [x] Struct alignment basics
+- [ ] Slice internals
+- [ ] Map internals basics
+- [ ] Interface internals basics
+- [ ] Stack vs heap basics
+- [ ] Escape analysis basics
+- [ ] Garbage collector basics
+- [ ] Struct alignment basics
 - [ ] Memory allocation basics
 
 ---
