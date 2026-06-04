@@ -468,6 +468,28 @@ func printStackHeapDemo() {
 	fmt.Printf("Arena name pointer address: %p\n", arenaNamePointer)
 }
 
+func createArenaScoreValue() int {
+	score := 100
+
+	return score
+}
+
+func createArenaScorePointer() *int {
+	score := 100
+
+	return &score
+}
+
+func printEscapeAnalysisDemo() {
+	scoreValue := createArenaScoreValue()
+	scorePointer := createArenaScorePointer()
+
+	fmt.Println("Escape analysis demo:")
+	fmt.Println("Score value:", scoreValue)
+	fmt.Println("Score pointer value:", *scorePointer)
+	fmt.Printf("Score pointer address: %p\n", scorePointer)
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -540,6 +562,8 @@ func main() {
 	printInterfaceInternalsDemo()
 
 	printStackHeapDemo()
+
+	printEscapeAnalysisDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
