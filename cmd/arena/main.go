@@ -371,11 +371,11 @@ func printMapInternalsDemo() {
 	fmt.Println("Map internals demo:")
 	fmt.Println("Inventory counters:", inventoryCounters)
 
-	potionCount, potionExists := inventoryCounters["Samll Potion"]
+	potionCount, potionExists := inventoryCounters["Small Potion"]
 	fmt.Println("Small Potion count:", potionCount, "exists:", potionExists)
 
-	unknowCount, unknowExists := inventoryCounters["Unknow Item"]
-	fmt.Println("Unknow Item count:", unknowCount, "exists:", unknowExists)
+	unknowCount, unknowExists := inventoryCounters["Unknown Item"]
+	fmt.Println("Unknown Item count:", unknowCount, "exists:", unknowExists)
 
 	sharedCounters := inventoryCounters
 	sharedCounters["Small Potion"] = 5
@@ -400,7 +400,7 @@ func printMapInternalsDemo() {
 
 	fmt.Println("Nil map:", nilCounters)
 	fmt.Println("Nil map length:", len(nilCounters))
-	fmt.Println("Read from nil map:", nilCounters["Missing item"])
+	fmt.Println("Read from nil map:", nilCounters["Missing Item"])
 
 	initializedCounters := make(map[string]int)
 	initializedCounters["Training Token"] = 1
