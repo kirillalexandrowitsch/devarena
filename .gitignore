@@ -1,4 +1,5 @@
 # Binaries
+/arena
 /bin/
 /dist/
 *.exe
