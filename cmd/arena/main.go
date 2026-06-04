@@ -374,8 +374,8 @@ func printMapInternalsDemo() {
 	potionCount, potionExists := inventoryCounters["Small Potion"]
 	fmt.Println("Small Potion count:", potionCount, "exists:", potionExists)
 
-	unknowCount, unknowExists := inventoryCounters["Unknown Item"]
-	fmt.Println("Unknown Item count:", unknowCount, "exists:", unknowExists)
+	unknownCount, unknownExists := inventoryCounters["Unknown Item"]
+	fmt.Println("Unknown Item count:", unknownCount, "exists:", unknownExists)
 
 	sharedCounters := inventoryCounters
 	sharedCounters["Small Potion"] = 5
@@ -441,6 +441,31 @@ func printInterfaceInternalsDemo() {
 	inventoryManager.AddItem("Interface Internals Badge")
 
 	fmt.Println("Hero inventory after interface call:", interfaceHero.Inventory)
+}
+
+func createArenaNameValue() string {
+	arenaName := "Stack Training Arena"
+
+	return arenaName
+}
+
+func createArenaNamePointer() *string {
+	arenaName := "Heap Candidate Arena"
+
+	return &arenaName
+}
+
+func printStackHeapDemo() {
+	localScore := 100
+	arenaNameValue := createArenaNameValue()
+	arenaNamePointer := createArenaNamePointer()
+
+	fmt.Println("Stack vs heap demo:")
+	fmt.Println("Local score:", localScore)
+	fmt.Printf("Local score address: %p\n", &localScore)
+	fmt.Println("Arena name value:", arenaNameValue)
+	fmt.Println("Arena name pointer value:", *arenaNamePointer)
+	fmt.Printf("Arena name pointer address: %p\n", arenaNamePointer)
 }
 
 func selectRewardItem(candidates []string) string {
@@ -513,6 +538,8 @@ func main() {
 	printMapInternalsDemo()
 
 	printInterfaceInternalsDemo()
+
+	printStackHeapDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
