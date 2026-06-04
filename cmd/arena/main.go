@@ -242,7 +242,60 @@ func printConstraintsDemo() {
 	fmt.Println("Max hero level:", maxHeroLevel)
 	fmt.Println("Max arena capacity:", maxArenaCapacity)
 	fmt.Println("Max critical chance:", maxCriticalChance)
+}
 
+type ArenaConfig struct {
+	Name     string
+	Capacity int
+	Ranked   bool
+}
+
+type ArenaOption func(*ArenaConfig)
+
+func WithArenaName(name string) ArenaOption {
+	return func(config *ArenaConfig) {
+		config.Name = name
+	}
+}
+
+func WithArenaCapacity(capacity int) ArenaOption {
+	return func(config *ArenaConfig) {
+		config.Capacity = capacity
+	}
+}
+
+func WithRankedArena(ranked bool) ArenaOption {
+	return func(config *ArenaConfig) {
+		config.Ranked = ranked
+	}
+}
+
+func NewArenaConfig(options ...ArenaOption) ArenaConfig {
+	config := ArenaConfig{
+		Name:     "Training Arena",
+		Capacity: 100,
+		Ranked:   false,
+	}
+
+	for _, option := range options {
+		option(&config)
+	}
+
+	return config
+}
+
+func printFunctionalOptionsDemo() {
+	defaultArena := NewArenaConfig()
+
+	tournamentArena := NewArenaConfig(
+		WithArenaName("Goblin Cup Arena"),
+		WithArenaCapacity(250),
+		WithRankedArena(true),
+	)
+
+	fmt.Println("Functional options demo:")
+	fmt.Println("Default arena:", defaultArena)
+	fmt.Println("Tournament arena:", tournamentArena)
 }
 
 func selectRewardItem(candidates []string) string {
@@ -305,6 +358,8 @@ func main() {
 	printTypeParametersDemo()
 
 	printConstraintsDemo()
+
+	printFunctionalOptionsDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
