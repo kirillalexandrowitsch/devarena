@@ -159,7 +159,7 @@ Beginner
 - [x] recover
 - [x] generics
 - [x] type parameters
-- [ ] constraints
+- [x] constraints
 - [ ] functional options pattern
 - [ ] dependency injection without framework
 

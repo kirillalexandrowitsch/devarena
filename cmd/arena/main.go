@@ -221,6 +221,30 @@ func printTypeParametersDemo() {
 	printPair[string, int]("Hero name to level", "Ragnar", 1)
 }
 
+type arenaNumber interface {
+	~int | ~int64 | ~float64
+}
+
+func maxArenaValue[T arenaNumber](first T, second T) T {
+	if first > second {
+		return first
+	}
+
+	return second
+}
+
+func printConstraintsDemo() {
+	maxHeroLevel := maxArenaValue(1, 5)
+	maxArenaCapacity := maxArenaValue(100, 250)
+	maxCriticalChance := maxArenaValue(0.15, 0.35)
+
+	fmt.Println("Constraints demo:")
+	fmt.Println("Max hero level:", maxHeroLevel)
+	fmt.Println("MAx arena capacity:", maxArenaCapacity)
+	fmt.Println("MAx critical chance:", maxCriticalChance)
+
+}
+
 func selectRewardItem(candidates []string) string {
 	selectedReward := "Rusty Sword"
 
@@ -279,6 +303,8 @@ func main() {
 	printGenericsDemo()
 
 	printTypeParametersDemo()
+
+	printConstraintsDemo()
 
 	gameHero := hero.Hero{
 		ID:    1,
