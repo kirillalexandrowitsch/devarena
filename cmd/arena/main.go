@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	defaultHeroName           = "Ragnar"
 	defaultHeroClass          = hero.HeroClassWarrior
 	defaultHeroLevel          = 1
 	defaultHeroHP             = 100
@@ -23,9 +24,13 @@ const (
 func main() {
 	fmt.Println("Welcome to DevArena")
 
+	if !hero.IsValidHeroName(defaultHeroName) {
+		fmt.Println("Invalid default hero name")
+	}
+
 	gameHero := hero.Hero{
 		ID:    1,
-		Name:  "Ragnar",
+		Name:  defaultHeroName,
 		Class: defaultHeroClass,
 		Level: defaultHeroLevel,
 		Alive: true,

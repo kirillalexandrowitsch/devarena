@@ -72,7 +72,7 @@ Beginner
 - [x] int64
 - [x] bool
 - [x] float64
-- [ ] rune
+- [x] rune
 - [ ] byte
 - [x] zero values
 - [ ] type conversion
