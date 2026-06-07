@@ -76,11 +76,18 @@ func main() {
 
 	arenaBattle.Start()
 
+	battleStatistics := battle.Statistics{
+		Wins:   1,
+		Losses: 0,
+	}
+
 	reward := battle.CalculateReward(gameHero.Level, gameEnemy.Name)
 	gameHero.AddItem(reward.Item)
 
 	fmt.Println(gameHero.Name, "received experience:", reward.Experience)
 	fmt.Println(gameHero.Name, "received item:", reward.Item)
+
+	fmt.Println("BAttle win rate:", battleStatistics.WinRatePercent())
 
 	gameHero.PrintInventory("Hero inventory after battle:")
 
