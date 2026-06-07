@@ -1,13 +1,19 @@
 package battle
 
-func (b Battle) ResultNames() (string, string) {
+func (b Battle) ResultNames() (winnerName string, defeatedName string) {
 	if b.Enemy.HP <= 0 {
-		return b.Hero.Name, b.Enemy.Name
+		winnerName = b.Hero.Name
+		defeatedName = b.Enemy.Name
+
+		return
 	}
 
 	if b.Hero.HP <= 0 {
-		return b.Enemy.Name, b.Hero.Name
+		winnerName = b.Enemy.Name
+		defeatedName = b.Hero.Name
+
+		return
 	}
 
-	return "", ""
+	return
 }
