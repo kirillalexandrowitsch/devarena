@@ -5,6 +5,8 @@ type Reward struct {
 	Item       string
 }
 
+type RewardItemRule func(defeatedEnemyName string) (string, bool)
+
 func CalculateReward(heroLevel int, defeatedEnemyName string) Reward {
 	baseExperience := 25
 	levelBonus := heroLevel * 5
@@ -13,11 +15,27 @@ func CalculateReward(heroLevel int, defeatedEnemyName string) Reward {
 		"Rusty Sword",
 	}
 
-	if defeatedEnemyName == "Goblin" {
+	rewardRules := []RewardItemRule{
+		func(enemyName string) (string, bool) {
+			if enemyName == "Goblin" {
+				return "Goblin Dagger", true
+			}
+
+			return "", false
+		},
+	}
+
+	for _, rule := range rewardRules {
+		item, matched := rule(defeatedEnemyName)
+		if !matched {
+			continue
+		}
+
 		rewardCandidates = []string{
-			"Goblin Dagger",
+			item,
 			"Rusty Sword",
 		}
+		break
 	}
 
 	return Reward{
