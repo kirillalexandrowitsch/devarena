@@ -87,7 +87,7 @@ func main() {
 	fmt.Println(gameHero.Name, "received experience:", reward.Experience)
 	fmt.Println(gameHero.Name, "received item:", reward.Item)
 
-	fmt.Println("BAttle win rate:", battleStatistics.WinRatePercent())
+	fmt.Println("Battle win rate:", battleStatistics.WinRatePercent())
 
 	gameHero.PrintInventory("Hero inventory after battle:")
 
