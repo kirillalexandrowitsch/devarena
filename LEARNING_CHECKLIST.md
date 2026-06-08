@@ -88,7 +88,7 @@ Beginner
 - [x] Named return values
 - [x] Variadic functions
 - [x] Anonymous functions
-- [ ] Closures
+- [x] Closures
 
 ## Control Flow
 

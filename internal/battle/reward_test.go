@@ -25,3 +25,31 @@ func TestCalculateRewardForUnknownEnemy(t *testing.T) {
 		t.Fatalf("expected item %q, got %q", "Rusty Sword", reward.Item)
 	}
 }
+
+func TestEnemyRewardItemRule(t *testing.T) {
+	rule := newEnemyRewardItemRule("Goblin", "Goblin Dagger")
+
+	item, matched := rule("Goblin")
+
+	if !matched {
+		t.Fatal("expected reward rule to match enemy")
+	}
+
+	if item != "Goblin Dagger" {
+		t.Fatalf("expected item %q, got %q", "Goblin Dagger", item)
+	}
+}
+
+func TestEnemyRewardItemRuleDoesNotMatchDifferentEnemy(t *testing.T) {
+	rule := newEnemyRewardItemRule("Goblin", "Goblin Dagger")
+
+	item, matched := rule("Orc")
+
+	if matched {
+		t.Fatal("expected reward rule not to match enemy")
+	}
+
+	if item != "" {
+		t.Fatalf("expected empty item, got %q", item)
+	}
+}

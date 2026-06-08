@@ -16,13 +16,7 @@ func CalculateReward(heroLevel int, defeatedEnemyName string) Reward {
 	}
 
 	rewardRules := []RewardItemRule{
-		func(enemyName string) (string, bool) {
-			if enemyName == "Goblin" {
-				return "Goblin Dagger", true
-			}
-
-			return "", false
-		},
+		newEnemyRewardItemRule("Goblin", "Goblin Dagger"),
 	}
 
 	for _, rule := range rewardRules {
@@ -41,6 +35,16 @@ func CalculateReward(heroLevel int, defeatedEnemyName string) Reward {
 	return Reward{
 		Experience: baseExperience + levelBonus,
 		Item:       selectRewardItem(rewardCandidates),
+	}
+}
+
+func newEnemyRewardItemRule(enemyName string, rewardItem string) RewardItemRule {
+	return func(defeatedEnemyName string) (string, bool) {
+		if defeatedEnemyName != enemyName {
+			return "", false
+		}
+
+		return rewardItem, true
 	}
 }
 
