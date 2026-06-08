@@ -104,7 +104,7 @@ Beginner
 - [x] Arrays
 - [x] Slices
 - [x] len
-- [ ] cap
+- [x] cap
 - [x] append
 - [ ] copy
 - [x] Maps

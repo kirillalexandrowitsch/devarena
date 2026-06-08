@@ -72,6 +72,8 @@ func (h *Hero) AddItem(item string) {
 }
 
 func (h *Hero) AddItems(items ...string) {
+	h.EnsureInventoryCapacity(len(items))
+
 	for _, item := range items {
 		h.AddItem(item)
 	}
