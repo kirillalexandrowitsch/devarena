@@ -108,7 +108,7 @@ Beginner
 - [x] append
 - [x] copy
 - [x] Maps
-- [ ] Map lookup
+- [x] Map lookup
 - [ ] Map delete
 - [x] Range over slice
 - [x] Range over map

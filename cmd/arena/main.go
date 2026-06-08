@@ -56,6 +56,11 @@ func main() {
 
 	gameHero.EquipWeapon(starterSword)
 
+	strength, strengthExists := gameHero.Stat("strength")
+	if strengthExists {
+		gameHero.BonusDamage += strength / 5
+	}
+
 	fmt.Println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))
 
 	gameHero.PrintInfo()
