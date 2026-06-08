@@ -15,3 +15,14 @@ func (h *Hero) EnsureInventoryCapacity(additionalItems int) {
 
 	h.Inventory = expandedInventory
 }
+
+func (h Hero) CloneInventory() []string {
+	if h.Inventory == nil {
+		return nil
+	}
+
+	clonedInventory := make([]string, len(h.Inventory))
+	copy(clonedInventory, h.Inventory)
+
+	return clonedInventory
+}

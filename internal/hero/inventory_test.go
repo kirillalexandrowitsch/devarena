@@ -62,3 +62,42 @@ func TestHeroAddItemsUsesInventoryCapacity(t *testing.T) {
 		t.Fatalf("expected third inventory item %q, got %q", "Rusty Sword", gameHero.Inventory[2])
 	}
 }
+
+func TestHeroCloneInventoryReturnsIndependentCopy(t *testing.T) {
+	gameHero := Hero{
+		Inventory: []string{"Small Potion", "Wooden Shield"},
+	}
+
+	clonedInventory := gameHero.CloneInventory()
+	clonedInventory[0] = "Large Potion"
+
+	if gameHero.Inventory[0] != "Small Potion" {
+		t.Fatalf("expected original inventory item to remain %q, got %q", "Small Potion", gameHero.Inventory[0])
+	}
+
+	if clonedInventory[0] != "Large Potion" {
+		t.Fatalf("expected cloned inventory item to be %q, got %q", "Large Potion", clonedInventory[0])
+	}
+}
+
+func TestHeroCloneInventoryPreservesLength(t *testing.T) {
+	gameHero := Hero{
+		Inventory: []string{"Small Potion", "Wooden Shield", "Rusty Sword"},
+	}
+
+	clonedInventory := gameHero.CloneInventory()
+
+	if len(clonedInventory) != len(gameHero.Inventory) {
+		t.Fatalf("expected cloned inventory length %d, got %d", len(gameHero.Inventory), len(clonedInventory))
+	}
+}
+
+func TestHeroCloneInventoryReturnsNilForNilInventory(t *testing.T) {
+	gameHero := Hero{}
+
+	clonedInventory := gameHero.CloneInventory()
+
+	if clonedInventory != nil {
+		t.Fatalf("expected nil cloned inventory, got %#v", clonedInventory)
+	}
+}
