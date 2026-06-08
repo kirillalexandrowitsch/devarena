@@ -43,9 +43,10 @@ func main() {
 		Attacks:   [3]string{"Slash", "Pierce", "Heavy Strike"},
 		Inventory: []string{"Small Potion", "Wooden Shield"},
 		Stats: map[string]int{
-			"strength": 10,
-			"agility":  7,
-			"stamina":  12,
+			"strength":        10,
+			"agility":         7,
+			"stamina":         12,
+			"temporary_bonus": 2,
 		},
 	}
 
@@ -59,6 +60,12 @@ func main() {
 	strength, strengthExists := gameHero.Stat("strength")
 	if strengthExists {
 		gameHero.BonusDamage += strength / 5
+	}
+
+	temporaryBonus, temporaryBonusExists := gameHero.Stat("temporary_bonus")
+	if temporaryBonusExists {
+		gameHero.BonusDamage += temporaryBonus
+		gameHero.RemoveStat("temporary_bonus")
 	}
 
 	fmt.Println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))

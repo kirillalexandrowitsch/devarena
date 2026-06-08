@@ -109,7 +109,7 @@ Beginner
 - [x] copy
 - [x] Maps
 - [x] Map lookup
-- [ ] Map delete
+- [x] Map delete
 - [x] Range over slice
 - [x] Range over map
 
