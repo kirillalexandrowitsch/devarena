@@ -23,6 +23,7 @@ func NewRewardEvent(heroName string, reward Reward) Event {
 			"reward_item":       reward.Item,
 			"reward_experience": reward.Experience,
 			"payload_size":      payload.Size(),
+			"reward_granted":    true,
 		},
 	}
 }
@@ -47,6 +48,26 @@ func (event Event) MetadataInt(key string) (int, bool) {
 	intValue, ok := value.(int)
 
 	return intValue, ok
+}
+
+func (event Event) MetadataText(key string) (string, bool) {
+	value, exists := event.Metadata[key]
+	if !exists {
+		return "", false
+	}
+
+	switch typedValue := value.(type) {
+	case string:
+		return typedValue, true
+	case int:
+		return fmt.Sprintf("%d", typedValue), true
+	case bool:
+		return fmt.Sprintf("%t", typedValue), true
+	case EventPayload:
+		return typedValue.String(), true
+	default:
+		return "", false
+	}
 }
 
 func NewRewardEventPayload(heroName string, reward Reward) EventPayload {

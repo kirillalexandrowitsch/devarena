@@ -137,7 +137,7 @@ Beginner
 - [x] Implicit implementation
 - [x] Empty interface / any
 - [x] Type assertion
-- [ ] Type switch
+- [x] Type switch
 - [x] Interface composition
 
 ## Packages and Modules

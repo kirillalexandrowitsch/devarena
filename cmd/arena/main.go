@@ -116,6 +116,11 @@ func main() {
 		fmt.Println("Reward event metadata experience:", rewardExperienceMetadata)
 	}
 
+	rewardGrantedMetadata, rewardGrantedMetadataExists := rewardEvent.MetadataText("reward_granted")
+	if rewardGrantedMetadataExists {
+		fmt.Println("Reward event metadata granted:", rewardGrantedMetadata)
+	}
+
 	fmt.Println("Battle winner:", winnerName)
 	fmt.Println("Defeated opponent:", defeatedName)
 
