@@ -98,8 +98,13 @@ func main() {
 	reward := battle.CalculateReward(gameHero.Level, defeatedName)
 	gameHero.AddItem(reward.Item)
 
+	rewardEvent := battle.NewRewardEvent(gameHero.Name, reward)
+
 	fmt.Println(gameHero.Name, "received experience:", reward.Experience)
 	fmt.Println(gameHero.Name, "received item:", reward.Item)
+
+	fmt.Println("Reward event type:", rewardEvent.Type)
+	fmt.Println("Reward event payload size:", rewardEvent.Payload.Size())
 
 	fmt.Println("Battle winner:", winnerName)
 	fmt.Println("Defeated opponent:", defeatedName)
