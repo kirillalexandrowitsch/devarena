@@ -74,47 +74,88 @@ Performance awareness
 
 ## Target Architecture
 
-DevArena is intended to evolve into a modular backend system with separated application layers.
+DevArena is intended to evolve into a domain-first modular backend system.
 
-Target architectural direction:
+The target architectural direction is:
+
+```text
+Domain-first design
+Modular monolith first
+Explicit application use cases
+Ports and adapters
+Infrastructure behind interfaces
+Event-driven integrations
+Production-oriented testing and observability
+```
+
+The project should grow around business capabilities and clear architectural boundaries:
 
 ```text
 cmd/
-  api/
   arena/
+  api/
   reward-worker/
   notification-worker/
   analytics-worker/
+  outbox-publisher/
 
 internal/
-  app/
-  config/
   domain/
-  handler/
-  service/
-  repository/
-  middleware/
-  validator/
-  response/
-  infrastructure/
+    hero/
+    enemy/
+    battle/
+    reward/
+    inventory/
+    rating/
+    event/
 
-proto/
-gen/
-migrations/
-deploy/
-tests/
+  app/
+    hero/
+    battle/
+    reward/
+    inventory/
+    rating/
+    event/
+
+  ports/
+    repository/
+    publisher/
+    cache/
+    lock/
+    transaction/
+
+  adapters/
+    http/
+    grpc/
+    postgres/
+    redis/
+    mongodb/
+    rabbitmq/
+    kafka/
+
+  platform/
+    config/
+    logger/
+    observability/
+    shutdown/
 ```
 
 The intended architecture follows these principles:
 
 ```text
 Domain logic is isolated from transport and infrastructure.
-Handlers depend on services.
-Services coordinate domain logic and repositories.
-Repositories hide persistence details.
-Infrastructure integrations are kept behind interfaces.
-Background workers process asynchronous tasks and events.
+Application use cases coordinate domain logic through ports.
+Ports define what the application needs from external systems.
+Adapters implement ports using concrete technologies.
+Infrastructure integrations are kept outside the domain layer.
+Background workers reuse the same application layer as the API.
 Application wiring is explicit and testable.
+```
+
+Detailed architectural rules are documented in:
+
+```text
+ARCHITECTURE.md
 ```
 
 ---
