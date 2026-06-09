@@ -106,6 +106,16 @@ func main() {
 	fmt.Println("Reward event type:", rewardEvent.Type)
 	fmt.Println("Reward event payload size:", rewardEvent.Payload.Size())
 
+	rewardItemMetadata, rewardItemMetadataExists := rewardEvent.MetadataString("reward_item")
+	if rewardItemMetadataExists {
+		fmt.Println("Reward event metadata item:", rewardItemMetadata)
+	}
+
+	rewardExperienceMetadata, rewardExperienceMetadataExists := rewardEvent.MetadataInt("reward_experience")
+	if rewardExperienceMetadataExists {
+		fmt.Println("Reward event metadata experience:", rewardExperienceMetadata)
+	}
+
 	fmt.Println("Battle winner:", winnerName)
 	fmt.Println("Defeated opponent:", defeatedName)
 

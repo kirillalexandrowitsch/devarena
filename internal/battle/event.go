@@ -27,6 +27,28 @@ func NewRewardEvent(heroName string, reward Reward) Event {
 	}
 }
 
+func (event Event) MetadataString(key string) (string, bool) {
+	value, exists := event.Metadata[key]
+	if !exists {
+		return "", false
+	}
+
+	stringValue, ok := value.(string)
+
+	return stringValue, ok
+}
+
+func (event Event) MetadataInt(key string) (int, bool) {
+	value, exists := event.Metadata[key]
+	if !exists {
+		return 0, false
+	}
+
+	intValue, ok := value.(int)
+
+	return intValue, ok
+}
+
 func NewRewardEventPayload(heroName string, reward Reward) EventPayload {
 	message := fmt.Sprintf(
 		"hero=%s;experience=%d;item=%s",
