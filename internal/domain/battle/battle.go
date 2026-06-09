@@ -3,8 +3,8 @@ package battle
 import (
 	"fmt"
 
-	"github.com/rudyakovk/devarena/internal/enemy"
-	"github.com/rudyakovk/devarena/internal/hero"
+	"github.com/rudyakovk/devarena/internal/domain/enemy"
+	"github.com/rudyakovk/devarena/internal/domain/hero"
 )
 
 type Battle struct {

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/rudyakovk/devarena/internal/battle"
-	"github.com/rudyakovk/devarena/internal/enemy"
-	"github.com/rudyakovk/devarena/internal/hero"
+	"github.com/rudyakovk/devarena/internal/domain/battle"
+	"github.com/rudyakovk/devarena/internal/domain/enemy"
+	"github.com/rudyakovk/devarena/internal/domain/hero"
 )
 
 const (

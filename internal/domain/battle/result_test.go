@@ -3,8 +3,8 @@ package battle
 import (
 	"testing"
 
-	"github.com/rudyakovk/devarena/internal/enemy"
-	"github.com/rudyakovk/devarena/internal/hero"
+	"github.com/rudyakovk/devarena/internal/domain/enemy"
+	"github.com/rudyakovk/devarena/internal/domain/hero"
 )
 
 func TestBattleResultNamesWhenEnemyDefeated(t *testing.T) {
