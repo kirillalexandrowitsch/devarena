@@ -1,210 +1,127 @@
 # DevArena
 
-DevArena is an educational backend project for learning Go and modern backend development from scratch.
+DevArena is a production-oriented educational backend project written in Go.
 
-The project starts as a simple console battle simulator and gradually evolves into a production-like backend platform with REST API, PostgreSQL, Redis, MongoDB, gRPC, RabbitMQ, Kafka, Docker, Kubernetes, CI/CD, observability, security, testing and production-readiness practices.
+The project is designed as a long-term portfolio system for learning and demonstrating practical backend engineering: domain modeling, API design, persistence, caching, asynchronous processing, distributed communication, observability, testing, deployment and production-readiness practices.
 
-The goal is not to build fast.  
-The goal is to learn every important backend topic through implementation, commit history and documentation.
-
----
-
-## Project Goal
-
-DevArena is built as a long-term learning project for becoming a strong Go backend developer.
-
-The project is designed to grow through levels:
-
-```text
-Beginner
-→ Confident Intern
-→ Junior Backend Developer
-→ Strong Junior / Junior+
-→ Middle-oriented Backend Developer
-```
-
-Every technology and concept is introduced through a real project feature.
-
-The learning cycle for every topic:
-
-```text
-1. Learn the concept
-2. Apply it in DevArena
-3. Understand why this solution is used
-4. Commit the change
-5. Mark the topic in LEARNING_CHECKLIST.md
-6. Document important decisions in ARCHITECTURE.md
-```
+DevArena starts from a simple arena game domain and evolves into a modular backend platform with real backend infrastructure and production-style engineering decisions.
 
 ---
 
-## Project Concept
+## Purpose
+
+DevArena is built to serve two goals:
+
+1. Learn Go and backend engineering through implementation, not isolated examples.
+2. Become a serious backend portfolio project that can be explained in interviews and reviewed through commit history.
+
+The project is not intended to be a quick demo application.  
+Each technical concept should eventually be represented by real project code, tests, documentation or infrastructure.
+
+---
+
+## Product Vision
 
 DevArena is a backend platform for a text-based arena game.
 
-Users create heroes, fight enemies, earn experience, receive items, join tournaments, trade equipment, get ranked on leaderboards and generate game events processed by background workers and analytics services.
+Users create heroes, fight enemies, receive rewards, manage inventory, participate in tournaments, progress through ratings and generate game events that are processed by background workers and analytics services.
 
-The project starts with a console application:
-
-```text
-Hero appears in the arena.
-Hero has HP, damage, level and class.
-Enemy appears.
-Battle runs round by round.
-Winner gets experience.
-```
-
-Later it evolves into a backend system:
+The final system is expected to support:
 
 ```text
-REST API
-PostgreSQL persistence
-Redis cache and cooldowns
-MongoDB battle logs
-RabbitMQ workers
-Kafka event streaming
-gRPC internal services
-Docker Compose local environment
-Kubernetes deployment
-GitHub Actions CI/CD
-Observability and production-readiness
-```
-
----
-
-## Current Stage
-
-```text
-Stage 1: Go Core
-```
-
-Current focus:
-
-```text
-Go packages and modules
-```
-
----
-
-## Planned Tech Stack
-
-### Language and Runtime
-
-```text
-Go
-Go modules
-Go standard library
-```
-
-### Backend
-
-```text
-REST API
-gRPC
-HTTP
-JSON
-JWT authentication
-Middleware
-Validation
-```
-
-### Databases and Storage
-
-```text
-PostgreSQL
-Redis
-MongoDB
-```
-
-### Messaging and Event-Driven Architecture
-
-```text
-RabbitMQ
-Kafka
+Hero management
+Enemy management
+Battle simulation
+Inventory and rewards
+Experience and progression
+Ratings and leaderboards
+Tournaments
+Battle history
+Game events
 Background workers
-Event streaming
-Outbox pattern
+Analytics
+Audit logging
 ```
 
-### Infrastructure
+---
+
+## Target Backend Capabilities
+
+The final version of DevArena should demonstrate the following backend capabilities:
 
 ```text
-Docker
-Docker Compose
-Kubernetes
-GitHub Actions
-CI/CD
-```
-
-### Quality and Production Readiness
-
-```text
-Testing
-Linting
+REST API for public application operations
+gRPC for internal service communication
+PostgreSQL for relational persistence
+Redis for caching, locks and cooldowns
+MongoDB for battle logs and analytics-oriented documents
+RabbitMQ for background task processing
+Kafka for event streaming
+Docker Compose for local infrastructure
+Kubernetes for deployment
+GitHub Actions for CI/CD
 Structured logging
 Metrics
 Tracing
 Health checks
 Graceful shutdown
 Security basics
-Performance basics
+Testing culture
+Performance awareness
 ```
 
 ---
 
-## Learning Areas
+## Target Architecture
 
-DevArena covers the following areas:
+DevArena is intended to evolve into a modular backend system with separated application layers.
+
+Target architectural direction:
 
 ```text
-Go Core
-Go Error Handling
-Go Concurrency
-Testing
-HTTP and REST API
-API Design
-gRPC
-PostgreSQL and SQL
-Redis
-MongoDB
-RabbitMQ
-Kafka
-Docker
-Kubernetes
-CI/CD
-Git and GitHub
-Linux and Terminal
-Networking Basics
-Security
-Observability
-Backend Architecture
-Data Modeling
-Background Jobs
-Performance Basics
-Production Readiness
+cmd/
+  api/
+  arena/
+  reward-worker/
+  notification-worker/
+  analytics-worker/
+
+internal/
+  app/
+  config/
+  domain/
+  handler/
+  service/
+  repository/
+  middleware/
+  validator/
+  response/
+  infrastructure/
+
+proto/
+gen/
+migrations/
+deploy/
+tests/
 ```
 
----
-
-## Development Principle
-
-This project is not developed as a quick demo.
-
-It is developed as a learning map.
-
-Every feature must answer:
+The intended architecture follows these principles:
 
 ```text
-What concept am I learning?
-Where is it used in DevArena?
-Why is it implemented this way?
-What problem does it solve?
-How can I explain this on an interview?
+Domain logic is isolated from transport and infrastructure.
+Handlers depend on services.
+Services coordinate domain logic and repositories.
+Repositories hide persistence details.
+Infrastructure integrations are kept behind interfaces.
+Background workers process asynchronous tasks and events.
+Application wiring is explicit and testable.
 ```
 
 ---
 
-## Main Domain Entities
+## Domain Model
+
+The core domain includes:
 
 ```text
 User
@@ -224,200 +141,118 @@ GameEvent
 OutboxEvent
 ```
 
+The domain starts from a battle simulation model and grows into a backend system around progression, rewards, events and persistence.
+
 ---
 
-## Project Evolution
+## Technology Stack
+
+### Language
 
 ```text
-Stage 0: Repository Initialization
-Stage 1: Console Arena and Go Basics
-Stage 2: Go Error Handling
-Stage 3: Go Concurrency
-Stage 4: Domain Packages and Modules
-Stage 5: In-memory REST API
-Stage 6: Backend Architecture
-Stage 7: PostgreSQL Persistence
-Stage 8: Docker Compose Environment
-Stage 9: Authentication and Authorization
-Stage 10: Redis Mechanics
-Stage 11: Testing
-Stage 12: RabbitMQ Workers
-Stage 13: Kafka Event Streaming
-Stage 14: MongoDB Logs
-Stage 15: gRPC Internal Services
-Stage 16: Observability
-Stage 17: Kubernetes Deployment
-Stage 18: CI/CD
-Stage 19: Security Hardening
-Stage 20: Performance and Production Readiness
+Go
+Go modules
+Go standard library
 ```
 
----
-
-## Current Project Structure
+### API and Communication
 
 ```text
-devarena/
-  cmd/
-    arena/
-      main.go
-
-  internal/
-    battle/
-      battle.go
-
-    enemy/
-      enemy.go
-
-    hero/
-      hero.go
-      weapon.go
-
-  README.md
-  ARCHITECTURE.md
-  LEARNING_CHECKLIST.md
-  .gitignore
-  go.mod
+HTTP
+REST
+JSON
+gRPC
+Middleware
+Validation
+JWT authentication
 ```
 
----
-
-## Future Project Structure
+### Persistence and Storage
 
 ```text
-devarena/
-  cmd/
-    arena/
-      main.go
-    api/
-      main.go
-    notification-worker/
-      main.go
-    reward-worker/
-      main.go
-    analytics-worker/
-      main.go
+PostgreSQL
+Redis
+MongoDB
+Database migrations
+Repository pattern
+```
 
-  internal/
-    app/
-    config/
-    handler/
-    service/
-    repository/
-    model/
-    middleware/
-    response/
-    validator/
-    infrastructure/
+### Messaging and Event Processing
 
-  proto/
-  gen/
-  migrations/
-  tests/
-  deploy/
-  .github/
+```text
+RabbitMQ
+Kafka
+Background workers
+Event streaming
+Outbox pattern
+```
 
-  Dockerfile
-  docker-compose.yml
-  Makefile
-  .env.example
-  .dockerignore
-  .gitignore
-  README.md
-  ARCHITECTURE.md
-  LEARNING_CHECKLIST.md
-  go.mod
-  go.sum
+### Infrastructure
+
+```text
+Docker
+Docker Compose
+Kubernetes
+GitHub Actions
+CI/CD pipelines
+```
+
+### Quality and Production Readiness
+
+```text
+Unit tests
+Integration tests
+Table-driven tests
+Race detection
+Code formatting
+Linting
+Structured logging
+Metrics
+Tracing
+Health checks
+Graceful shutdown
+Security basics
+Performance profiling
 ```
 
 ---
 
-## Go Module
+## Learning Philosophy
 
-This project uses Go modules.
+DevArena is an educational project, but the code should be treated as production-oriented.
 
-Current module path:
-
-```text
-github.com/rudyakovk/devarena
-```
-
-Internal packages are imported using this module path.
-
-Examples:
-
-```go
-import "github.com/rudyakovk/devarena/internal/hero"
-import "github.com/rudyakovk/devarena/internal/enemy"
-import "github.com/rudyakovk/devarena/internal/battle"
-```
-
-The `internal` directory is used to keep application packages private to this module.
-
-This means external projects cannot import packages such as:
+Every topic should be learned through one or more of the following:
 
 ```text
-github.com/rudyakovk/devarena/internal/hero
+A real domain feature
+A refactoring that improves the design
+A test that proves behavior
+A benchmark or profiling task
+A documented architectural decision
+A production-style infrastructure addition
 ```
 
-Only packages inside the same module can use these internal packages.
+Learning progress is tracked separately in:
 
-Useful Go module commands:
+```text
+LEARNING_CHECKLIST.md
+```
 
-```bash
-go mod tidy
-go list ./...
-go test ./...
+Architectural decisions and design evolution are documented in:
+
+```text
+ARCHITECTURE.md
 ```
 
 ---
 
-## Current Internal Packages
+## Development
 
-### `internal/hero`
-
-Contains hero-related domain logic:
-
-```text
-Hero
-Weapon
-Sword
-Axe
-Hero methods
-Weapon interface
-```
-
-### `internal/enemy`
-
-Contains enemy-related domain logic:
-
-```text
-Enemy
-Enemy.TakeDamage
-```
-
-### `internal/battle`
-
-Contains battle-related domain logic:
-
-```text
-Battle
-Battle.Start
-```
-
----
-
-## Run
-
-Current console version:
+Run the application:
 
 ```bash
 go run ./cmd/arena
 ```
-
----
-
-## Test
 
 Run all tests:
 
@@ -425,24 +260,13 @@ Run all tests:
 go test ./...
 ```
 
-Later the project will include:
-
-```bash
-go test -race ./...
-go test -cover ./...
-```
-
----
-
-## Useful Development Commands
-
 Format code:
 
 ```bash
 gofmt -w .
 ```
 
-List all packages:
+List packages:
 
 ```bash
 go list ./...
@@ -454,99 +278,53 @@ Clean and update module dependencies:
 go mod tidy
 ```
 
-Run the console arena:
+---
 
-```bash
-go run ./cmd/arena
-```
+## Documentation
 
-Run all tests:
+### README.md
 
-```bash
-go test ./...
-```
+Describes the project purpose, final vision, target architecture and development commands.
+
+### ARCHITECTURE.md
+
+Documents architectural decisions, target structure, package responsibilities and system evolution.
+
+### LEARNING_CHECKLIST.md
+
+Tracks learning progress and confirms which topics have been implemented in the project.
 
 ---
 
-## Git Commit Style
+## Commit Style
 
-The project uses meaningful commit messages.
+The project uses clear commit messages that describe the purpose of each change.
 
 Examples:
 
 ```text
 init: create DevArena project
-docs: add learning roadmap
-learn: add hero variables
-learn: add basic hero data types
-learn: add damage calculation function
-learn: add battle condition
-learn: add simple battle loop
-learn: add hero constants
-learn: add fixed attack array
-learn: add hero inventory slice
-learn: copy hero inventory slice
-learn: add hero stats map
-learn: iterate hero collections with range
-learn: add Hero Enemy and Battle structs
-learn: add Hero and Battle methods
-learn: use pointers to update hero and battle state
-learn: add Weapon interface
-refactor: split arena domain into packages
-learn: document Go module usage
+docs: update project readme
+learn: add hero stat lookup
+refactor: split domain packages
 feat: add REST API health endpoint
-feat: add PostgreSQL hero repository
-test: add battle service table-driven tests
+test: add battle service tests
 ci: add GitHub Actions workflow
 deploy: add Kubernetes manifests
 ```
 
 ---
 
-## Documentation Files
-
-### README.md
-
-Explains what the project is, how to run it and what it is designed to teach.
-
-### ARCHITECTURE.md
-
-Describes the current and future architecture of the project.
-
-### LEARNING_CHECKLIST.md
-
-Tracks all topics that must be learned, implemented, committed and documented.
-
----
-
 ## Final Goal
 
-At the end of development, DevArena should look like a serious backend portfolio project.
-
-It should demonstrate:
+The final version of DevArena should be explainable as:
 
 ```text
-Strong Go fundamentals
-Practical backend architecture
-REST API design
-PostgreSQL persistence
-Redis caching and locking
-MongoDB document modeling
-RabbitMQ background workers
-Kafka event streaming
-gRPC service communication
-Dockerized local environment
-Kubernetes deployment
-CI/CD automation
-Testing culture
-Security basics
-Observability
-Production-readiness thinking
+DevArena is a production-oriented educational backend platform written in Go.
+
+It uses a text-based arena game domain to demonstrate practical backend engineering:
+REST API, PostgreSQL, Redis, MongoDB, RabbitMQ, Kafka, gRPC, Docker, Kubernetes,
+CI/CD, testing, observability, security and production-readiness practices.
 ```
 
-The final project should be explainable in interviews as:
-
-```text
-DevArena is a production-like educational backend platform written in Go.
-It started as a console battle simulator and evolved into a modular backend system with REST API, PostgreSQL, Redis, MongoDB, RabbitMQ, Kafka, gRPC, Docker, Kubernetes, CI/CD, testing and observability.
-```
+The expected result is a serious backend portfolio project with understandable architecture, meaningful commit history, tested business logic and infrastructure close to real production systems.
