@@ -1,143 +1,156 @@
 # DevArena Architecture
 
-DevArena is an educational backend project designed to learn Go and backend development through practical implementation.
+DevArena is a production-oriented educational backend platform written in Go.
 
-The project starts as a console battle simulator and gradually evolves into a production-like backend platform with REST API, PostgreSQL, Redis, MongoDB, gRPC, RabbitMQ, Kafka, Docker, Kubernetes, CI/CD, testing, security, observability and production-readiness practices.
+The project uses a text-based arena game domain to learn and demonstrate practical backend engineering: domain modeling, application use cases, persistence, caching, messaging, distributed communication, observability, testing, deployment and production-readiness practices.
 
-The purpose of the architecture is not only to build a working application, but also to create a structured learning path from beginner level to confident intern, junior and middle-oriented backend development.
+The architecture is intentionally designed as a **domain-first modular backend system**.
 
 ---
 
-## Development Principle
+## Architectural Direction
 
-The project is developed as a learning map.
-
-Every topic must go through this cycle:
+DevArena follows this architectural direction:
 
 ```text
-1. Learn the concept
-2. Apply it in DevArena
-3. Explain why it is implemented this way
-4. Commit the change
-5. Mark the topic in LEARNING_CHECKLIST.md
-6. Document important decisions in ARCHITECTURE.md
+Domain-first design
+Modular monolith first
+Explicit application use cases
+Ports and adapters
+Infrastructure behind interfaces
+Event-driven integrations
+Production-oriented testing and observability
 ```
 
-The goal is not to build fast.
+The project should not be organized around generic technical folders only.
 
-The goal is to understand every layer.
+Instead of growing into a structure like this:
+
+```text
+internal/
+  model/
+  service/
+  repository/
+  handler/
+```
+
+DevArena should grow around business capabilities:
+
+```text
+internal/
+  domain/
+    hero/
+    enemy/
+    battle/
+    reward/
+    inventory/
+    rating/
+    event/
+
+  app/
+    hero/
+    battle/
+    reward/
+    rating/
+
+  ports/
+  adapters/
+  platform/
+```
+
+Technical layers still exist, but they are organized around clear architectural boundaries.
 
 ---
 
-## Project Concept
+## Core Architecture Rule
+
+The most important rule:
+
+```text
+Domain logic must not depend on infrastructure.
+```
+
+Domain packages must not import:
+
+```text
+HTTP frameworks
+database drivers
+Redis clients
+Kafka clients
+RabbitMQ clients
+MongoDB clients
+gRPC transport code
+environment configuration
+logging frameworks
+```
+
+Domain packages may use:
+
+```text
+Go standard library
+other domain packages when the dependency is meaningful
+small domain-specific value objects and interfaces
+```
+
+Application packages coordinate domain logic and depend on ports.
+
+Adapters implement ports using real technologies.
+
+---
+
+## Target System Overview
 
 DevArena is a backend platform for a text-based arena game.
 
-Users can:
+The final system supports:
 
 ```text
-register
-log in
-create heroes
-fight enemies
-receive experience
-level up
-collect items
-equip items
-join tournaments
-get rewards
-appear on leaderboards
-```
-
-System components process:
-
-```text
-battle logic
-rewards
-notifications
-ratings
-audit logs
-analytics
-event streaming
-background jobs
+User registration and authentication
+Hero creation and management
+Enemy management
+Battle simulation
+Battle rounds
+Inventory management
+Reward calculation and granting
+Experience and progression
+Ratings and leaderboards
+Tournaments
+Battle history
+Domain events
+Outbox events
+Background workers
+Analytics
+Audit logging
 ```
 
 ---
 
-## Architecture Evolution
+## Target Runtime Components
 
-The project evolves step by step:
+The final runtime topology includes:
 
 ```text
-Console Go application
-→ Go packages
-→ Error handling
-→ Go concurrency
-→ In-memory REST API
-→ Layered backend architecture
-→ PostgreSQL persistence
-→ Docker Compose environment
-→ Authentication and authorization
-→ Redis mechanics
-→ Automated tests
-→ RabbitMQ workers
-→ Kafka event streaming
-→ MongoDB logs
-→ gRPC internal services
-→ Observability
-→ Kubernetes deployment
-→ CI/CD automation
-→ Security hardening
-→ Performance and production readiness
+API application
+Console arena application
+Reward worker
+Notification worker
+Analytics worker
+Outbox publisher
+PostgreSQL
+Redis
+MongoDB
+RabbitMQ
+Kafka
+gRPC internal services
 ```
+
+The project may start as a console application, but the final architecture must support multiple entrypoints.
 
 ---
 
-## Development Stages
+## Target Repository Structure
 
-```text
-Stage 0: Repository Initialization
-Stage 1: Console Arena and Go Basics
-Stage 2: Go Error Handling
-Stage 3: Go Concurrency
-Stage 4: Domain Packages and Modules
-Stage 5: In-memory REST API
-Stage 6: Backend Architecture
-Stage 7: PostgreSQL Persistence
-Stage 8: Docker Compose Environment
-Stage 9: Authentication and Authorization
-Stage 10: Redis Mechanics
-Stage 11: Testing
-Stage 12: RabbitMQ Workers
-Stage 13: Kafka Event Streaming
-Stage 14: MongoDB Logs
-Stage 15: gRPC Internal Services
-Stage 16: Observability
-Stage 17: Kubernetes Deployment
-Stage 18: CI/CD
-Stage 19: Security Hardening
-Stage 20: Performance and Production Readiness
-```
-
----
-
-## Initial Structure
-
-```text
-devarena/
-  cmd/
-    arena/
-      main.go
-  README.md
-  ARCHITECTURE.md
-  LEARNING_CHECKLIST.md
-  .gitignore
-  go.mod
-```
-
----
-
-## Final Target Structure
+The target repository structure is:
 
 ```text
 devarena/
@@ -146,139 +159,98 @@ devarena/
       main.go
     api/
       main.go
-    notification-worker/
-      main.go
     reward-worker/
+      main.go
+    notification-worker/
       main.go
     analytics-worker/
       main.go
+    outbox-publisher/
+      main.go
 
   internal/
+    domain/
+      user/
+      auth/
+      hero/
+      enemy/
+      battle/
+      reward/
+      inventory/
+      rating/
+      tournament/
+      event/
+      audit/
+
     app/
-      app.go
+      user/
+      auth/
+      hero/
+      battle/
+      reward/
+      inventory/
+      rating/
+      tournament/
+      event/
 
-    config/
-      config.go
+    ports/
+      repository/
+      publisher/
+      cache/
+      lock/
+      transaction/
+      clock/
+      idgen/
+      password/
+      token/
 
-    handler/
-      health_handler.go
-      auth_handler.go
-      hero_handler.go
-      battle_handler.go
-      inventory_handler.go
-      rating_handler.go
-      admin_handler.go
-
-    service/
-      auth_service.go
-      hero_service.go
-      battle_service.go
-      inventory_service.go
-      rating_service.go
-      reward_service.go
-      notification_service.go
-      analytics_service.go
-
-    repository/
-      user_repository.go
-      hero_repository.go
-      battle_repository.go
-      inventory_repository.go
-      rating_repository.go
-      refresh_token_repository.go
-      battle_log_repository.go
-      audit_log_repository.go
-
-    model/
-      user.go
-      hero.go
-      hero_class.go
-      enemy.go
-      battle.go
-      battle_round.go
-      item.go
-      inventory.go
-      reward.go
-      rating.go
-      event.go
-      audit_log.go
-
-    middleware/
-      logger.go
-      recovery.go
-      auth.go
-      rate_limiter.go
-      request_id.go
-      cors.go
-      timeout.go
-
-    response/
-      response.go
-      error.go
-
-    validator/
-      auth_validator.go
-      hero_validator.go
-      battle_validator.go
-      inventory_validator.go
-
-    infrastructure/
-      postgres/
-        connection.go
-        user_repository.go
-        hero_repository.go
-        battle_repository.go
-        inventory_repository.go
-        rating_repository.go
-        refresh_token_repository.go
-
-      redis/
-        client.go
-        cache.go
-        leaderboard.go
-        rate_limiter.go
-        session_store.go
-        distributed_lock.go
-        pubsub.go
-
-      mongodb/
-        client.go
-        battle_log_repository.go
-        audit_log_repository.go
-        event_debug_log_repository.go
-
-      rabbitmq/
-        connection.go
-        publisher.go
-        consumer.go
-        retry.go
-        dlq.go
-
-      kafka/
-        producer.go
-        consumer.go
-        events.go
-        outbox.go
+    adapters/
+      http/
+        handler/
+        middleware/
+        request/
+        response/
+        router/
 
       grpc/
-        clients.go
-        servers.go
-        interceptors.go
+        server/
+        client/
+        interceptor/
 
+      postgres/
+        repository/
+        transaction/
+        migration/
+
+      redis/
+        cache/
+        lock/
+        leaderboard/
+        ratelimit/
+
+      mongodb/
+        repository/
+
+      rabbitmq/
+        publisher/
+        consumer/
+
+      kafka/
+        producer/
+        consumer/
+
+    platform/
+      config/
+      logger/
       observability/
-        logger.go
-        metrics.go
-        tracing.go
+      shutdown/
+      validation/
 
   proto/
     hero/
-      hero.proto
     battle/
-      battle.proto
     rating/
-      rating.proto
     inventory/
-      inventory.proto
 
   gen/
     hero/
@@ -288,58 +260,17 @@ devarena/
 
   migrations/
     postgres/
-      000001_create_users_table.up.sql
-      000001_create_users_table.down.sql
-      000002_create_heroes_table.up.sql
-      000002_create_heroes_table.down.sql
-      000003_create_enemies_table.up.sql
-      000003_create_enemies_table.down.sql
-      000004_create_battles_table.up.sql
-      000004_create_battles_table.down.sql
-      000005_create_battle_rounds_table.up.sql
-      000005_create_battle_rounds_table.down.sql
-      000006_create_items_table.up.sql
-      000006_create_items_table.down.sql
-      000007_create_hero_inventory_table.up.sql
-      000007_create_hero_inventory_table.down.sql
-      000008_create_ratings_table.up.sql
-      000008_create_ratings_table.down.sql
-      000009_create_refresh_tokens_table.up.sql
-      000009_create_refresh_tokens_table.down.sql
-      000010_create_outbox_events_table.up.sql
-      000010_create_outbox_events_table.down.sql
 
   tests/
     integration/
-      api_test.go
-      postgres_test.go
-      redis_test.go
-      rabbitmq_test.go
-      kafka_test.go
+    e2e/
 
   deploy/
+    docker/
     k8s/
-      namespace.yaml
-      configmap.yaml
-      secret.yaml
-      api-deployment.yaml
-      api-service.yaml
-      notification-worker-deployment.yaml
-      reward-worker-deployment.yaml
-      analytics-worker-deployment.yaml
-      postgres.yaml
-      redis.yaml
-      mongodb.yaml
-      rabbitmq.yaml
-      kafka.yaml
-      ingress.yaml
-      hpa.yaml
 
   .github/
     workflows/
-      ci.yml
-      docker.yml
-      deploy.yml
 
   Dockerfile
   docker-compose.yml
@@ -356,445 +287,613 @@ devarena/
 
 ---
 
-## Main Domain Entities
+## Dependency Direction
+
+Allowed dependency flow:
 
 ```text
-User
-Hero
-HeroClass
-Enemy
-Battle
-BattleRound
-Item
-Inventory
-Reward
-Rating
-Tournament
-BattleLog
-AuditLog
-GameEvent
-OutboxEvent
+cmd
+→ internal/app
+→ internal/domain
+→ Go standard library
+```
+
+```text
+cmd
+→ internal/adapters
+→ internal/ports
+```
+
+```text
+internal/app
+→ internal/ports
+```
+
+```text
+internal/adapters
+→ internal/ports
+→ internal/domain
+```
+
+```text
+internal/platform
+→ infrastructure libraries
+```
+
+Forbidden dependency flow:
+
+```text
+domain → adapters
+domain → platform
+domain → database driver
+domain → HTTP transport
+domain → Kafka/RabbitMQ/Redis/MongoDB clients
+app    → concrete database implementation
+app    → concrete message broker implementation
+```
+
+The intended dependency graph:
+
+```text
+cmd
+ ├── app
+ │    ├── domain
+ │    └── ports
+ ├── adapters
+ │    ├── ports
+ │    └── domain
+ └── platform
 ```
 
 ---
 
-## User
+## Layer Responsibilities
+
+### `cmd/`
+
+Contains executable entrypoints.
+
+Examples:
+
+```text
+cmd/arena
+cmd/api
+cmd/reward-worker
+cmd/notification-worker
+cmd/analytics-worker
+cmd/outbox-publisher
+```
+
+Responsibilities:
+
+```text
+Load configuration
+Create dependencies
+Wire application services
+Start the process
+Handle shutdown
+Return process exit status
+```
+
+`cmd` packages should not contain business logic.
+
+---
+
+### `internal/domain/`
+
+Contains business concepts and business rules.
+
+Examples:
+
+```text
+domain/hero
+domain/enemy
+domain/battle
+domain/reward
+domain/inventory
+domain/rating
+domain/event
+```
+
+Responsibilities:
+
+```text
+Entities
+Value objects
+Domain services
+Domain events
+Business invariants
+Pure calculations
+State transitions
+Domain-specific interfaces when needed
+```
+
+Domain code should be easy to test without databases, HTTP servers or external systems.
+
+---
+
+### `internal/app/`
+
+Contains application use cases.
+
+Examples:
+
+```text
+app/hero/CreateHero
+app/battle/StartBattle
+app/reward/GrantReward
+app/rating/GetLeaderboard
+app/event/PublishOutboxEvents
+```
+
+Responsibilities:
+
+```text
+Coordinate domain objects
+Call repositories through ports
+Run transactions through transaction ports
+Check authorization decisions when needed
+Publish events through publisher ports
+Coordinate cache and lock ports
+Return application-level results
+```
+
+Application layer should not know which exact database, broker or cache implementation is used.
+
+---
+
+### `internal/ports/`
+
+Contains interfaces required by application services.
+
+Examples:
+
+```text
+HeroRepository
+BattleRepository
+RewardRepository
+EventPublisher
+OutboxRepository
+LeaderboardCache
+DistributedLock
+TransactionManager
+Clock
+IDGenerator
+PasswordHasher
+TokenManager
+```
+
+Ports define what the application needs, not how infrastructure works.
+
+Good port example:
+
+```go
+type HeroRepository interface {
+	Save(ctx context.Context, hero hero.Hero) error
+	FindByID(ctx context.Context, id hero.ID) (hero.Hero, error)
+}
+```
+
+Bad port example:
+
+```go
+type PostgresHeroRepository interface {
+	ExecSQL(query string, args ...any) error
+}
+```
+
+Ports should be technology-neutral.
+
+---
+
+### `internal/adapters/`
+
+Contains concrete implementations of ports and transport layers.
+
+Examples:
+
+```text
+HTTP handlers
+gRPC servers
+PostgreSQL repositories
+Redis cache implementation
+MongoDB log repository
+RabbitMQ publisher and consumer
+Kafka producer and consumer
+```
+
+Adapters may depend on external libraries.
+
+Adapters translate between external systems and internal application/domain types.
+
+---
+
+### `internal/platform/`
+
+Contains process-level technical utilities.
+
+Examples:
+
+```text
+configuration loading
+structured logging setup
+metrics setup
+tracing setup
+validation helpers
+graceful shutdown
+runtime diagnostics
+```
+
+Platform code should not contain business rules.
+
+---
+
+## Domain Boundaries
+
+### User
 
 Represents a registered platform user.
 
+Owns:
+
 ```text
-User:
-- id
-- email
-- password_hash
-- role
-- created_at
-- updated_at
+id
+email
+password hash
+role
+created at
+updated at
 ```
 
-Used for:
+Related capabilities:
 
 ```text
+registration
+login
 authentication
 authorization
-JWT
-password hashing
-PostgreSQL constraints
-indexes
 refresh tokens
-audit logs
+audit logging
 ```
 
 ---
-
-## Hero
-
-Represents a playable character owned by a user.
-
-```text
-Hero:
-- id
-- user_id
-- name
-- class
-- level
-- experience
-- hp
-- damage
-- armor
-- created_at
-- updated_at
-```
-
-Used for:
-
-```text
-Go variables
-structs
-methods
-pointers
-REST CRUD
-PostgreSQL relations
-Redis cache
-gRPC service methods
-Kafka events
-```
-
----
-
-## Enemy
-
-Represents an opponent in the arena.
-
-```text
-Enemy:
-- id
-- name
-- level
-- hp
-- damage
-- reward_exp
-```
-
-Used for:
-
-```text
-conditions
-loops
-arrays
-slices
-maps
-battle logic
-```
-
----
-
-## Battle
-
-Represents a fight between a hero and an enemy.
-
-```text
-Battle:
-- id
-- hero_id
-- enemy_id
-- status
-- winner_type
-- winner_id
-- started_at
-- finished_at
-```
-
-Used for:
-
-```text
-business logic
-transactions
-RabbitMQ jobs
-Kafka events
-MongoDB battle logs
-gRPC streaming
-```
-
----
-
-## BattleRound
-
-Represents one round inside a battle.
-
-```text
-BattleRound:
-- id
-- battle_id
-- round_number
-- attacker_type
-- attacker_id
-- defender_type
-- defender_id
-- damage
-- created_at
-```
-
-Used for:
-
-```text
-loops
-slices
-ORDER BY
-JOIN
-LIMIT
-battle replay
-MongoDB embedded documents
-```
-
----
-
-## Item
-
-Represents a game item.
-
-```text
-Item:
-- id
-- name
-- type
-- rarity
-- damage_bonus
-- armor_bonus
-- created_at
-```
-
-Used for:
-
-```text
-interfaces
-inventory
-transactions
-many-to-many relations
-reward workers
-```
-
----
-
-## Inventory
-
-Represents a hero inventory.
-
-```text
-InventoryItem:
-- id
-- hero_id
-- item_id
-- quantity
-- equipped
-```
-
-Used for:
-
-```text
-slices
-maps
-JOIN
-transactions
-UNIQUE constraints
-```
-
----
-
-## Rating
-
-Represents hero leaderboard data.
-
-```text
-Rating:
-- hero_id
-- wins
-- losses
-- score
-```
-
-Used for:
-
-```text
-GROUP BY
-ORDER BY
-LIMIT
-Redis sorted sets
-Kafka rating projector
-```
-
----
-
-## GameEvent
-
-Represents a domain event.
-
-```text
-GameEvent:
-- event_id
-- event_type
-- aggregate_id
-- aggregate_type
-- occurred_at
-- payload
-```
-
-Used for:
-
-```text
-Kafka
-RabbitMQ
-outbox pattern
-audit logs
-analytics
-event-driven architecture
-```
-
----
-
-## Layered Architecture
-
-The main backend request flow:
-
-```text
-HTTP request
-→ middleware
-→ handler
-→ service
-→ repository
-→ database/storage
-```
-
----
-
-## Handler Layer
-
-Responsible for:
-
-```text
-HTTP requests
-JSON decoding
-path parameters
-query parameters
-headers
-basic request validation
-calling services
-mapping service errors to HTTP status codes
-returning JSON responses
-```
-
-Handlers must not contain business logic.
-
----
-
-## Service Layer
-
-Responsible for:
-
-```text
-business logic
-battle rules
-hero leveling
-reward calculation
-cooldown checks
-authorization rules
-transaction orchestration
-event publishing
-calling repositories
-calling infrastructure clients
-```
-
-Services contain the main application behavior.
-
----
-
-## Repository Layer
-
-Responsible for:
-
-```text
-data persistence
-SQL queries
-PostgreSQL CRUD
-MongoDB CRUD
-Redis operations
-transactions
-query methods
-```
-
-Repositories must not contain HTTP logic.
-
----
-
-## Infrastructure Layer
-
-Responsible for:
-
-```text
-PostgreSQL connection
-Redis client
-MongoDB client
-Kafka producer
-Kafka consumer
-RabbitMQ publisher
-RabbitMQ consumer
-gRPC clients
-gRPC servers
-observability clients
-```
-
----
-
-## Planned REST API
-
-### Health
-
-```http
-GET /health
-GET /health/live
-GET /health/ready
-```
 
 ### Auth
 
-```http
-POST /api/v1/auth/register
-POST /api/v1/auth/login
-POST /api/v1/auth/refresh
-POST /api/v1/auth/logout
-GET  /api/v1/users/me
+Represents authentication and authorization rules.
+
+Owns:
+
+```text
+password hashing policy
+token creation
+token validation
+roles
+permissions
+session invalidation
+refresh token lifecycle
 ```
 
-### Heroes
+Auth should not be mixed into HTTP handlers directly.  
+HTTP handlers call application use cases.
 
-```http
-POST   /api/v1/heroes
-GET    /api/v1/heroes
-GET    /api/v1/heroes/{id}
-PUT    /api/v1/heroes/{id}
-PATCH  /api/v1/heroes/{id}
-DELETE /api/v1/heroes/{id}
+---
+
+### Hero
+
+Represents a playable character.
+
+Owns:
+
+```text
+id
+user id
+name
+class
+level
+experience
+combat stats
+inventory references
+equipped items
+status
 ```
 
-### Battles
+Hero domain rules include:
 
-```http
-POST /api/v1/battles
-GET  /api/v1/battles/{id}
-GET  /api/v1/heroes/{id}/battles
-GET  /api/v1/battles/{id}/rounds
-GET  /api/v1/battles/{id}/log
+```text
+name validation
+class restrictions
+level progression
+damage calculation
+stat management
+equipment effects
+inventory constraints
 ```
+
+---
+
+### Enemy
+
+Represents an arena opponent.
+
+Owns:
+
+```text
+id
+name
+level
+combat stats
+reward profile
+behavior profile
+```
+
+Enemy domain rules include:
+
+```text
+damage receiving
+enemy difficulty
+reward eligibility
+battle participation
+```
+
+---
+
+### Battle
+
+Represents a fight between a hero and an enemy.
+
+Owns:
+
+```text
+battle id
+hero participant
+enemy participant
+battle status
+rounds
+winner
+result
+started at
+finished at
+```
+
+Battle domain rules include:
+
+```text
+round progression
+damage application
+winner detection
+battle result calculation
+battle event creation
+```
+
+Battle logic belongs in the domain layer.  
+Persistence, HTTP and messaging do not belong in battle domain code.
+
+---
+
+### Reward
+
+Represents experience, items and other gains after battle or tournament activity.
+
+Owns:
+
+```text
+experience amount
+reward item
+reward rules
+reward conditions
+reward event data
+```
+
+Reward domain rules include:
+
+```text
+base reward calculation
+level-based reward calculation
+enemy-specific reward rules
+reward item selection
+reward granting eligibility
+```
+
+---
 
 ### Inventory
 
-```http
-GET    /api/v1/heroes/{id}/inventory
-POST   /api/v1/heroes/{id}/inventory/items
-PATCH  /api/v1/heroes/{id}/inventory/items/{item_id}/equip
-DELETE /api/v1/heroes/{id}/inventory/items/{item_id}
+Represents hero-owned items.
+
+Owns:
+
+```text
+item list
+item quantity
+equipped state
+capacity constraints
+item snapshots
 ```
+
+Inventory domain rules include:
+
+```text
+adding items
+removing items
+equipping items
+copying inventory snapshots
+capacity handling
+```
+
+---
 
 ### Rating
 
-```http
-GET /api/v1/leaderboard
-GET /api/v1/heroes/{id}/rating
+Represents leaderboard and competitive score.
+
+Owns:
+
+```text
+hero id
+wins
+losses
+score
+rank projection
 ```
 
-### Admin and Analytics
+Rating domain rules include:
 
-```http
-GET /api/v1/admin/stats
-GET /api/v1/admin/audit-logs
-GET /api/v1/admin/events
+```text
+win/loss updates
+score calculation
+leaderboard projection events
+ranking consistency
+```
+
+---
+
+### Event
+
+Represents domain and integration events.
+
+Owns:
+
+```text
+event id
+event type
+aggregate id
+aggregate type
+occurred at
+payload
+metadata
+version
+```
+
+Events are used for:
+
+```text
+outbox pattern
+Kafka streaming
+RabbitMQ job publishing
+audit logging
+analytics
+event replay and debugging
+```
+
+---
+
+### Tournament
+
+Represents structured competition between heroes.
+
+Owns:
+
+```text
+tournament id
+participants
+state
+rounds
+winner
+rewards
+schedule
+```
+
+Tournament can be added after core battle and rating logic is stable.
+
+---
+
+### Audit
+
+Represents security and operational audit records.
+
+Owns:
+
+```text
+actor id
+action
+resource
+timestamp
+metadata
+request id
+correlation id
+```
+
+Audit data should be append-only.
+
+---
+
+## Application Use Cases
+
+Application layer should be organized by use cases, not by generic service names.
+
+Examples:
+
+```text
+CreateHero
+GetHero
+UpdateHero
+StartBattle
+GetBattleResult
+GrantReward
+GetInventory
+EquipItem
+GetLeaderboard
+PublishOutboxEvents
+RegisterUser
+LoginUser
+RefreshToken
+```
+
+A use case may coordinate:
+
+```text
+domain rules
+repository ports
+transaction ports
+cache ports
+event publisher ports
+lock ports
+clock and ID generator ports
+```
+
+Use cases should be testable with fake ports.
+
+---
+
+## HTTP API Architecture
+
+HTTP is an adapter, not the core application.
+
+HTTP handlers are responsible for:
+
+```text
+routing
+request decoding
+path and query parameters
+headers
+input validation
+calling application use cases
+mapping application errors to HTTP status codes
+returning JSON responses
+```
+
+HTTP handlers must not contain battle logic, reward logic or persistence logic.
+
+Target REST API groups:
+
+```text
+/health
+/api/v1/auth
+/api/v1/users
+/api/v1/heroes
+/api/v1/battles
+/api/v1/inventory
+/api/v1/leaderboard
+/api/v1/tournaments
+/api/v1/admin
 ```
 
 ---
 
 ## REST API Principles
 
-The API must use:
+The REST API should use:
 
 ```text
 clear resource names
@@ -804,7 +903,6 @@ unified error format
 pagination
 filtering
 sorting
-validation
 request ID
 authentication middleware
 authorization rules
@@ -812,11 +910,7 @@ rate limiting
 graceful shutdown
 ```
 
----
-
-## Unified Error Format
-
-All API errors should follow one structure:
+Unified error response:
 
 ```json
 {
@@ -830,236 +924,13 @@ All API errors should follow one structure:
 }
 ```
 
-Common error codes:
-
-```text
-validation_error
-unauthorized
-forbidden
-hero_not_found
-battle_not_found
-cooldown_active
-rate_limit_exceeded
-conflict
-internal_error
-```
-
 ---
 
-## Planned PostgreSQL Tables
+## gRPC Architecture
 
-```text
-users
-heroes
-enemies
-battles
-battle_rounds
-items
-hero_inventory
-ratings
-refresh_tokens
-outbox_events
-```
+gRPC is used for internal service communication and streaming scenarios.
 
----
-
-## PostgreSQL Responsibilities
-
-PostgreSQL stores core relational data:
-
-```text
-users
-heroes
-battle metadata
-battle rounds
-items
-inventory
-ratings
-refresh tokens
-outbox events
-```
-
----
-
-## PostgreSQL Topics Used
-
-```text
-SELECT
-INSERT
-UPDATE
-DELETE
-WHERE
-JOIN
-LEFT JOIN
-GROUP BY
-HAVING
-ORDER BY
-LIMIT
-OFFSET
-COUNT
-SUM
-AVG
-MIN
-MAX
-primary key
-foreign key
-unique constraint
-not null constraint
-check constraint
-indexes
-transactions
-migrations
-connection pool
-pgx
-context with DB queries
-EXPLAIN
-EXPLAIN ANALYZE
-transaction isolation levels
-SELECT FOR UPDATE
-optimistic locking
-upsert
-CTE
-window functions
-N+1 problem
-slow query analysis
-```
-
----
-
-## Planned Redis Usage
-
-```text
-hero:{id}
-leaderboard:global
-battle:cooldown:hero:{id}
-rate_limit:ip:{ip}
-refresh_token:{token_id}
-lock:battle:hero:{id}
-arena:events
-```
-
-Redis is used for:
-
-```text
-caching
-leaderboard
-rate limiting
-session storage
-distributed locking
-battle cooldowns
-pub/sub notifications
-```
-
----
-
-## Planned MongoDB Collections
-
-```text
-battle_logs
-audit_logs
-event_debug_logs
-```
-
-MongoDB is used for:
-
-```text
-battle replay documents
-audit logs
-debug event payloads
-flexible schema data
-embedded documents
-aggregation pipeline
-```
-
----
-
-## Planned RabbitMQ Usage
-
-RabbitMQ is used for background jobs.
-
-```text
-Exchanges:
-- devarena.direct
-- devarena.fanout
-- devarena.topic
-- devarena.dlx
-
-Queues:
-- notification.queue
-- reward.queue
-- levelup.queue
-- dead_letter.queue
-
-Routing keys:
-- battle.finished
-- hero.level_up
-- reward.grant
-- notification.send
-```
-
-RabbitMQ handles:
-
-```text
-reward jobs
-notification jobs
-level-up jobs
-retry
-dead letter queue
-manual ack/nack
-background processing
-```
-
----
-
-## Planned Kafka Usage
-
-Kafka is used for event streaming and analytics.
-
-```text
-Topics:
-- devarena.hero.events
-- devarena.battle.events
-- devarena.inventory.events
-- devarena.rating.events
-```
-
-Kafka consumers:
-
-```text
-analytics-worker
-audit-worker
-rating-projector
-```
-
-Kafka event types:
-
-```text
-hero.created
-hero.updated
-battle.started
-battle.finished
-hero.level_up
-item.dropped
-item.equipped
-rating.updated
-```
-
-Kafka design principles:
-
-```text
-partition by hero_id
-preserve ordering inside partition
-at-least-once delivery
-idempotent consumers
-consumer groups
-offset management
-dead letter topic
-event versioning
-```
-
----
-
-## Planned gRPC Services
+Target services:
 
 ```text
 HeroService
@@ -1068,233 +939,347 @@ RatingService
 InventoryService
 ```
 
-RPC examples:
+gRPC responsibilities:
 
 ```text
-HeroService.GetHero
-HeroService.ValidateHero
-BattleService.StartBattle
-BattleService.GetBattle
-BattleService.StreamBattleRounds
-BattleService.SendBattleActions
-BattleService.LiveBattle
-RatingService.GetHeroRating
-RatingService.UpdateRating
-```
-
-RPC types to learn:
-
-```text
-unary RPC
-server streaming
-client streaming
-bidirectional streaming
-```
-
-gRPC must use:
-
-```text
-Protocol Buffers
-generated Go code
-metadata
+internal service APIs
+streaming battle rounds
+service-to-service calls
+typed contracts through Protocol Buffers
 deadlines
+metadata
 status codes
 interceptors
 health checks
-grpcurl
+```
+
+gRPC code belongs in adapters.
+
+Generated code belongs in `gen/`.
+
+Protocol Buffer definitions belong in `proto/`.
+
+---
+
+## Persistence Architecture
+
+### PostgreSQL
+
+PostgreSQL stores core relational state.
+
+Planned tables:
+
+```text
+users
+refresh_tokens
+heroes
+enemies
+battles
+battle_rounds
+items
+hero_inventory
+ratings
+tournaments
+tournament_participants
+outbox_events
+```
+
+PostgreSQL is responsible for:
+
+```text
+source-of-truth relational data
+transactions
+constraints
+indexes
+foreign keys
+query consistency
+outbox storage
+```
+
+PostgreSQL access must be implemented through repository adapters.
+
+Application code depends on repository ports, not PostgreSQL directly.
+
+---
+
+### Redis
+
+Redis is used for fast ephemeral and derived data.
+
+Planned usage:
+
+```text
+hero cache
+leaderboard cache
+battle cooldowns
+rate limiting
+distributed locks
+session or token metadata
+pub/sub notifications where useful
+```
+
+Example keys:
+
+```text
+hero:{id}
+leaderboard:global
+battle:cooldown:hero:{id}
+rate_limit:ip:{ip}
+refresh_token:{token_id}
+lock:battle:hero:{id}
+```
+
+Redis must not be the source of truth for critical relational state.
+
+---
+
+### MongoDB
+
+MongoDB stores flexible document-oriented data.
+
+Planned collections:
+
+```text
+battle_logs
+audit_logs
+event_debug_logs
+analytics_snapshots
+```
+
+MongoDB is used for:
+
+```text
+battle replay documents
+audit records
+debug event payloads
+analytics-oriented documents
+flexible schema data
+embedded documents
+aggregation pipelines
+```
+
+MongoDB must not replace PostgreSQL for core transactional state.
+
+---
+
+## Transaction and Consistency Model
+
+Application services coordinate transactions through ports.
+
+Transaction-sensitive use cases include:
+
+```text
+CreateHero
+StartBattle
+GrantReward
+EquipItem
+UpdateRating
+PublishOutboxEvents
+```
+
+Rules:
+
+```text
+Business decisions are made in application/domain code.
+Database transaction boundaries are controlled by application use cases.
+Repository adapters execute concrete queries.
+Outbox events are written in the same transaction as state changes.
+External event publishing happens after transaction commit.
+```
+
+The preferred consistency pattern:
+
+```text
+PostgreSQL transaction
+→ state change
+→ outbox event inserted
+→ transaction committed
+→ outbox publisher reads event
+→ Kafka/RabbitMQ publish
+→ event marked as published
 ```
 
 ---
 
-## Planned Docker Setup
+## Event-Driven Architecture
 
-Docker is used for local development and reproducible environments.
+DevArena uses events for asynchronous processing and integration.
 
-Services:
+Event categories:
 
 ```text
-api
-postgres
-redis
-mongodb
-rabbitmq
-kafka
-notification-worker
-reward-worker
+domain events
+integration events
+outbox events
+audit events
+analytics events
+background jobs
+```
+
+Example event types:
+
+```text
+hero.created
+hero.updated
+battle.started
+battle.finished
+reward.granted
+item.equipped
+rating.updated
+tournament.finished
+```
+
+Event rules:
+
+```text
+Events must have stable type names.
+Events must have explicit versions.
+Events must be serializable.
+Events must include aggregate information.
+Consumers must be idempotent.
+Event publishing should use the outbox pattern for reliability.
+```
+
+---
+
+## RabbitMQ Architecture
+
+RabbitMQ is used for background jobs and task processing.
+
+Planned queues:
+
+```text
+reward.queue
+notification.queue
+levelup.queue
+dead_letter.queue
+```
+
+Planned routing keys:
+
+```text
+battle.finished
+reward.grant
+hero.level_up
+notification.send
+```
+
+RabbitMQ handles:
+
+```text
+job dispatching
+retry
+dead letter queue
+manual ack/nack
+background processing
+worker scaling
+```
+
+RabbitMQ is best suited for commands/jobs that should be processed by workers.
+
+---
+
+## Kafka Architecture
+
+Kafka is used for event streaming and analytics.
+
+Planned topics:
+
+```text
+devarena.hero.events
+devarena.battle.events
+devarena.inventory.events
+devarena.rating.events
+devarena.audit.events
+```
+
+Kafka consumers:
+
+```text
 analytics-worker
+audit-worker
+rating-projector
+event-debug-consumer
 ```
 
-Docker topics:
+Kafka principles:
 
 ```text
-image
-container
-Dockerfile
-docker build
-docker run
-docker exec
-docker logs
-docker compose
-volumes
-networks
+partition by aggregate id when ordering matters
+preserve ordering inside partition
+at-least-once delivery
+idempotent consumers
+consumer groups
+offset management
+dead letter topic
+event versioning
+schema compatibility
+```
+
+Kafka is best suited for event streams and projections.
+
+---
+
+## Worker Architecture
+
+Workers are separate entrypoints under `cmd/`.
+
+Examples:
+
+```text
+cmd/reward-worker
+cmd/notification-worker
+cmd/analytics-worker
+cmd/outbox-publisher
+```
+
+Worker responsibilities:
+
+```text
+consume jobs or events
+call application use cases
+handle retries
+handle idempotency
+emit logs and metrics
+shutdown gracefully
+```
+
+Workers should use the same application layer as the API.
+
+Workers should not duplicate business logic.
+
+---
+
+## Configuration Architecture
+
+Configuration belongs in `internal/platform/config`.
+
+Configuration sources:
+
+```text
 environment variables
-multi-stage build
-.dockerignore
-non-root user
-healthcheck
+.env files for local development
+Kubernetes secrets and config maps
+CI/CD secrets
 ```
 
----
+Configuration must be explicit.
 
-## Planned Kubernetes Resources
+Examples:
 
 ```text
-namespace
-deployment
-replica set
-pod
-service
-ingress
-configmap
-secret
-readiness probe
-liveness probe
-resource requests
-resource limits
-horizontal pod autoscaler
-persistent volume
-persistent volume claim
-job
-cronjob
-service account
-RBAC
-network policy
+HTTP_PORT
+DATABASE_URL
+REDIS_ADDR
+MONGODB_URI
+RABBITMQ_URL
+KAFKA_BROKERS
+JWT_SECRET
+LOG_LEVEL
+TRACING_ENABLED
 ```
 
-Kubernetes services:
-
-```text
-api-service
-postgres-service
-redis-service
-mongodb-service
-rabbitmq-service
-kafka-service
-```
-
-Kubernetes deployments:
-
-```text
-api-deployment
-notification-worker-deployment
-reward-worker-deployment
-analytics-worker-deployment
-```
-
----
-
-## Planned CI/CD
-
-GitHub Actions workflows:
-
-```text
-ci.yml
-docker.yml
-deploy.yml
-```
-
-CI pipeline:
-
-```text
-checkout
-setup Go
-gofmt check
-go vet
-go test ./...
-go test -race ./...
-coverage report
-golangci-lint
-docker build
-```
-
-Docker pipeline:
-
-```text
-docker login
-docker build
-docker push
-```
-
-Deploy pipeline:
-
-```text
-load kubeconfig from secrets
-kubectl apply
-kubectl rollout status
-```
-
-CI/CD topics:
-
-```text
-pipeline
-build
-test
-lint
-docker build
-docker push
-deploy
-GitHub Actions
-secrets
-artifacts
-environments
-branch protection
-release tags
-rollback
-deployment strategies
-```
-
----
-
-## Go Concurrency Architecture
-
-Concurrency will be introduced after core Go topics.
-
-Concurrency use cases:
-
-```text
-parallel battle simulation
-battle event channels
-reward worker pool
-rating update synchronization
-context cancellation
-timeout-aware operations
-graceful shutdown
-background workers
-Kafka consumers
-RabbitMQ consumers
-```
-
-Concurrency topics:
-
-```text
-goroutines
-channels
-buffered channels
-select
-sync.WaitGroup
-sync.Mutex
-sync.RWMutex
-sync.Once
-atomic counters
-race conditions
-go test -race
-context.Context
-worker pool
-fan-out/fan-in
-backpressure
-goroutine leaks
-bounded concurrency
-```
+Domain code must not read environment variables.
 
 ---
 
@@ -1307,6 +1292,7 @@ Error categories:
 ```text
 validation errors
 domain errors
+application errors
 repository errors
 infrastructure errors
 authentication errors
@@ -1317,54 +1303,26 @@ retryable errors
 non-retryable errors
 ```
 
-Error handling topics:
+Rules:
+
+```text
+Domain errors describe business rule violations.
+Application errors describe use case failures.
+Adapters map errors to protocol-specific responses.
+HTTP maps errors to status codes.
+gRPC maps errors to gRPC status codes.
+Workers map retryable errors to retry behavior.
+```
+
+Go error handling should use:
 
 ```text
 errors.New
-fmt.Errorf
-%w wrapping
+fmt.Errorf with %w
 errors.Is
 errors.As
-sentinel errors
-custom error types
-mapping errors to HTTP status codes
-structured error responses
-```
-
----
-
-## Testing Architecture
-
-Testing levels:
-
-```text
-unit tests
-table-driven tests
-handler tests
-repository tests
-integration tests
-contract tests
-benchmark tests
-fuzz tests
-```
-
-Testing tools and concepts:
-
-```text
-testing package
-httptest
-mocks
-fakes
-stubs
-test helpers
-test fixtures
-testcontainers
-go test ./...
-go test -race
-coverage
-golden files
-deterministic tests
-flaky test prevention
+sentinel errors where appropriate
+custom error types where useful
 ```
 
 ---
@@ -1377,40 +1335,42 @@ Observability includes:
 structured logging
 request ID
 correlation ID
-log levels
+trace ID
 metrics
 health checks
-readiness
-liveness
-tracing
+readiness probes
+liveness probes
+distributed tracing
 alerts
 dashboards
 ```
 
-Planned tools/concepts:
+Planned tools and concepts:
 
 ```text
+OpenTelemetry
 Prometheus
 Grafana
-OpenTelemetry
-trace ID
-span
+structured JSON logs
 RED metrics
 USE metrics
+latency percentiles
 error rate
-latency
 throughput
 ```
+
+Observability should be added at adapter and platform boundaries.
+
+Domain code should not depend on observability libraries.
 
 ---
 
 ## Security Architecture
 
-Security topics:
+Security areas:
 
 ```text
 password hashing
-bcrypt
 JWT access tokens
 refresh tokens
 token revocation
@@ -1425,6 +1385,58 @@ secret management
 audit logs
 least privilege
 dependency vulnerability scanning
+```
+
+Security rules:
+
+```text
+Passwords are never stored in plain text.
+Tokens are validated in middleware and application services.
+Authorization decisions are explicit.
+Admin endpoints require role checks.
+Sensitive configuration comes from environment or secret storage.
+Audit logs are append-only.
+```
+
+---
+
+## Testing Architecture
+
+Testing levels:
+
+```text
+unit tests
+table-driven tests
+application use case tests
+handler tests
+repository integration tests
+worker tests
+contract tests
+benchmark tests
+fuzz tests
+end-to-end tests
+```
+
+Testing principles:
+
+```text
+Domain tests should be fast and isolated.
+Application tests should use fake ports.
+Adapter tests may use testcontainers or local infrastructure.
+Repository tests should verify real database behavior.
+Handler tests should use httptest.
+Worker tests should verify retry and idempotency behavior.
+Critical paths should have table-driven tests.
+Performance-sensitive code should have benchmarks.
+```
+
+Commands:
+
+```bash
+go test ./...
+go test -race ./...
+go test -cover ./...
+go test -bench=. ./...
 ```
 
 ---
@@ -1453,61 +1465,209 @@ backpressure
 horizontal scaling
 ```
 
----
-
-## Production Readiness Architecture
-
-Production-readiness topics:
+Performance rules:
 
 ```text
-configuration via environment variables
-health checks
-graceful shutdown
-database migrations
-safe migrations
-Docker Compose
-Kubernetes deployment
-CI/CD checks
-rollback strategy
-feature flags
-alerts
-dashboards
-runbooks
-incident analysis
-postmortem basics
+Optimize based on measurement.
+Use benchmarks for hot paths.
+Use indexes for query patterns.
+Use Redis for derived fast-access data.
+Use context timeouts for external calls.
+Avoid premature distributed complexity.
 ```
 
 ---
 
-## Core Production-Like Scenario
+## Deployment Architecture
 
-Final DevArena scenario:
+Local development uses Docker Compose.
+
+Production-like deployment uses Kubernetes.
+
+Planned Docker services:
 
 ```text
-1. User registers
-2. User logs in
-3. User creates Hero
-4. Hero starts Battle
-5. API checks JWT
-6. Middleware adds request ID
-7. BattleService checks cooldown in Redis
-8. BattleService uses Redis distributed lock
-9. BattleService loads Hero and Enemy from PostgreSQL
-10. BattleService runs battle algorithm
-11. Battle result is saved in PostgreSQL transaction
-12. Battle rounds are saved in PostgreSQL
-13. Full battle log is saved in MongoDB
-14. battle.finished event is written to outbox_events
-15. Outbox publisher publishes event to Kafka
-16. reward.grant job is published to RabbitMQ
-17. RewardWorker grants experience or item
-18. RatingProjector updates Redis leaderboard
-19. AnalyticsWorker updates statistics
-20. API returns battle result as JSON
-21. Logs, metrics and traces are emitted
-22. CI pipeline verifies tests and build
-23. Docker image is built and pushed
-24. Kubernetes deploy updates application
+api
+postgres
+redis
+mongodb
+rabbitmq
+kafka
+reward-worker
+notification-worker
+analytics-worker
+outbox-publisher
+```
+
+Planned Kubernetes resources:
+
+```text
+namespace
+deployment
+service
+ingress
+configmap
+secret
+readiness probe
+liveness probe
+resource requests
+resource limits
+horizontal pod autoscaler
+persistent volume
+persistent volume claim
+job
+cronjob
+service account
+RBAC
+network policy
+```
+
+---
+
+## CI/CD Architecture
+
+GitHub Actions is used for continuous integration and deployment.
+
+Planned workflows:
+
+```text
+ci.yml
+docker.yml
+deploy.yml
+```
+
+CI pipeline should include:
+
+```text
+checkout
+setup Go
+gofmt check
+go vet
+go test ./...
+go test -race ./...
+coverage report
+golangci-lint
+docker build
+```
+
+Deployment pipeline should include:
+
+```text
+build image
+push image
+apply Kubernetes manifests
+wait for rollout
+verify health checks
+```
+
+---
+
+## Architecture Governance
+
+Every new feature or learning topic must respect the architecture.
+
+Before adding code, decide where it belongs:
+
+```text
+Is it business logic?
+→ internal/domain
+
+Is it a use case that coordinates multiple operations?
+→ internal/app
+
+Is it an interface required by the application?
+→ internal/ports
+
+Is it HTTP, gRPC, database, Redis, Kafka, RabbitMQ or MongoDB code?
+→ internal/adapters
+
+Is it configuration, logging, tracing or shutdown logic?
+→ internal/platform
+
+Is it only process startup and dependency wiring?
+→ cmd
+```
+
+Forbidden shortcuts:
+
+```text
+Do not put business logic in main.go.
+Do not put business logic in HTTP handlers.
+Do not put database-specific code in domain packages.
+Do not put Kafka/RabbitMQ clients in application use cases directly.
+Do not create generic utility packages without clear ownership.
+Do not create a central model package for all domain entities.
+Do not duplicate domain rules in workers.
+```
+
+---
+
+## Learning Integration Rule
+
+DevArena is educational, but learning topics must be implemented as real project code.
+
+Each learning topic should result in one of the following:
+
+```text
+A real domain capability
+A useful application use case
+A safer interface or port
+A better adapter implementation
+A meaningful test
+A benchmark for a performance-sensitive path
+A documented architectural decision
+A production-readiness improvement
+```
+
+A topic should not be marked complete only because it was demonstrated in isolated terminal output.
+
+Progress tracking belongs in:
+
+```text
+LEARNING_CHECKLIST.md
+```
+
+Architecture decisions belong in:
+
+```text
+ARCHITECTURE.md
+```
+
+Public project positioning belongs in:
+
+```text
+README.md
+```
+
+---
+
+## Core Production Scenario
+
+The final production-like scenario:
+
+```text
+1. User registers.
+2. User logs in.
+3. User creates a hero.
+4. Hero starts a battle.
+5. API validates JWT.
+6. Middleware adds request ID and correlation ID.
+7. Battle use case checks cooldown through Redis port.
+8. Battle use case acquires distributed lock through lock port.
+9. Battle use case loads hero and enemy through repository ports.
+10. Domain battle logic runs the battle.
+11. Battle result is saved in PostgreSQL inside a transaction.
+12. Battle rounds are saved.
+13. Outbox event is written in the same transaction.
+14. Transaction is committed.
+15. Outbox publisher publishes battle.finished to Kafka.
+16. Reward job is published to RabbitMQ.
+17. Reward worker grants experience and items.
+18. Rating projector updates leaderboard projection.
+19. Analytics worker stores analytics data.
+20. Audit log is recorded.
+21. API returns battle result as JSON.
+22. Logs, metrics and traces are emitted.
 ```
 
 ---
@@ -1518,22 +1678,36 @@ At the end of the project, DevArena should demonstrate:
 
 ```text
 strong Go fundamentals
-clear error handling
-practical concurrency
-clean backend architecture
+domain-first design
+clear application use cases
+ports and adapters
 REST API design
+gRPC internal communication
 PostgreSQL persistence
 Redis caching and locking
 MongoDB document modeling
 RabbitMQ background jobs
 Kafka event streaming
-gRPC internal communication
-Dockerized development environment
+outbox pattern
+Dockerized local development
 Kubernetes deployment
 CI/CD automation
-testing culture
+structured testing
 security basics
 observability
 performance awareness
 production-readiness thinking
+```
+
+The final architecture should be explainable as:
+
+```text
+DevArena is a production-oriented educational backend platform written in Go.
+
+It starts from a text-based arena game domain and evolves into a modular backend system.
+The core business logic is kept in domain packages, application use cases coordinate behavior
+through ports, and infrastructure integrations are implemented as adapters.
+
+The system demonstrates REST API, PostgreSQL, Redis, MongoDB, RabbitMQ, Kafka, gRPC,
+Docker, Kubernetes, CI/CD, testing, observability, security and production-readiness practices.
 ```
