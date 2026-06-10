@@ -22,8 +22,13 @@ const (
 )
 
 func Run() {
-	fmt.Println("Welcome to DevArena")
+	sessionReport := startSessionReport()
 
+	defer func() {
+		sessionReport.finish()
+		sessionReport.print()
+	}()
+	fmt.Println("Welcome to DevArena")
 	if !hero.IsValidHeroName(defaultHeroName) {
 		fmt.Println("Invalid default hero name")
 		return
