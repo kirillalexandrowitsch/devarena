@@ -157,7 +157,7 @@ Beginner
 - [x] defer
 - [x] panic
 - [x] recover
-- [ ] generics
+- [x] generics
 - [ ] type parameters
 - [ ] constraints
 - [ ] functional options pattern

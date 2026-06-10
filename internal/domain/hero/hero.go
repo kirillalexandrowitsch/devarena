@@ -72,7 +72,7 @@ func (h *Hero) AddItem(item string) {
 }
 
 func (h *Hero) AddItems(items ...string) {
-	h.EnsureInventoryCapacity(len(items))
+	h.Inventory = EnsureInventoryCapacity(h.Inventory, len(h.Inventory)+len(items))
 
 	for _, item := range items {
 		h.AddItem(item)
@@ -90,4 +90,8 @@ func (h *Hero) TakeDamage(damage int) {
 		h.HP = 0
 		h.Alive = false
 	}
+}
+
+func (hero Hero) HasItem(item string) bool {
+	return HasInventoryItem(hero.Inventory, item)
 }

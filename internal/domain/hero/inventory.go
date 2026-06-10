@@ -1,28 +1,25 @@
 package hero
 
-func (h *Hero) EnsureInventoryCapacity(additionalItems int) {
-	if additionalItems <= 0 {
-		return
+import "github.com/rudyakovk/devarena/internal/domain/shared"
+
+func EnsureInventoryCapacity(items []string, requiredCapacity int) []string {
+	if cap(items) >= requiredCapacity {
+		return items
 	}
 
-	requiredCapacity := len(h.Inventory) + additionalItems
-	if cap(h.Inventory) >= requiredCapacity {
-		return
-	}
+	expanded := make([]string, len(items), requiredCapacity)
+	copy(expanded, items)
 
-	expandedInventory := make([]string, 0, requiredCapacity)
-	expandedInventory = append(expandedInventory, h.Inventory...)
-
-	h.Inventory = expandedInventory
+	return expanded
 }
 
-func (h Hero) CloneInventory() []string {
-	if h.Inventory == nil {
-		return nil
-	}
+func CloneInventory(items []string) []string {
+	cloned := make([]string, len(items))
+	copy(cloned, items)
 
-	clonedInventory := make([]string, len(h.Inventory))
-	copy(clonedInventory, h.Inventory)
+	return cloned
+}
 
-	return clonedInventory
+func HasInventoryItem(items []string, item string) bool {
+	return shared.Contains(items, item)
 }

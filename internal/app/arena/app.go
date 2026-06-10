@@ -39,6 +39,10 @@ func Run() {
 
 	gameHero.EquipWeapon(starterSword)
 
+	if gameHero.HasItem("Small Potion") {
+		fmt.Println("Hero has a Small Potion")
+	}
+
 	strength, strengthExists := gameHero.Stat("strength")
 	if strengthExists {
 		gameHero.BonusDamage += strength / 5
