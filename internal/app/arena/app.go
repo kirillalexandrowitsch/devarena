@@ -30,8 +30,12 @@ func (app *App) Run() {
 
 	defer func() {
 		sessionReport.finish()
-		sessionReport.print()
+
+		if app.printSessionReport {
+			sessionReport.print()
+		}
 	}()
+
 	fmt.Println("Welcome to DevArena")
 
 	gameHero := mustCreateDefaultHero()
@@ -43,13 +47,15 @@ func (app *App) Run() {
 
 	gameHero.EquipWeapon(starterSword)
 
-	if gameHero.HasItem("Small Potion") {
-		fmt.Println("Hero has a Small Potion")
-	}
+	if app.showInventoryInfo {
+		if gameHero.HasItem("Small Potion") {
+			fmt.Println("Hero has a Small Potion")
+		}
 
-	firstInventoryItem := gameHero.FirstInventoryItem()
-	if firstInventoryItem.Found {
-		fmt.Println("First inventory item:", firstInventoryItem.Value)
+		firstInventoryItem := gameHero.FirstInventoryItem()
+		if firstInventoryItem.Found {
+			fmt.Println("First inventory item:", firstInventoryItem.Value)
+		}
 	}
 
 	strength, strengthExists := gameHero.Stat("strength")
@@ -63,9 +69,11 @@ func (app *App) Run() {
 		gameHero.RemoveStat("temporary_bonus")
 	}
 
-	highestStatValue := gameHero.HighestStatValue()
-	if highestStatValue.Found {
-		fmt.Println("Highest hero stat value:", highestStatValue.Value)
+	if app.showStatSummary {
+		highestStatValue := gameHero.HighestStatValue()
+		if highestStatValue.Found {
+			fmt.Println("Highest hero stat value:", highestStatValue.Value)
+		}
 	}
 
 	fmt.Println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))
