@@ -156,7 +156,7 @@ Beginner
 
 - [x] defer
 - [x] panic
-- [ ] recover
+- [x] recover
 - [ ] generics
 - [ ] type parameters
 - [ ] constraints
