@@ -59,6 +59,11 @@ func Run() {
 		gameHero.RemoveStat("temporary_bonus")
 	}
 
+	highestStatValue := gameHero.HighestStatValue()
+	if highestStatValue.Found {
+		fmt.Println("Highest hero stat value:", highestStatValue.Value)
+	}
+
 	fmt.Println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))
 
 	gameHero.PrintInfo()
