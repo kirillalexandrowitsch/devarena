@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/rudyakovk/devarena/internal/app/arena"
 )
@@ -15,6 +16,7 @@ func main() {
 		arena.WithSessionReport(true),
 		arena.WithInventoryInfo(true),
 		arena.WithStatSummary(true),
+		arena.WithOutput(os.Stdout),
 	)
 
 	app.Run()

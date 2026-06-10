@@ -1,8 +1,6 @@
 package arena
 
 import (
-	"fmt"
-
 	"github.com/rudyakovk/devarena/internal/domain/battle"
 	"github.com/rudyakovk/devarena/internal/domain/enemy"
 	"github.com/rudyakovk/devarena/internal/domain/hero"
@@ -32,11 +30,11 @@ func (app *App) Run() {
 		sessionReport.finish()
 
 		if app.printSessionReport {
-			sessionReport.print()
+			sessionReport.printTo(app.output)
 		}
 	}()
 
-	fmt.Println("Welcome to DevArena")
+	app.println("Welcome to DevArena")
 
 	gameHero := mustCreateDefaultHero()
 
@@ -49,12 +47,12 @@ func (app *App) Run() {
 
 	if app.showInventoryInfo {
 		if gameHero.HasItem("Small Potion") {
-			fmt.Println("Hero has a Small Potion")
+			app.println("Hero has a Small Potion")
 		}
 
 		firstInventoryItem := gameHero.FirstInventoryItem()
 		if firstInventoryItem.Found {
-			fmt.Println("First inventory item:", firstInventoryItem.Value)
+			app.println("First inventory item:", firstInventoryItem.Value)
 		}
 	}
 
@@ -72,11 +70,11 @@ func (app *App) Run() {
 	if app.showStatSummary {
 		highestStatValue := gameHero.HighestStatValue()
 		if highestStatValue.Found {
-			fmt.Println("Highest hero stat value:", highestStatValue.Value)
+			app.println("Highest hero stat value:", highestStatValue.Value)
 		}
 	}
 
-	fmt.Println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))
+	app.println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))
 
 	gameHero.PrintInfo()
 	gameHero.PrintStats()
@@ -108,34 +106,34 @@ func (app *App) Run() {
 
 	rewardEvent := battle.NewRewardEvent(gameHero.Name, reward)
 
-	fmt.Println(gameHero.Name, "received experience:", reward.Experience)
-	fmt.Println(gameHero.Name, "received item:", reward.Item)
+	app.println(gameHero.Name, "received experience:", reward.Experience)
+	app.println(gameHero.Name, "received item:", reward.Item)
 
-	fmt.Println("Reward event type:", rewardEvent.Type)
-	fmt.Println("Reward event payload size:", rewardEvent.Payload.Size())
+	app.println("Reward event type:", rewardEvent.Type)
+	app.println("Reward event payload size:", rewardEvent.Payload.Size())
 
 	rewardItemMetadata, rewardItemMetadataExists := rewardEvent.MetadataString("reward_item")
 	if rewardItemMetadataExists {
-		fmt.Println("Reward event metadata item:", rewardItemMetadata)
+		app.println("Reward event metadata item:", rewardItemMetadata)
 	}
 
 	rewardExperienceMetadata, rewardExperienceMetadataExists := rewardEvent.MetadataInt("reward_experience")
 	if rewardExperienceMetadataExists {
-		fmt.Println("Reward event metadata experience:", rewardExperienceMetadata)
+		app.println("Reward event metadata experience:", rewardExperienceMetadata)
 	}
 
 	rewardGrantedMetadata, rewardGrantedMetadataExists := rewardEvent.MetadataText("reward_granted")
 	if rewardGrantedMetadataExists {
-		fmt.Println("Reward event metadata granted:", rewardGrantedMetadata)
+		app.println("Reward event metadata granted:", rewardGrantedMetadata)
 	}
 
-	fmt.Println("Battle winner:", winnerName)
-	fmt.Println("Defeated opponent:", defeatedName)
+	app.println("Battle winner:", winnerName)
+	app.println("Defeated opponent:", defeatedName)
 
-	fmt.Println("Battle win rate:", battleStatistics.WinRatePercent())
+	app.println("Battle win rate:", battleStatistics.WinRatePercent())
 
 	gameHero.PrintInventory("Hero inventory after battle:")
 
-	fmt.Println("Final hero HP:", gameHero.HP)
-	fmt.Println("Final enemy HP:", gameEnemy.HP)
+	app.println("Final hero HP:", gameHero.HP)
+	app.println("Final enemy HP:", gameEnemy.HP)
 }

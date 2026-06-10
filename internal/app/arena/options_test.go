@@ -1,6 +1,9 @@
 package arena
 
-import "testing"
+import (
+	"bytes"
+	"testing"
+)
 
 func TestNewAppUsesDefaultOptions(t *testing.T) {
 	app := NewApp()
@@ -16,13 +19,20 @@ func TestNewAppUsesDefaultOptions(t *testing.T) {
 	if !app.showStatSummary {
 		t.Fatal("expected stat summary to be enabled by default")
 	}
+
+	if app.output == nil {
+		t.Fatal("expected output to be set by default")
+	}
 }
 
 func TestNewAppAppliesFunctionalOptions(t *testing.T) {
+	output := &bytes.Buffer{}
+
 	app := NewApp(
 		WithSessionReport(false),
 		WithInventoryInfo(false),
 		WithStatSummary(false),
+		WithOutput(output),
 	)
 
 	if app.printSessionReport {
@@ -35,5 +45,19 @@ func TestNewAppAppliesFunctionalOptions(t *testing.T) {
 
 	if app.showStatSummary {
 		t.Fatal("expected stat summary to be disabled")
+	}
+
+	if app.output != output {
+		t.Fatal("expected custom output to be applied")
+	}
+}
+
+func TestWithOutputIgnoresNilOutput(t *testing.T) {
+	app := NewApp(
+		WithOutput(nil),
+	)
+
+	if app.output == nil {
+		t.Fatal("expected nil output not to replace default output")
 	}
 }

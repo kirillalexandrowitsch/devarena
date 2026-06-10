@@ -2,6 +2,8 @@ package arena
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"time"
 )
 
@@ -29,5 +31,9 @@ func (report sessionReport) duration() time.Duration {
 }
 
 func (report sessionReport) print() {
-	fmt.Println("Arena session duration:", report.duration())
+	report.printTo(os.Stdout)
+}
+
+func (report sessionReport) printTo(output io.Writer) {
+	fmt.Fprintln(output, "Arena session duration:", report.duration())
 }
