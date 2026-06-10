@@ -43,6 +43,11 @@ func Run() {
 		fmt.Println("Hero has a Small Potion")
 	}
 
+	firstInventoryItem := gameHero.FirstInventoryItem()
+	if firstInventoryItem.Found {
+		fmt.Println("First inventory item:", firstInventoryItem.Value)
+	}
+
 	strength, strengthExists := gameHero.Stat("strength")
 	if strengthExists {
 		gameHero.BonusDamage += strength / 5

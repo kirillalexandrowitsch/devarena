@@ -1,6 +1,10 @@
 package hero
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/rudyakovk/devarena/internal/domain/shared"
+)
 
 type Hero struct {
 	ID    HeroID
@@ -94,4 +98,8 @@ func (h *Hero) TakeDamage(damage int) {
 
 func (hero Hero) HasItem(item string) bool {
 	return HasInventoryItem(hero.Inventory, item)
+}
+
+func (hero Hero) FirstInventoryItem() shared.Selection[string] {
+	return FirstInventoryItem(hero.Inventory)
 }

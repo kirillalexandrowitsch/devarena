@@ -23,3 +23,7 @@ func CloneInventory(items []string) []string {
 func HasInventoryItem(items []string, item string) bool {
 	return shared.Contains(items, item)
 }
+
+func FirstInventoryItem(items []string) shared.Selection[string] {
+	return shared.First(items)
+}
