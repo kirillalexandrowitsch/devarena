@@ -29,32 +29,8 @@ func Run() {
 		sessionReport.print()
 	}()
 	fmt.Println("Welcome to DevArena")
-	if !hero.IsValidHeroName(defaultHeroName) {
-		fmt.Println("Invalid default hero name")
-		return
-	}
 
-	gameHero := hero.Hero{
-		ID:    1,
-		Name:  defaultHeroName,
-		Class: defaultHeroClass,
-		Level: defaultHeroLevel,
-		Alive: true,
-		CombatStats: hero.CombatStats{
-			HP:             defaultHeroHP,
-			BaseDamage:     defaultHeroBaseDamage,
-			BonusDamage:    defaultHeroBonusDamage,
-			CriticalChance: defaultHeroCriticalChance,
-		},
-		Attacks:   [3]string{"Slash", "Pierce", "Heavy Strike"},
-		Inventory: []string{"Small Potion", "Wooden Shield"},
-		Stats: map[string]int{
-			"strength":        10,
-			"agility":         7,
-			"stamina":         12,
-			"temporary_bonus": 2,
-		},
-	}
+	gameHero := mustCreateDefaultHero()
 
 	starterSword := hero.Sword{
 		Title: "Starter Sword",

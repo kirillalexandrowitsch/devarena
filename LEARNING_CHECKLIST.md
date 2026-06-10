@@ -155,7 +155,7 @@ Beginner
 ## Additional Core Go
 
 - [x] defer
-- [ ] panic
+- [x] panic
 - [ ] recover
 - [ ] generics
 - [ ] type parameters
