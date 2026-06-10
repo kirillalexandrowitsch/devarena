@@ -2,7 +2,7 @@
 
 DevArena is a production-oriented educational backend platform written in Go.
 
-The project uses a text-based arena game domain to learn and demonstrate practical backend engineering: domain modeling, application use cases, persistence, caching, messaging, distributed communication, observability, testing, deployment and production-readiness practices.
+The project uses a text-based arena game domain to learn and demonstrate practical backend engineering: domain modeling, application use cases, persistence, caching, messaging, distributed communication, analytics, observability, testing, deployment and production-readiness practices.
 
 The architecture is intentionally designed as a **domain-first modular backend system**.
 
@@ -20,6 +20,7 @@ Ports and adapters
 Infrastructure behind interfaces
 Event-driven integrations
 Production-oriented testing and observability
+Analytics-oriented data processing
 ```
 
 The project should not be organized around generic technical folders only.
@@ -34,7 +35,7 @@ internal/
   handler/
 ```
 
-DevArena should grow around business capabilities:
+DevArena should grow around business capabilities and architectural boundaries:
 
 ```text
 internal/
@@ -51,14 +52,16 @@ internal/
     hero/
     battle/
     reward/
+    inventory/
     rating/
+    event/
 
   ports/
   adapters/
   platform/
 ```
 
-Technical layers still exist, but they are organized around clear architectural boundaries.
+Technical layers still exist, but they are organized around clear ownership and dependency direction.
 
 ---
 
@@ -79,9 +82,11 @@ Redis clients
 Kafka clients
 RabbitMQ clients
 MongoDB clients
+ClickHouse clients
 gRPC transport code
 environment configuration
 logging frameworks
+observability frameworks
 ```
 
 Domain packages may use:
@@ -139,6 +144,7 @@ Outbox publisher
 PostgreSQL
 Redis
 MongoDB
+ClickHouse
 RabbitMQ
 Kafka
 gRPC internal services
@@ -192,6 +198,7 @@ devarena/
       rating/
       tournament/
       event/
+      analytics/
 
     ports/
       repository/
@@ -199,6 +206,7 @@ devarena/
       cache/
       lock/
       transaction/
+      analytics/
       clock/
       idgen/
       password/
@@ -231,6 +239,10 @@ devarena/
       mongodb/
         repository/
 
+      clickhouse/
+        analytics/
+        migration/
+
       rabbitmq/
         publisher/
         consumer/
@@ -260,6 +272,7 @@ devarena/
 
   migrations/
     postgres/
+    clickhouse/
 
   tests/
     integration/
@@ -327,8 +340,9 @@ domain → adapters
 domain → platform
 domain → database driver
 domain → HTTP transport
-domain → Kafka/RabbitMQ/Redis/MongoDB clients
+domain → Kafka/RabbitMQ/Redis/MongoDB/ClickHouse clients
 app    → concrete database implementation
+app    → concrete analytics storage implementation
 app    → concrete message broker implementation
 ```
 
@@ -386,13 +400,17 @@ Contains business concepts and business rules.
 Examples:
 
 ```text
+domain/user
+domain/auth
 domain/hero
 domain/enemy
 domain/battle
 domain/reward
 domain/inventory
 domain/rating
+domain/tournament
 domain/event
+domain/audit
 ```
 
 Responsibilities:
@@ -410,6 +428,8 @@ Domain-specific interfaces when needed
 
 Domain code should be easy to test without databases, HTTP servers or external systems.
 
+Domain code must not know about PostgreSQL, Redis, MongoDB, ClickHouse, RabbitMQ, Kafka, HTTP, gRPC or Kubernetes.
+
 ---
 
 ### `internal/app/`
@@ -424,6 +444,7 @@ app/battle/StartBattle
 app/reward/GrantReward
 app/rating/GetLeaderboard
 app/event/PublishOutboxEvents
+app/analytics/RecordBattleAnalytics
 ```
 
 Responsibilities:
@@ -435,10 +456,11 @@ Run transactions through transaction ports
 Check authorization decisions when needed
 Publish events through publisher ports
 Coordinate cache and lock ports
+Coordinate analytics ports
 Return application-level results
 ```
 
-Application layer should not know which exact database, broker or cache implementation is used.
+Application layer should not know which exact database, broker, cache or analytics implementation is used.
 
 ---
 
@@ -457,6 +479,8 @@ OutboxRepository
 LeaderboardCache
 DistributedLock
 TransactionManager
+AnalyticsWriter
+AnalyticsReader
 Clock
 IDGenerator
 PasswordHasher
@@ -474,11 +498,27 @@ type HeroRepository interface {
 }
 ```
 
+Good analytics port example:
+
+```go
+type BattleAnalyticsWriter interface {
+	RecordBattleFinished(ctx context.Context, event BattleFinishedAnalyticsEvent) error
+}
+```
+
 Bad port example:
 
 ```go
 type PostgresHeroRepository interface {
 	ExecSQL(query string, args ...any) error
+}
+```
+
+Bad analytics port example:
+
+```go
+type ClickHouseBattleAnalytics interface {
+	InsertIntoClickHouse(ctx context.Context, query string, args ...any) error
 }
 ```
 
@@ -498,6 +538,7 @@ gRPC servers
 PostgreSQL repositories
 Redis cache implementation
 MongoDB log repository
+ClickHouse analytics repository
 RabbitMQ publisher and consumer
 Kafka producer and consumer
 ```
@@ -574,7 +615,8 @@ session invalidation
 refresh token lifecycle
 ```
 
-Auth should not be mixed into HTTP handlers directly.  
+Auth should not be mixed into HTTP handlers directly.
+
 HTTP handlers call application use cases.
 
 ---
@@ -666,7 +708,8 @@ battle result calculation
 battle event creation
 ```
 
-Battle logic belongs in the domain layer.  
+Battle logic belongs in the domain layer.
+
 Persistence, HTTP and messaging do not belong in battle domain code.
 
 ---
@@ -834,6 +877,7 @@ GrantReward
 GetInventory
 EquipItem
 GetLeaderboard
+RecordBattleAnalytics
 PublishOutboxEvents
 RegisterUser
 LoginUser
@@ -848,6 +892,7 @@ repository ports
 transaction ports
 cache ports
 event publisher ports
+analytics ports
 lock ports
 clock and ID generator ports
 ```
@@ -873,7 +918,7 @@ mapping application errors to HTTP status codes
 returning JSON responses
 ```
 
-HTTP handlers must not contain battle logic, reward logic or persistence logic.
+HTTP handlers must not contain battle logic, reward logic, analytics logic or persistence logic.
 
 Target REST API groups:
 
@@ -886,6 +931,7 @@ Target REST API groups:
 /api/v1/inventory
 /api/v1/leaderboard
 /api/v1/tournaments
+/api/v1/analytics
 /api/v1/admin
 ```
 
@@ -937,6 +983,7 @@ HeroService
 BattleService
 RatingService
 InventoryService
+AnalyticsService
 ```
 
 gRPC responsibilities:
@@ -1062,6 +1109,44 @@ MongoDB must not replace PostgreSQL for core transactional state.
 
 ---
 
+### ClickHouse
+
+ClickHouse stores analytical and aggregated data.
+
+Planned tables:
+
+```text
+battle_analytics
+hero_progression_analytics
+reward_analytics
+rating_snapshots
+event_analytics
+user_activity_analytics
+```
+
+ClickHouse is used for:
+
+```text
+OLAP queries
+large analytical scans
+battle statistics
+reward distribution analytics
+event analytics
+leaderboard history
+aggregated reporting
+performance-oriented analytical reads
+```
+
+ClickHouse must not be used as the source of truth for transactional state.
+
+PostgreSQL remains the source of truth for relational business data.
+
+ClickHouse data should be populated through event streams, workers or explicit analytics pipelines.
+
+Application code must depend on analytics ports, not ClickHouse directly.
+
+---
+
 ## Transaction and Consistency Model
 
 Application services coordinate transactions through ports.
@@ -1085,6 +1170,7 @@ Database transaction boundaries are controlled by application use cases.
 Repository adapters execute concrete queries.
 Outbox events are written in the same transaction as state changes.
 External event publishing happens after transaction commit.
+Analytics storage is populated asynchronously when possible.
 ```
 
 The preferred consistency pattern:
@@ -1096,7 +1182,9 @@ PostgreSQL transaction
 → transaction committed
 → outbox publisher reads event
 → Kafka/RabbitMQ publish
-→ event marked as published
+→ analytics worker consumes event
+→ ClickHouse analytics row inserted
+→ event marked as processed where needed
 ```
 
 ---
@@ -1127,6 +1215,7 @@ reward.granted
 item.equipped
 rating.updated
 tournament.finished
+analytics.recorded
 ```
 
 Event rules:
@@ -1138,6 +1227,7 @@ Events must be serializable.
 Events must include aggregate information.
 Consumers must be idempotent.
 Event publishing should use the outbox pattern for reliability.
+Analytics consumers should tolerate duplicates.
 ```
 
 ---
@@ -1191,6 +1281,7 @@ devarena.battle.events
 devarena.inventory.events
 devarena.rating.events
 devarena.audit.events
+devarena.analytics.events
 ```
 
 Kafka consumers:
@@ -1200,6 +1291,7 @@ analytics-worker
 audit-worker
 rating-projector
 event-debug-consumer
+clickhouse-sink-worker
 ```
 
 Kafka principles:
@@ -1217,6 +1309,45 @@ schema compatibility
 ```
 
 Kafka is best suited for event streams and projections.
+
+---
+
+## Analytics Architecture
+
+Analytics is separated from transactional business state.
+
+Analytics data may come from:
+
+```text
+domain events
+integration events
+outbox events
+worker-produced events
+periodic projections
+batch backfills
+```
+
+Analytics storage may include:
+
+```text
+ClickHouse for OLAP queries
+MongoDB for flexible debug and replay documents
+Redis for fast derived leaderboard views
+```
+
+Analytics use cases should depend on analytics ports.
+
+Analytics adapters implement those ports using concrete systems.
+
+Rules:
+
+```text
+Do not use ClickHouse for transactional writes.
+Do not make domain logic depend on analytics storage.
+Do not block critical user flows on non-critical analytics writes unless required.
+Prefer asynchronous analytics ingestion.
+Design analytics inserts to be idempotent or duplicate-tolerant.
+```
 
 ---
 
@@ -1240,6 +1371,7 @@ consume jobs or events
 call application use cases
 handle retries
 handle idempotency
+write analytics data
 emit logs and metrics
 shutdown gracefully
 ```
@@ -1272,6 +1404,7 @@ HTTP_PORT
 DATABASE_URL
 REDIS_ADDR
 MONGODB_URI
+CLICKHOUSE_DSN
 RABBITMQ_URL
 KAFKA_BROKERS
 JWT_SECRET
@@ -1295,6 +1428,7 @@ domain errors
 application errors
 repository errors
 infrastructure errors
+analytics errors
 authentication errors
 authorization errors
 conflict errors
@@ -1312,6 +1446,7 @@ Adapters map errors to protocol-specific responses.
 HTTP maps errors to status codes.
 gRPC maps errors to gRPC status codes.
 Workers map retryable errors to retry behavior.
+Analytics ingestion errors should be observable and retryable when possible.
 ```
 
 Go error handling should use:
@@ -1357,6 +1492,8 @@ USE metrics
 latency percentiles
 error rate
 throughput
+analytics ingestion lag
+worker processing lag
 ```
 
 Observability should be added at adapter and platform boundaries.
@@ -1396,6 +1533,7 @@ Authorization decisions are explicit.
 Admin endpoints require role checks.
 Sensitive configuration comes from environment or secret storage.
 Audit logs are append-only.
+Analytics data must not expose sensitive secrets.
 ```
 
 ---
@@ -1410,6 +1548,7 @@ table-driven tests
 application use case tests
 handler tests
 repository integration tests
+analytics adapter integration tests
 worker tests
 contract tests
 benchmark tests
@@ -1424,6 +1563,7 @@ Domain tests should be fast and isolated.
 Application tests should use fake ports.
 Adapter tests may use testcontainers or local infrastructure.
 Repository tests should verify real database behavior.
+Analytics tests should verify schema, inserts and query behavior.
 Handler tests should use httptest.
 Worker tests should verify retry and idempotency behavior.
 Critical paths should have table-driven tests.
@@ -1454,6 +1594,10 @@ timeouts
 N+1 query prevention
 query optimization
 EXPLAIN ANALYZE
+ClickHouse query planning
+ClickHouse table engines
+ClickHouse partitioning
+ClickHouse ordering keys
 pprof
 CPU profiling
 memory profiling
@@ -1472,6 +1616,7 @@ Optimize based on measurement.
 Use benchmarks for hot paths.
 Use indexes for query patterns.
 Use Redis for derived fast-access data.
+Use ClickHouse for analytical scans and aggregations.
 Use context timeouts for external calls.
 Avoid premature distributed complexity.
 ```
@@ -1491,6 +1636,7 @@ api
 postgres
 redis
 mongodb
+clickhouse
 rabbitmq
 kafka
 reward-worker
@@ -1578,7 +1724,7 @@ Is it a use case that coordinates multiple operations?
 Is it an interface required by the application?
 → internal/ports
 
-Is it HTTP, gRPC, database, Redis, Kafka, RabbitMQ or MongoDB code?
+Is it HTTP, gRPC, database, Redis, Kafka, RabbitMQ, MongoDB or ClickHouse code?
 → internal/adapters
 
 Is it configuration, logging, tracing or shutdown logic?
@@ -1595,6 +1741,7 @@ Do not put business logic in main.go.
 Do not put business logic in HTTP handlers.
 Do not put database-specific code in domain packages.
 Do not put Kafka/RabbitMQ clients in application use cases directly.
+Do not put ClickHouse clients in application use cases directly.
 Do not create generic utility packages without clear ownership.
 Do not create a central model package for all domain entities.
 Do not duplicate domain rules in workers.
@@ -1664,7 +1811,7 @@ The final production-like scenario:
 16. Reward job is published to RabbitMQ.
 17. Reward worker grants experience and items.
 18. Rating projector updates leaderboard projection.
-19. Analytics worker stores analytics data.
+19. Analytics worker stores analytical data in ClickHouse.
 20. Audit log is recorded.
 21. API returns battle result as JSON.
 22. Logs, metrics and traces are emitted.
@@ -1686,6 +1833,7 @@ gRPC internal communication
 PostgreSQL persistence
 Redis caching and locking
 MongoDB document modeling
+ClickHouse analytics and OLAP queries
 RabbitMQ background jobs
 Kafka event streaming
 outbox pattern
@@ -1708,6 +1856,7 @@ It starts from a text-based arena game domain and evolves into a modular backend
 The core business logic is kept in domain packages, application use cases coordinate behavior
 through ports, and infrastructure integrations are implemented as adapters.
 
-The system demonstrates REST API, PostgreSQL, Redis, MongoDB, RabbitMQ, Kafka, gRPC,
-Docker, Kubernetes, CI/CD, testing, observability, security and production-readiness practices.
+The system demonstrates REST API, PostgreSQL, Redis, MongoDB, ClickHouse, RabbitMQ, Kafka,
+gRPC, Docker, Kubernetes, CI/CD, testing, observability, security, analytics and
+production-readiness practices.
 ```

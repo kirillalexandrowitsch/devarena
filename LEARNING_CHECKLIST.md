@@ -521,6 +521,23 @@ Beginner
 - [ ] Circuit breaker concept
 - [ ] Bulkhead pattern concept
 
+## Domain-First Target Architecture
+
+- [ ] Domain-first design
+- [ ] Application use cases
+- [ ] Ports and adapters
+- [ ] Infrastructure behind interfaces
+- [ ] Domain package boundaries
+- [ ] Application package boundaries
+- [ ] Adapter package boundaries
+- [ ] Platform package boundaries
+- [ ] Dependency direction enforcement
+- [ ] Avoiding business logic in cmd
+- [ ] Avoiding business logic in handlers
+- [ ] Avoiding infrastructure imports in domain
+- [ ] Avoiding concrete database clients in app layer
+- [ ] Avoiding concrete analytics storage clients in app layer
+
 ---
 
 # Stage 9. Data Modeling
@@ -556,6 +573,19 @@ Beginner
 - [ ] Event history
 - [ ] Read models
 - [ ] Write models
+
+## Analytical Modeling
+
+- [ ] OLTP vs OLAP
+- [ ] Analytical events
+- [ ] Fact tables
+- [ ] Dimension tables basics
+- [ ] Aggregated tables
+- [ ] Time-series event modeling
+- [ ] Append-only analytics data
+- [ ] Duplicate-tolerant analytics design
+- [ ] Analytics data retention
+- [ ] Analytics backfill strategy
 
 ---
 
@@ -772,10 +802,14 @@ Beginner
 - [ ] Testcontainers
 - [ ] PostgreSQL test container
 - [ ] Redis test container
+- [ ] MongoDB test container
+- [ ] ClickHouse test container
 - [ ] RabbitMQ test container
 - [ ] Kafka test container
 - [ ] Database cleanup strategies
 - [ ] Transactional tests
+- [ ] Analytics test data cleanup
+- [ ] Idempotent analytics test design
 
 ## Advanced Testing
 
@@ -791,6 +825,8 @@ Beginner
 - [ ] Testing async code
 - [ ] Testing Kafka consumers
 - [ ] Testing RabbitMQ consumers
+- [ ] Testing ClickHouse inserts
+- [ ] Testing ClickHouse analytical queries
 
 ---
 
@@ -812,6 +848,19 @@ Beginner
 - [ ] Networks
 - [ ] Environment variables
 - [ ] Multi-stage build
+
+## Docker for Local Infrastructure
+
+- [ ] Local PostgreSQL container
+- [ ] Local Redis container
+- [ ] Local MongoDB container
+- [ ] Local ClickHouse container
+- [ ] Local RabbitMQ container
+- [ ] Local Kafka container
+- [ ] Docker Compose service dependencies
+- [ ] Docker Compose healthchecks
+- [ ] Docker Compose volumes
+- [ ] Docker Compose networks
 
 ## Docker for Production-like Setup
 
@@ -955,7 +1004,169 @@ Beginner
 
 ---
 
-# Stage 18. gRPC
+# Stage 18. ClickHouse
+
+## ClickHouse Basics
+
+- [ ] What ClickHouse is
+- [ ] OLTP vs OLAP
+- [ ] Column-oriented storage
+- [ ] Analytical workloads
+- [ ] Append-oriented data model
+- [ ] ClickHouse server basics
+- [ ] ClickHouse client basics
+- [ ] ClickHouse SQL basics
+- [ ] Databases
+- [ ] Tables
+- [ ] Columns
+- [ ] Data types
+- [ ] Nullable columns
+- [ ] LowCardinality
+- [ ] DateTime
+- [ ] DateTime64
+- [ ] UUID
+- [ ] Array basics
+- [ ] Map basics
+
+## ClickHouse Table Engines
+
+- [ ] MergeTree
+- [ ] ReplacingMergeTree
+- [ ] SummingMergeTree
+- [ ] AggregatingMergeTree
+- [ ] Distributed table concept
+- [ ] Memory engine basics
+- [ ] Choosing table engines
+- [ ] Engine tradeoffs
+
+## ClickHouse Schema Design
+
+- [ ] ORDER BY key
+- [ ] PARTITION BY
+- [ ] PRIMARY KEY in ClickHouse
+- [ ] Sorting key design
+- [ ] Partitioning strategy
+- [ ] Granules
+- [ ] Sparse indexes
+- [ ] Data skipping indexes
+- [ ] Time-based partitioning
+- [ ] Event table design
+- [ ] Battle analytics table design
+- [ ] Reward analytics table design
+- [ ] Rating snapshot table design
+- [ ] User activity analytics table design
+- [ ] Denormalized analytics schema
+- [ ] Fact table concept
+- [ ] Dimension data handling
+- [ ] Duplicate-tolerant schema design
+
+## ClickHouse Queries
+
+- [ ] SELECT
+- [ ] INSERT
+- [ ] WHERE
+- [ ] GROUP BY
+- [ ] ORDER BY
+- [ ] LIMIT
+- [ ] COUNT
+- [ ] SUM
+- [ ] AVG
+- [ ] MIN
+- [ ] MAX
+- [ ] uniq
+- [ ] uniqExact
+- [ ] quantile
+- [ ] quantiles
+- [ ] argMax
+- [ ] argMin
+- [ ] toDate
+- [ ] toStartOfHour
+- [ ] toStartOfDay
+- [ ] dateDiff
+- [ ] Window functions basics
+- [ ] WITH clause basics
+- [ ] Subqueries basics
+
+## ClickHouse Aggregations
+
+- [ ] Aggregation functions
+- [ ] AggregateFunction type
+- [ ] SimpleAggregateFunction type
+- [ ] AggregatingMergeTree basics
+- [ ] SummingMergeTree basics
+- [ ] Materialized views
+- [ ] Incremental aggregation
+- [ ] Pre-aggregated tables
+- [ ] Rollup tables
+- [ ] Daily aggregation tables
+- [ ] Leaderboard analytics aggregation
+- [ ] Battle result aggregation
+- [ ] Reward distribution aggregation
+
+## ClickHouse Performance
+
+- [ ] Query performance basics
+- [ ] Avoiding SELECT *
+- [ ] Filtering by sorting key
+- [ ] Partition pruning
+- [ ] Compression basics
+- [ ] Batch inserts
+- [ ] Insert block size
+- [ ] Avoiding many small inserts
+- [ ] Query profiling basics
+- [ ] system.query_log
+- [ ] system.parts
+- [ ] system.mutations
+- [ ] EXPLAIN basics
+- [ ] Memory usage basics
+- [ ] Cardinality awareness
+
+## ClickHouse with Go
+
+- [ ] ClickHouse Go driver
+- [ ] Opening ClickHouse connection
+- [ ] Connection settings
+- [ ] Context with ClickHouse queries
+- [ ] Batch insert from Go
+- [ ] Querying analytical data from Go
+- [ ] Scanning query results
+- [ ] Mapping ClickHouse rows to Go structs
+- [ ] ClickHouse adapter package
+- [ ] Analytics repository pattern
+- [ ] Analytics ports
+- [ ] Fake analytics ports for tests
+- [ ] ClickHouse integration tests
+- [ ] ClickHouse migrations from Go
+- [ ] Error handling for ClickHouse queries
+- [ ] Retry strategy for analytics writes
+- [ ] Idempotent analytics writes
+
+## ClickHouse Architecture in DevArena
+
+- [ ] ClickHouse as analytics storage
+- [ ] ClickHouse is not source of truth
+- [ ] PostgreSQL as transactional source of truth
+- [ ] Event-driven analytics ingestion
+- [ ] Analytics worker
+- [ ] Kafka to ClickHouse pipeline
+- [ ] Outbox to analytics pipeline
+- [ ] Battle analytics events
+- [ ] Reward analytics events
+- [ ] Rating analytics events
+- [ ] Audit analytics events
+- [ ] User activity analytics events
+- [ ] Analytics read use cases
+- [ ] Analytics API endpoints
+- [ ] ClickHouse migrations directory
+- [ ] ClickHouse Docker Compose service
+- [ ] ClickHouse configuration through environment variables
+- [ ] Observability for analytics ingestion
+- [ ] Backfill analytics data
+- [ ] Handling duplicate analytics events
+
+---
+
+# Stage 19. gRPC
 
 ## gRPC Basics
 
@@ -994,7 +1205,7 @@ Beginner
 
 ---
 
-# Stage 19. Observability
+# Stage 20. Observability
 
 ## Logging
 
@@ -1004,6 +1215,8 @@ Beginner
 - [ ] Correlation ID
 - [ ] Error logging
 - [ ] Access logs
+- [ ] Worker logs
+- [ ] Analytics ingestion logs
 
 ## Metrics
 
@@ -1015,6 +1228,10 @@ Beginner
 - [ ] Histograms
 - [ ] RED metrics
 - [ ] USE metrics
+- [ ] Business metrics
+- [ ] Analytics ingestion metrics
+- [ ] ClickHouse query metrics
+- [ ] Worker lag metrics
 
 ## Tracing
 
@@ -1023,6 +1240,11 @@ Beginner
 - [ ] Spans
 - [ ] Trace ID
 - [ ] Context propagation
+- [ ] HTTP tracing
+- [ ] gRPC tracing
+- [ ] Worker tracing
+- [ ] Database tracing
+- [ ] Analytics pipeline tracing
 
 ## Health and Alerts
 
@@ -1033,10 +1255,13 @@ Beginner
 - [ ] Dashboards
 - [ ] SLO / SLA basics
 - [ ] Log aggregation basics
+- [ ] Analytics ingestion lag alerts
+- [ ] Database availability alerts
+- [ ] Worker failure alerts
 
 ---
 
-# Stage 20. Networking Basics
+# Stage 21. Networking Basics
 
 - [ ] TCP/IP basics
 - [ ] DNS
@@ -1065,7 +1290,7 @@ Beginner
 
 ---
 
-# Stage 21. Kubernetes
+# Stage 22. Kubernetes
 
 ## Kubernetes Basics
 
@@ -1110,10 +1335,13 @@ Beginner
 - [ ] Node selectors
 - [ ] Config rollout strategy
 - [ ] Secrets management basics
+- [ ] StatefulSet basics
+- [ ] Stateful services in Kubernetes
+- [ ] Database deployment tradeoffs
 
 ---
 
-# Stage 22. CI/CD
+# Stage 23. CI/CD
 
 ## CI/CD Basics
 
@@ -1154,7 +1382,7 @@ Beginner
 
 ---
 
-# Stage 23. Background Jobs
+# Stage 24. Background Jobs
 
 ## Basic Background Jobs
 
@@ -1178,9 +1406,21 @@ Beginner
 - [ ] Graceful worker shutdown
 - [ ] Backpressure
 
+## Analytics Background Jobs
+
+- [ ] Analytics worker
+- [ ] Event consumer worker
+- [ ] ClickHouse sink worker
+- [ ] Analytics batch insert worker
+- [ ] Analytics retry queue
+- [ ] Analytics dead letter handling
+- [ ] Analytics backfill job
+- [ ] Analytics idempotency
+- [ ] Analytics ingestion lag handling
+
 ---
 
-# Stage 24. Performance Basics
+# Stage 25. Performance Basics
 
 ## Basic Performance
 
@@ -1208,9 +1448,22 @@ Beginner
 - [ ] Load testing
 - [ ] Horizontal scaling
 
+## Analytics Performance
+
+- [ ] OLAP query performance
+- [ ] ClickHouse query optimization
+- [ ] ClickHouse sorting key performance
+- [ ] ClickHouse partition pruning
+- [ ] Batch insert performance
+- [ ] Materialized view performance
+- [ ] Aggregated table performance
+- [ ] Analytics query latency
+- [ ] Analytics ingestion throughput
+- [ ] Analytics storage growth
+
 ---
 
-# Stage 25. Production Readiness
+# Stage 26. Production Readiness
 
 ## Basic Production Readiness
 
@@ -1235,3 +1488,38 @@ Beginner
 - [ ] Runbooks
 - [ ] Incident analysis
 - [ ] Postmortem basics
+
+## Data and Analytics Readiness
+
+- [ ] PostgreSQL backup basics
+- [ ] MongoDB backup basics
+- [ ] ClickHouse backup basics
+- [ ] Data retention policy
+- [ ] Analytics retention policy
+- [ ] Schema migration rollback strategy
+- [ ] Analytics backfill strategy
+- [ ] Event replay strategy
+- [ ] Duplicate event handling
+- [ ] Data consistency checks
+
+## Interview Readiness
+
+- [ ] Explain Go project structure
+- [ ] Explain domain-first architecture
+- [ ] Explain ports and adapters
+- [ ] Explain dependency direction
+- [ ] Explain transaction boundaries
+- [ ] Explain outbox pattern
+- [ ] Explain PostgreSQL role
+- [ ] Explain Redis role
+- [ ] Explain MongoDB role
+- [ ] Explain ClickHouse role
+- [ ] Explain RabbitMQ role
+- [ ] Explain Kafka role
+- [ ] Explain gRPC role
+- [ ] Explain Docker setup
+- [ ] Explain Kubernetes basics
+- [ ] Explain testing strategy
+- [ ] Explain observability strategy
+- [ ] Explain deployment strategy
+- [ ] Explain production-readiness decisions
