@@ -11,5 +11,11 @@ func main() {
 		fmt.Println("Arena stopped after panic:", value)
 	})
 
-	arena.Run()
+	app := arena.NewApp(
+		arena.WithSessionReport(true),
+		arena.WithInventoryInfo(true),
+		arena.WithStatSummary(true),
+	)
+
+	app.Run()
 }

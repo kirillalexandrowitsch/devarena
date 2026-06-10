@@ -22,6 +22,10 @@ const (
 )
 
 func Run() {
+	NewApp().Run()
+}
+
+func (app *App) Run() {
 	sessionReport := startSessionReport()
 
 	defer func() {
