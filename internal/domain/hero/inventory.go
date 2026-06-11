@@ -2,6 +2,12 @@ package hero
 
 import "github.com/rudyakovk/devarena/internal/domain/shared"
 
+type InventorySnapshot struct {
+	Items    []string
+	Length   int
+	Capacity int
+}
+
 func EnsureInventoryCapacity(items []string, requiredCapacity int) []string {
 	if cap(items) >= requiredCapacity {
 		return items
@@ -26,4 +32,12 @@ func HasInventoryItem(items []string, item string) bool {
 
 func FirstInventoryItem(items []string) shared.Selection[string] {
 	return shared.First(items)
+}
+
+func NewInventorySnapshot(items []string) InventorySnapshot {
+	return InventorySnapshot{
+		Items:    CloneInventory(items),
+		Length:   len(items),
+		Capacity: cap(items),
+	}
 }

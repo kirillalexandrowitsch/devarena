@@ -54,6 +54,10 @@ func (app *App) Run() {
 		if firstInventoryItem.Found {
 			app.println("First inventory item:", firstInventoryItem.Value)
 		}
+
+		inventorySnapshot := gameHero.InventorySnapshot()
+		app.println("Hero inventory length:", inventorySnapshot.Length)
+		app.println("Hero inventory capacity:", inventorySnapshot.Capacity)
 	}
 
 	strength, strengthExists := gameHero.Stat("strength")

@@ -75,3 +75,48 @@ func TestHeroFirstInventoryItemReturnsFirstItem(t *testing.T) {
 		t.Fatalf("expected first hero inventory item %q, got %q", "Small Potion", selection.Value)
 	}
 }
+
+func TestNewInventorySnapshotStoresLengthAndCapacity(t *testing.T) {
+	items := make([]string, 0, 5)
+	items = append(items, "Small Potion", "Wooden Shield")
+
+	snapshot := NewInventorySnapshot(items)
+
+	if snapshot.Length != 2 {
+		t.Fatalf("expected snapshot length %d, got %d", 2, snapshot.Length)
+	}
+
+	if snapshot.Capacity != 5 {
+		t.Fatalf("expected snapshot capacity %d, got %d", 5, snapshot.Capacity)
+	}
+}
+
+func TestNewInventorySnapshotClonesItems(t *testing.T) {
+	items := []string{"Small Potion", "Wooden Shield"}
+
+	snapshot := NewInventorySnapshot(items)
+
+	items[0] = "Broken Potion"
+
+	if snapshot.Items[0] != "Small Potion" {
+		t.Fatalf("expected snapshot item %q, got %q", "Small Potion", snapshot.Items[0])
+	}
+}
+
+func TestHeroInventorySnapshotReturnsInventoryMetadata(t *testing.T) {
+	gameHero := Hero{
+		Inventory: make([]string, 0, 4),
+	}
+
+	gameHero.Inventory = append(gameHero.Inventory, "Small Potion")
+
+	snapshot := gameHero.InventorySnapshot()
+
+	if snapshot.Length != 1 {
+		t.Fatalf("expected snapshot length %d, got %d", 1, snapshot.Length)
+	}
+
+	if snapshot.Capacity != 4 {
+		t.Fatalf("expected snapshot capacity %d, got %d", 4, snapshot.Capacity)
+	}
+}

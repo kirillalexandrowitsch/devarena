@@ -103,3 +103,7 @@ func (hero Hero) HasItem(item string) bool {
 func (hero Hero) FirstInventoryItem() shared.Selection[string] {
 	return FirstInventoryItem(hero.Inventory)
 }
+
+func (hero Hero) InventorySnapshot() InventorySnapshot {
+	return NewInventorySnapshot(hero.Inventory)
+}
