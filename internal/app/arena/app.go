@@ -44,6 +44,10 @@ func (app *App) Run() {
 	summaryNameReader := hero.BuildSummaryNameReader(gameHero)
 	app.println("Hero summary name from closure:", summaryNameReader())
 
+	heroSummaries := hero.BuildHeroSummaries([]hero.Hero{gameHero})
+	app.println("Hero summaries count:", len(heroSummaries))
+	app.println("Alive hero summaries count:", hero.CountAliveSummaries(heroSummaries))
+
 	starterSword := hero.Sword{
 		Title: "Starter Sword",
 		Bonus: 4,

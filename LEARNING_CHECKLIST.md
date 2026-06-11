@@ -170,7 +170,7 @@ Beginner
 - [x] Interface internals basics
 - [x] Stack vs heap basics
 - [x] Escape analysis basics
-- [ ] Garbage collector basics
+- [x] Garbage collector basics
 - [ ] Struct alignment basics
 - [ ] Memory allocation basics
 
