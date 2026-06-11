@@ -167,7 +167,7 @@ Beginner
 
 - [x] Slice internals
 - [x] Map internals basics
-- [ ] Interface internals basics
+- [x] Interface internals basics
 - [ ] Stack vs heap basics
 - [ ] Escape analysis basics
 - [ ] Garbage collector basics

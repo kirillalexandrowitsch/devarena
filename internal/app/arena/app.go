@@ -45,6 +45,12 @@ func (app *App) Run() {
 
 	gameHero.EquipWeapon(starterSword)
 
+	weaponSnapshot := gameHero.WeaponSnapshot()
+	if weaponSnapshot.Equipped {
+		app.println("Hero weapon:", weaponSnapshot.Name)
+		app.println("Hero weapon dynamic type:", weaponSnapshot.DynamicType)
+	}
+
 	if app.showInventoryInfo {
 		if gameHero.HasItem("Small Potion") {
 			app.println("Hero has a Small Potion")
