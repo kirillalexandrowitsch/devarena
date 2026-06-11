@@ -48,6 +48,9 @@ func (app *App) Run() {
 	app.println("Hero summaries count:", len(heroSummaries))
 	app.println("Alive hero summaries count:", hero.CountAliveSummaries(heroSummaries))
 
+	app.println("Compact hero summary size:", hero.CompactHeroSummarySize())
+	app.println("Padded hero summary size:", hero.PaddedHeroSummarySize())
+
 	starterSword := hero.Sword{
 		Title: "Starter Sword",
 		Bonus: 4,
