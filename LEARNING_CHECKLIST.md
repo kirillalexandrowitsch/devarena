@@ -172,7 +172,7 @@ Beginner
 - [x] Escape analysis basics
 - [x] Garbage collector basics
 - [x] Struct alignment basics
-- [ ] Memory allocation basics
+- [x] Memory allocation basics
 
 ---
 

@@ -51,6 +51,15 @@ func (app *App) Run() {
 	app.println("Compact hero summary size:", hero.CompactHeroSummarySize())
 	app.println("Padded hero summary size:", hero.PaddedHeroSummarySize())
 
+	allocatedSummaries := hero.AllocateHeroSummaries([]hero.Hero{gameHero})
+	app.println("Allocated hero summaries count:", len(allocatedSummaries))
+
+	reusedSummaries := hero.ReuseHeroSummaries([]hero.Hero{gameHero}, make([]hero.HeroSummary, 0, 4))
+	app.println("Reused hero summaries capacity:", cap(reusedSummaries))
+
+	heroIndex := hero.IndexHeroesByID([]hero.Hero{gameHero})
+	app.println("Indexed heroes count:", len(heroIndex))
+
 	starterSword := hero.Sword{
 		Title: "Starter Sword",
 		Bonus: 4,
