@@ -113,3 +113,57 @@ func TestHeroHighestStatValueReturnsHighestValue(t *testing.T) {
 		t.Fatalf("expected highest hero stat value %d, got %d", 12, selection.Value)
 	}
 }
+
+func TestCloneStatsCreatesIndependentMap(t *testing.T) {
+	stats := map[string]int{
+		"strength": 10,
+		"agility":  7,
+	}
+
+	cloned := CloneStats(stats)
+
+	stats["strength"] = 99
+
+	if cloned["strength"] != 10 {
+		t.Fatalf("expected cloned strength %d, got %d", 10, cloned["strength"])
+	}
+}
+
+func TestNewStatsSnapshotStoresCountAndClonesValues(t *testing.T) {
+	stats := map[string]int{
+		"strength": 10,
+		"agility":  7,
+	}
+
+	snapshot := NewStatsSnapshot(stats)
+
+	if snapshot.Count != 2 {
+		t.Fatalf("expected snapshot count %d, got %d", 2, snapshot.Count)
+	}
+
+	stats["strength"] = 99
+
+	if snapshot.Values["strength"] != 10 {
+		t.Fatalf("expected snapshot strength %d, got %d", 10, snapshot.Values["strength"])
+	}
+}
+
+func TestHeroStatsSnapshotReturnsStatsMetadata(t *testing.T) {
+	gameHero := Hero{
+		Stats: map[string]int{
+			"strength": 10,
+			"agility":  7,
+			"stamina":  12,
+		},
+	}
+
+	snapshot := gameHero.StatsSnapshot()
+
+	if snapshot.Count != 3 {
+		t.Fatalf("expected snapshot count %d, got %d", 3, snapshot.Count)
+	}
+
+	if snapshot.Values["stamina"] != 12 {
+		t.Fatalf("expected stamina value %d, got %d", 12, snapshot.Values["stamina"])
+	}
+}

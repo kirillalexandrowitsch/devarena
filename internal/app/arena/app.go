@@ -76,6 +76,9 @@ func (app *App) Run() {
 		if highestStatValue.Found {
 			app.println("Highest hero stat value:", highestStatValue.Value)
 		}
+
+		statsSnapshot := gameHero.StatsSnapshot()
+		app.println("Hero stats count:", statsSnapshot.Count)
 	}
 
 	app.println("Hero class description:", hero.DescribeHeroClass(gameHero.Class))
