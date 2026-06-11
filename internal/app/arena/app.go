@@ -38,6 +38,9 @@ func (app *App) Run() {
 
 	gameHero := mustCreateDefaultHero()
 
+	heroSummary := gameHero.Summary()
+	app.println("Hero summary:", heroSummary.Name, heroSummary.Class, heroSummary.Level)
+
 	starterSword := hero.Sword{
 		Title: "Starter Sword",
 		Bonus: 4,
