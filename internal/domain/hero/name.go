@@ -12,6 +12,10 @@ func HeroNameLength(name string) int {
 func ValidateHeroName(name string) error {
 	nameLength := HeroNameLength(name)
 
+	if nameLength == 0 {
+		return ErrHeroNameEmpty
+	}
+
 	if nameLength < MinHeroNameLength {
 		return ValidationError{Message: "hero name is too short"}
 	}

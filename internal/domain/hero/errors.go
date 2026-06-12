@@ -1,5 +1,9 @@
 package hero
 
+import "errors"
+
+var ErrHeroNameEmpty = errors.New("hero name is empty")
+
 type ValidationError struct {
 	Message string
 }

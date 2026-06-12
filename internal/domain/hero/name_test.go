@@ -20,6 +20,14 @@ func TestValidateHeroNameReturnsNilForValidName(t *testing.T) {
 	}
 }
 
+func TestValidateHeroNameReturnsErrHeroNameEmpty(t *testing.T) {
+	err := ValidateHeroName("")
+
+	if err != ErrHeroNameEmpty {
+		t.Fatalf("expected ErrHeroNameEmpty, got %v", err)
+	}
+}
+
 func TestValidateHeroNameReturnsErrorForShortName(t *testing.T) {
 	err := ValidateHeroName("Ra")
 
@@ -51,7 +59,7 @@ func TestIsValidHeroNameReturnsTrueForValidName(t *testing.T) {
 }
 
 func TestIsValidHeroNameReturnsFalseForInvalidName(t *testing.T) {
-	if IsValidHeroName("Ra") {
+	if IsValidHeroName("") {
 		t.Fatal("expected hero name to be invalid")
 	}
 }
