@@ -184,7 +184,7 @@ Beginner
 - [x] errors.New
 - [x] fmt.Errorf
 - [x] Returning errors
-- [ ] Checking errors
+- [x] Checking errors
 
 ## Error Wrapping
 

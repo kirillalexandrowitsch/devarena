@@ -16,7 +16,7 @@ func mustCreateDefaultHero() hero.Hero {
 		},
 	)
 	if err != nil {
-		panic(err)
+		panic(describeHeroCreationError(err))
 	}
 
 	gameHero.Attacks = [3]string{
