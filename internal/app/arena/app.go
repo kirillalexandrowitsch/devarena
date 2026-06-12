@@ -38,6 +38,10 @@ func (app *App) Run() {
 
 	gameHero := mustCreateDefaultHero()
 
+	if err := hero.ValidateHeroName(gameHero.Name); err != nil {
+		app.println("Hero validation error:", err)
+	}
+
 	heroSummary := gameHero.Summary()
 	app.println("Hero summary:", heroSummary.Name, heroSummary.Class, heroSummary.Level)
 

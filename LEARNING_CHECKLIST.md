@@ -180,7 +180,7 @@ Beginner
 
 ## Basic Error Handling
 
-- [ ] error interface
+- [x] error interface
 - [ ] errors.New
 - [ ] fmt.Errorf
 - [ ] Returning errors

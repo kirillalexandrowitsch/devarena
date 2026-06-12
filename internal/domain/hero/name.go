@@ -9,8 +9,20 @@ func HeroNameLength(name string) int {
 	return len([]rune(name))
 }
 
-func IsValidHeroName(name string) bool {
+func ValidateHeroName(name string) error {
 	nameLength := HeroNameLength(name)
 
-	return nameLength >= MinHeroNameLength && nameLength <= MaxHeroNameLength
+	if nameLength < MinHeroNameLength {
+		return ValidationError{Message: "hero name is too short"}
+	}
+
+	if nameLength > MaxHeroNameLength {
+		return ValidationError{Message: "hero name is too long"}
+	}
+
+	return nil
+}
+
+func IsValidHeroName(name string) bool {
+	return ValidateHeroName(name) == nil
 }
