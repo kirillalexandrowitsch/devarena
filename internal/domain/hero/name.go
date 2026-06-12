@@ -1,5 +1,7 @@
 package hero
 
+import "fmt"
+
 const (
 	MinHeroNameLength = 3
 	MaxHeroNameLength = 20
@@ -17,11 +19,11 @@ func ValidateHeroName(name string) error {
 	}
 
 	if nameLength < MinHeroNameLength {
-		return ValidationError{Message: "hero name is too short"}
+		return fmt.Errorf("hero name %q is too short: length %d is less than %d", name, nameLength, MinHeroNameLength)
 	}
 
 	if nameLength > MaxHeroNameLength {
-		return ValidationError{Message: "hero name is too long"}
+		return fmt.Errorf("hero name %q is too long: length %d is greater than %d", name, nameLength, MaxHeroNameLength)
 	}
 
 	return nil

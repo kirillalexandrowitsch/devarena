@@ -28,27 +28,29 @@ func TestValidateHeroNameReturnsErrHeroNameEmpty(t *testing.T) {
 	}
 }
 
-func TestValidateHeroNameReturnsErrorForShortName(t *testing.T) {
+func TestValidateHeroNameReturnsFormattedErrorForShortName(t *testing.T) {
 	err := ValidateHeroName("Ra")
 
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
 
-	if err.Error() != "hero name is too short" {
-		t.Fatalf("expected short name error, got %q", err.Error())
+	expectedMessage := `hero name "Ra" is too short: length 2 is less than 3`
+	if err.Error() != expectedMessage {
+		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
 	}
 }
 
-func TestValidateHeroNameReturnsErrorForLongName(t *testing.T) {
+func TestValidateHeroNameReturnsFormattedErrorForLongName(t *testing.T) {
 	err := ValidateHeroName("VeryLongHeroNameOverLimit")
 
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
 
-	if err.Error() != "hero name is too long" {
-		t.Fatalf("expected long name error, got %q", err.Error())
+	expectedMessage := `hero name "VeryLongHeroNameOverLimit" is too long: length 25 is greater than 20`
+	if err.Error() != expectedMessage {
+		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
 	}
 }
 

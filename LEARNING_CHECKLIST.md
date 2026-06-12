@@ -182,7 +182,7 @@ Beginner
 
 - [x] error interface
 - [x] errors.New
-- [ ] fmt.Errorf
+- [x] fmt.Errorf
 - [ ] Returning errors
 - [ ] Checking errors
 
