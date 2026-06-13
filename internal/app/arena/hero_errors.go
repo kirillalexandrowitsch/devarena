@@ -1,13 +1,17 @@
 package arena
 
-import "github.com/rudyakovk/devarena/internal/domain/hero"
+import (
+	"errors"
+
+	"github.com/rudyakovk/devarena/internal/domain/hero"
+)
 
 func describeHeroCreationError(err error) string {
 	if err == nil {
 		return ""
 	}
 
-	if err == hero.ErrHeroNameEmpty {
+	if errors.Is(err, hero.ErrHeroNameEmpty) {
 		return "default hero name is empty"
 	}
 

@@ -189,7 +189,7 @@ Beginner
 ## Error Wrapping
 
 - [x] Error wrapping with %w
-- [ ] errors.Is
+- [x] errors.Is
 - [ ] errors.As
 - [ ] Error chains
 

@@ -1,6 +1,9 @@
 package hero
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestNewHeroReturnsHeroForValidInput(t *testing.T) {
 	stats := CombatStats{
@@ -43,6 +46,10 @@ func TestNewHeroReturnsWrappedErrorForEmptyName(t *testing.T) {
 		t.Fatal("expected error, got nil")
 	}
 
+	if !errors.Is(err, ErrHeroNameEmpty) {
+		t.Fatalf("expected error chain to contain ErrHeroNameEmpty, got %v", err)
+	}
+
 	expectedMessage := "create hero: hero name is empty"
 	if err.Error() != expectedMessage {
 		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
@@ -81,6 +88,10 @@ func TestNewHeroReturnsWrappedErrorForShortName(t *testing.T) {
 
 	if err == nil {
 		t.Fatal("expected error, got nil")
+	}
+
+	if errors.Is(err, ErrHeroNameEmpty) {
+		t.Fatalf("expected error chain not to contain ErrHeroNameEmpty, got %v", err)
 	}
 
 	expectedMessage := `create hero: hero name "Ra" is too short: length 2 is less than 3`
