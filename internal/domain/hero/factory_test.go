@@ -29,7 +29,7 @@ func TestNewHeroReturnsHeroForValidInput(t *testing.T) {
 	}
 }
 
-func TestNewHeroReturnsErrorForInvalidName(t *testing.T) {
+func TestNewHeroReturnsWrappedErrorForEmptyName(t *testing.T) {
 	stats := CombatStats{
 		HP:             100,
 		BaseDamage:     15,
@@ -43,8 +43,9 @@ func TestNewHeroReturnsErrorForInvalidName(t *testing.T) {
 		t.Fatal("expected error, got nil")
 	}
 
-	if err != ErrHeroNameEmpty {
-		t.Fatalf("expected ErrHeroNameEmpty, got %v", err)
+	expectedMessage := "create hero: hero name is empty"
+	if err.Error() != expectedMessage {
+		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
 	}
 
 	if gameHero.ID != 0 {
@@ -65,5 +66,25 @@ func TestNewHeroReturnsErrorForInvalidName(t *testing.T) {
 
 	if gameHero.Alive {
 		t.Fatal("expected zero hero to be not alive")
+	}
+}
+
+func TestNewHeroReturnsWrappedErrorForShortName(t *testing.T) {
+	stats := CombatStats{
+		HP:             100,
+		BaseDamage:     15,
+		BonusDamage:    5,
+		CriticalChance: 0.15,
+	}
+
+	_, err := NewHero(1, "Ra", HeroClassWarrior, 3, stats)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	expectedMessage := `create hero: hero name "Ra" is too short: length 2 is less than 3`
+	if err.Error() != expectedMessage {
+		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
 	}
 }

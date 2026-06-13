@@ -1,8 +1,10 @@
 package hero
 
+import "fmt"
+
 func NewHero(id HeroID, name string, class HeroClass, level int, stats CombatStats) (Hero, error) {
 	if err := ValidateHeroName(name); err != nil {
-		return Hero{}, err
+		return Hero{}, fmt.Errorf("create hero: %w", err)
 	}
 
 	return Hero{
