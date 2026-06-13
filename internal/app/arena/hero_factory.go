@@ -1,11 +1,19 @@
 package arena
 
-import "github.com/rudyakovk/devarena/internal/domain/hero"
+import (
+	"fmt"
 
-func mustCreateDefaultHero() hero.Hero {
+	"github.com/rudyakovk/devarena/internal/domain/hero"
+)
+
+func createDefaultHero() (hero.Hero, error) {
+	return createDefaultHeroWithName(defaultHeroName)
+}
+
+func createDefaultHeroWithName(name string) (hero.Hero, error) {
 	gameHero, err := hero.NewHero(
 		1,
-		defaultHeroName,
+		name,
 		defaultHeroClass,
 		defaultHeroLevel,
 		hero.CombatStats{
@@ -16,7 +24,7 @@ func mustCreateDefaultHero() hero.Hero {
 		},
 	)
 	if err != nil {
-		panic(describeHeroCreationError(err))
+		return hero.Hero{}, fmt.Errorf("create default hero: %w", err)
 	}
 
 	gameHero.Attacks = [3]string{
@@ -35,6 +43,15 @@ func mustCreateDefaultHero() hero.Hero {
 		"agility":         7,
 		"stamina":         12,
 		"temporary_bonus": 2,
+	}
+
+	return gameHero, nil
+}
+
+func mustCreateDefaultHero() hero.Hero {
+	gameHero, err := createDefaultHero()
+	if err != nil {
+		panic(describeHeroCreationError(err))
 	}
 
 	return gameHero

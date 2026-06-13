@@ -191,7 +191,7 @@ Beginner
 - [x] Error wrapping with %w
 - [x] errors.Is
 - [x] errors.As
-- [ ] Error chains
+- [x] Error chains
 
 ## Error Types
 

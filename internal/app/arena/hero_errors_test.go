@@ -33,6 +33,16 @@ func TestDescribeHeroCreationErrorReturnsMessageForWrappedEmptyName(t *testing.T
 	}
 }
 
+func TestDescribeHeroCreationErrorReturnsMessageForDefaultHeroErrorChain(t *testing.T) {
+	_, err := createDefaultHeroWithName("")
+
+	message := describeHeroCreationError(err)
+
+	if message != "default hero name is empty" {
+		t.Fatalf("expected empty name message, got %q", message)
+	}
+}
+
 func TestDescribeHeroCreationErrorReturnsValidationMessage(t *testing.T) {
 	err := hero.ValidationError{
 		Field:   "hero_name",
@@ -52,6 +62,17 @@ func TestDescribeHeroCreationErrorReturnsWrappedValidationMessage(t *testing.T) 
 		Field:   "hero_name",
 		Message: "value is too short",
 	})
+
+	message := describeHeroCreationError(err)
+
+	expectedMessage := "default hero validation failed: hero_name"
+	if message != expectedMessage {
+		t.Fatalf("expected message %q, got %q", expectedMessage, message)
+	}
+}
+
+func TestDescribeHeroCreationErrorReturnsValidationMessageForDefaultHeroErrorChain(t *testing.T) {
+	_, err := createDefaultHeroWithName("Ra")
 
 	message := describeHeroCreationError(err)
 
