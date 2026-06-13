@@ -15,5 +15,10 @@ func describeHeroCreationError(err error) string {
 		return "default hero name is empty"
 	}
 
+	var validationErr hero.ValidationError
+	if errors.As(err, &validationErr) {
+		return "default hero validation failed: " + validationErr.Field
+	}
+
 	return "default hero creation failed: " + err.Error()
 }

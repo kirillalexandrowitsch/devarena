@@ -33,12 +33,40 @@ func TestDescribeHeroCreationErrorReturnsMessageForWrappedEmptyName(t *testing.T
 	}
 }
 
-func TestDescribeHeroCreationErrorReturnsFallbackMessage(t *testing.T) {
-	err := hero.ValidationError{Message: "hero name is too short"}
+func TestDescribeHeroCreationErrorReturnsValidationMessage(t *testing.T) {
+	err := hero.ValidationError{
+		Field:   "hero_name",
+		Message: "value is too short",
+	}
 
 	message := describeHeroCreationError(err)
 
-	expectedMessage := "default hero creation failed: hero name is too short"
+	expectedMessage := "default hero validation failed: hero_name"
+	if message != expectedMessage {
+		t.Fatalf("expected message %q, got %q", expectedMessage, message)
+	}
+}
+
+func TestDescribeHeroCreationErrorReturnsWrappedValidationMessage(t *testing.T) {
+	err := fmt.Errorf("create hero: %w", hero.ValidationError{
+		Field:   "hero_name",
+		Message: "value is too short",
+	})
+
+	message := describeHeroCreationError(err)
+
+	expectedMessage := "default hero validation failed: hero_name"
+	if message != expectedMessage {
+		t.Fatalf("expected message %q, got %q", expectedMessage, message)
+	}
+}
+
+func TestDescribeHeroCreationErrorReturnsFallbackMessage(t *testing.T) {
+	err := fmt.Errorf("unknown error")
+
+	message := describeHeroCreationError(err)
+
+	expectedMessage := "default hero creation failed: unknown error"
 	if message != expectedMessage {
 		t.Fatalf("expected message %q, got %q", expectedMessage, message)
 	}

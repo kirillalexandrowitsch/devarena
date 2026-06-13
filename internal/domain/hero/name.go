@@ -19,11 +19,17 @@ func ValidateHeroName(name string) error {
 	}
 
 	if nameLength < MinHeroNameLength {
-		return fmt.Errorf("hero name %q is too short: length %d is less than %d", name, nameLength, MinHeroNameLength)
+		return ValidationError{
+			Field:   "hero_name",
+			Message: fmt.Sprintf("value %q is too short: length %d is less than %d", name, nameLength, MinHeroNameLength),
+		}
 	}
 
 	if nameLength > MaxHeroNameLength {
-		return fmt.Errorf("hero name %q is too long: length %d is greater than %d", name, nameLength, MaxHeroNameLength)
+		return ValidationError{
+			Field:   "hero_name",
+			Message: fmt.Sprintf("value %q is too long: length %d is greater than %d", name, nameLength, MaxHeroNameLength),
+		}
 	}
 
 	return nil

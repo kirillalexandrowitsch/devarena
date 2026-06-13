@@ -1,6 +1,9 @@
 package hero
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestHeroNameLengthCountsRunes(t *testing.T) {
 	name := "Рагнар"
@@ -23,34 +26,52 @@ func TestValidateHeroNameReturnsNilForValidName(t *testing.T) {
 func TestValidateHeroNameReturnsErrHeroNameEmpty(t *testing.T) {
 	err := ValidateHeroName("")
 
-	if err != ErrHeroNameEmpty {
+	if !errors.Is(err, ErrHeroNameEmpty) {
 		t.Fatalf("expected ErrHeroNameEmpty, got %v", err)
 	}
 }
 
-func TestValidateHeroNameReturnsFormattedErrorForShortName(t *testing.T) {
+func TestValidateHeroNameReturnsValidationErrorForShortName(t *testing.T) {
 	err := ValidateHeroName("Ra")
 
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
 
-	expectedMessage := `hero name "Ra" is too short: length 2 is less than 3`
-	if err.Error() != expectedMessage {
-		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
+	var validationErr ValidationError
+	if !errors.As(err, &validationErr) {
+		t.Fatalf("expected ValidationError, got %T", err)
+	}
+
+	if validationErr.Field != "hero_name" {
+		t.Fatalf("expected field %q, got %q", "hero_name", validationErr.Field)
+	}
+
+	expectedMessage := `value "Ra" is too short: length 2 is less than 3`
+	if validationErr.Message != expectedMessage {
+		t.Fatalf("expected message %q, got %q", expectedMessage, validationErr.Message)
 	}
 }
 
-func TestValidateHeroNameReturnsFormattedErrorForLongName(t *testing.T) {
+func TestValidateHeroNameReturnsValidationErrorForLongName(t *testing.T) {
 	err := ValidateHeroName("VeryLongHeroNameOverLimit")
 
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
 
-	expectedMessage := `hero name "VeryLongHeroNameOverLimit" is too long: length 25 is greater than 20`
-	if err.Error() != expectedMessage {
-		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
+	var validationErr ValidationError
+	if !errors.As(err, &validationErr) {
+		t.Fatalf("expected ValidationError, got %T", err)
+	}
+
+	if validationErr.Field != "hero_name" {
+		t.Fatalf("expected field %q, got %q", "hero_name", validationErr.Field)
+	}
+
+	expectedMessage := `value "VeryLongHeroNameOverLimit" is too long: length 25 is greater than 20`
+	if validationErr.Message != expectedMessage {
+		t.Fatalf("expected message %q, got %q", expectedMessage, validationErr.Message)
 	}
 }
 

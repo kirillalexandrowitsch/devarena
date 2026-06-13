@@ -76,7 +76,7 @@ func TestNewHeroReturnsWrappedErrorForEmptyName(t *testing.T) {
 	}
 }
 
-func TestNewHeroReturnsWrappedErrorForShortName(t *testing.T) {
+func TestNewHeroReturnsWrappedValidationErrorForShortName(t *testing.T) {
 	stats := CombatStats{
 		HP:             100,
 		BaseDamage:     15,
@@ -90,11 +90,16 @@ func TestNewHeroReturnsWrappedErrorForShortName(t *testing.T) {
 		t.Fatal("expected error, got nil")
 	}
 
-	if errors.Is(err, ErrHeroNameEmpty) {
-		t.Fatalf("expected error chain not to contain ErrHeroNameEmpty, got %v", err)
+	var validationErr ValidationError
+	if !errors.As(err, &validationErr) {
+		t.Fatalf("expected ValidationError in chain, got %T", err)
 	}
 
-	expectedMessage := `create hero: hero name "Ra" is too short: length 2 is less than 3`
+	if validationErr.Field != "hero_name" {
+		t.Fatalf("expected field %q, got %q", "hero_name", validationErr.Field)
+	}
+
+	expectedMessage := `create hero: hero_name: value "Ra" is too short: length 2 is less than 3`
 	if err.Error() != expectedMessage {
 		t.Fatalf("expected error %q, got %q", expectedMessage, err.Error())
 	}
